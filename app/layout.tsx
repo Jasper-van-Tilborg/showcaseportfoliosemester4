@@ -1,27 +1,48 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Space_Grotesk, Manrope } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import AtmosphericBg from "@/components/AtmosphericBg";
 
-const inter = Inter({
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-space-grotesk",
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+});
+
+const manrope = Manrope({
+  subsets: ["latin"],
+  variable: "--font-manrope",
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Jasper van Tilborg - Designer & Developer",
-  description: "Portfolio of Jasper van Tilborg - Designer & Developer creating digital experiences with clean design and code",
+  title: "Jasper van Tilborg — Brand Strategist & Visual Designer",
+  description:
+    "Showcase portfolio of Jasper van Tilborg — Brand Strategist & Visual Designer at Fontys University of Applied Sciences.",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} font-sans antialiased`}>
+    <html lang="en" className="dark">
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        />
+      </head>
+      <body
+        className={`${spaceGrotesk.variable} ${manrope.variable} font-body antialiased bg-background text-on-surface overflow-x-hidden`}
+      >
+        <AtmosphericBg />
+        <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   );
