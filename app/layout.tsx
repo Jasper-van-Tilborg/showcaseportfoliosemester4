@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Manrope } from "next/font/google";
+import { Space_Grotesk, Manrope, Playfair_Display, DM_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AtmosphericBg from "@/components/AtmosphericBg";
+import ThemeApplicator from "@/components/ThemeApplicator";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -15,6 +16,20 @@ const spaceGrotesk = Space_Grotesk({
 const manrope = Manrope({
   subsets: ["latin"],
   variable: "--font-manrope",
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+});
+
+const playfairDisplay = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair-display",
+  weight: ["400", "500", "600", "700", "800", "900"],
+  display: "swap",
+});
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  variable: "--font-dm-sans",
   weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 });
@@ -37,8 +52,9 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${spaceGrotesk.variable} ${manrope.variable} font-body antialiased bg-background text-on-surface overflow-x-hidden`}
+        className={`${spaceGrotesk.variable} ${manrope.variable} ${playfairDisplay.variable} ${dmSans.variable} font-body antialiased bg-background text-on-surface overflow-x-hidden`}
       >
+        <ThemeApplicator />
         <AtmosphericBg />
         <Navbar />
         {children}

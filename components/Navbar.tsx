@@ -41,9 +41,9 @@ export default function Navbar() {
                 <Link
                   key={href}
                   href={href}
-                  className={`font-headline text-sm tracking-widest uppercase transition-colors duration-300 ${
+                  className={`nav-link font-headline text-sm tracking-widest uppercase transition-colors duration-300 ${
                     active
-                      ? "text-primary font-bold border-b-2 border-primary-container pb-0.5"
+                      ? "nav-link-active text-primary font-bold"
                       : "text-on-surface-variant hover:text-primary"
                   }`}
                 >

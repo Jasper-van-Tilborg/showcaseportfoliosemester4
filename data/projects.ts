@@ -8,6 +8,23 @@ export interface EvidenceItem {
   description?: string;
 }
 
+export interface ProjectSection {
+  heading: string;
+  body: string;
+}
+
+export interface ProjectTheme {
+  background: string;        // page background colour
+  primary: string;           // replaces --color-primary (vibrant accent)
+  primaryContainer: string;  // replaces --color-primary-container
+  onPrimary: string;         // replaces --color-on-primary
+  onSurface: string;         // replaces --color-on-surface (main text)
+  onSurfaceVariant: string;  // replaces --color-on-surface-variant (secondary text)
+  outlineVariant: string;    // replaces --color-outline-variant (borders)
+  surfaceContainerLowest: string; // replaces --color-surface-container-lowest (footer bg)
+  fontHighlights?: Record<string, string>; // word → font-family, renders that word in its own font
+}
+
 export interface Project {
   id: number;
   slug: string;
@@ -16,22 +33,74 @@ export interface Project {
   year: string;
   shortDescription: string;
   description: string;
+  sections?: ProjectSection[];
   tags: string[];
   coverGradient: string; // CSS gradient string used as cover
+  coverImage?: string;  // Optional hero image for cards
   featured: boolean;
   evidence?: EvidenceItem[];
-  links?: { live?: string; github?: string };
+  links?: { live?: string; github?: string; figma?: string };
   metadata?: {
     duration?: string;
     teamSize?: number;
     role?: string;
     course?: string;
   };
+  theme?: ProjectTheme;
 }
 
 export const projects: Project[] = [
   {
     id: 1,
+    slug: "fioresque",
+    title: "Fioresque",
+    category: "UI/UX",
+    year: "2026",
+    shortDescription: "Ontworpen én gebouwd — van visuele identiteit tot werkende code, live in productie.",
+    description:
+      "Fioresque is een premium fashion e-commerce website die ik volledig heb ontworpen én gebouwd voor een natuur-geïnspireerd kledingmerk. Het project omvat het gehele traject van visuele identiteit tot werkende code, live in productie.",
+    sections: [
+      {
+        heading: "Ontwerp & visuele identiteit",
+        body: "Het merk draait om een verfijnd kleurenpalet van donkergroen, zwart en crème, gecombineerd met de typografie van Playfair Display en DM Sans. Deze keuzes geven het merk een luxueuze, organische uitstraling die aansluit bij de natuur-geïnspireerde positionering.",
+      },
+      {
+        heading: "Pagina's & componenten",
+        body: "De website beslaat meerdere pagina's en componenten, waaronder de homepage, shopoverzicht, collectiespagina, productdetailpagina en een over ons-pagina — volledig responsive voor zowel mobiel als desktop. Specifieke aandacht ging uit naar navigatie-interacties, een horizontale productcarousel met peek-effect, een bottom sheet filter/sort-overlay voor mobiel en een desktop cartlade.",
+      },
+      {
+        heading: "Tech stack",
+        body: "Next.js · Tailwind CSS · Figma · Vercel",
+      },
+    ],
+    tags: ["UI/UX Design", "Figma", "E-commerce", "Visuele Identiteit", "Next.js", "Tailwind CSS"],
+    coverGradient: "linear-gradient(135deg, #1E2420 0%, #2D4A35 50%, #4A7A56 100%)",
+    coverImage: "/fioresque_wit.png",
+    featured: true,
+    links: { live: "https://fioresque.vercel.app", github: "https://github.com/Jasper-van-Tilborg/fioresque" },
+    metadata: {
+      duration: "Ongoing",
+      teamSize: 1,
+      role: "Designer & Developer",
+      course: "Personal Project",
+    },
+    theme: {
+      background:        "#1E2420",
+      primary:           "#4A7A56",
+      primaryContainer:  "#2D4A35",
+      onPrimary:         "#F2F0EB",
+      onSurface:         "#F2F0EB",
+      onSurfaceVariant:  "#a8b8a0",
+      outlineVariant:             "#2D4A35",
+      surfaceContainerLowest:     "#141a16",
+      fontHighlights: {
+        "Playfair Display": "var(--font-playfair-display), serif",
+        "DM Sans":          "var(--font-dm-sans), system-ui, sans-serif",
+      },
+    },
+  },
+  {
+    id: 2,
     slug: "vara-media-agency",
     title: "VARA Media Agency",
     category: "BRANDING",
@@ -50,7 +119,7 @@ export const projects: Project[] = [
     },
   },
   {
-    id: 2,
+    id: 3,
     slug: "showcase-portfolio",
     title: "Showcase Portfolio",
     category: "UI/UX",
@@ -69,7 +138,7 @@ export const projects: Project[] = [
     },
   },
   {
-    id: 3,
+    id: 4,
     slug: "brand-identity-study",
     title: "Brand Identity Study",
     category: "IDENTITY",
@@ -88,7 +157,7 @@ export const projects: Project[] = [
     },
   },
   {
-    id: 4,
+    id: 5,
     slug: "motion-design-reel",
     title: "Motion Design Reel",
     category: "MOTION",
@@ -107,7 +176,7 @@ export const projects: Project[] = [
     },
   },
   {
-    id: 5,
+    id: 6,
     slug: "ux-research-sprint",
     title: "UX Research Sprint",
     category: "RESEARCH",

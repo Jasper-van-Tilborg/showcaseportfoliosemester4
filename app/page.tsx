@@ -1,4 +1,6 @@
+import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import Icon from "@/components/Icon";
 import FadeUp from "@/components/motion/FadeUp";
 import HeroContent from "@/components/motion/HeroContent";
@@ -99,12 +101,33 @@ export default function HomePage() {
                 <Link
                   href={`/work/${featuredProjects[0].slug}`}
                   className="group block transition-transform duration-300 ease-out hover:-translate-y-2"
+                  style={featuredProjects[0].theme ? ({
+                    "--color-primary":            featuredProjects[0].theme.primary,
+                    "--color-primary-container":  featuredProjects[0].theme.primaryContainer,
+                    "--color-on-primary":         featuredProjects[0].theme.onPrimary,
+                    "--color-on-primary-fixed":   featuredProjects[0].theme.background,
+                    "--color-on-surface":         featuredProjects[0].theme.onSurface,
+                    "--color-on-surface-variant": featuredProjects[0].theme.onSurfaceVariant,
+                  } as React.CSSProperties) : undefined}
                 >
                   <div className="relative w-full aspect-video glass-card rounded-3xl overflow-hidden border border-outline-variant/10 cinematic-shadow">
                     <div
                       className="absolute inset-0 transition-transform duration-700 group-hover:scale-105"
                       style={{ background: featuredProjects[0].coverGradient }}
                     />
+                    {featuredProjects[0].coverImage && (
+                      <div className="absolute inset-12 group-hover:inset-0 transition-all duration-500 overflow-hidden rounded-xl group-hover:rounded-none">
+                        <Image
+                          src={featuredProjects[0].coverImage}
+                          alt={featuredProjects[0].title}
+                          fill
+                          className="object-cover object-center"
+                          sizes="(max-width: 768px) 100vw, 66vw"
+                        />
+                      </div>
+                    )}
+                    {/* Grey desaturating overlay — fades on hover to reveal colour */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-neutral-900/95 via-neutral-800/80 to-neutral-700/70 transition-opacity duration-500 group-hover:opacity-0" />
                     <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent opacity-80" />
                     <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-primary-container/5 backdrop-blur-[2px]" />
                     <div className="absolute bottom-8 left-8">

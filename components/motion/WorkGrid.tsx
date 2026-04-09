@@ -1,7 +1,9 @@
 "use client";
 
+import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import Icon from "@/components/Icon";
 import type { Project } from "@/data/projects";
 
@@ -12,6 +14,16 @@ export default function WorkGrid({ projects }: { projects: Project[] }) {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {projects.map((project, index) => {
         const isWide = index === 2;
+        const themeVars = project.theme
+          ? ({
+              "--color-primary":            project.theme.primary,
+              "--color-primary-container":  project.theme.primaryContainer,
+              "--color-on-primary":         project.theme.onPrimary,
+              "--color-on-primary-fixed":   project.theme.background,
+              "--color-on-surface":         project.theme.onSurface,
+              "--color-on-surface-variant": project.theme.onSurfaceVariant,
+            } as React.CSSProperties)
+          : undefined;
         return (
           <motion.div
             key={project.slug}
@@ -23,6 +35,7 @@ export default function WorkGrid({ projects }: { projects: Project[] }) {
           >
             <Link
               href={`/work/${project.slug}`}
+              style={themeVars}
               className={`group relative flex overflow-hidden bg-surface-container-low rounded-2xl transition-transform duration-300 ease-out hover:-translate-y-2 ${
                 isWide
                   ? "aspect-[16/7] min-h-[320px]"
@@ -34,14 +47,28 @@ export default function WorkGrid({ projects }: { projects: Project[] }) {
                 className="absolute inset-0 scale-105 group-hover:scale-100 transition-transform duration-700"
                 style={{ background: project.coverGradient }}
               />
+              {/* Grey desaturating overlay — fades on hover to reveal colour */}
+              <div className="absolute inset-0 bg-gradient-to-br from-neutral-900/95 via-neutral-800/80 to-neutral-700/70 transition-opacity duration-500 group-hover:opacity-0" />
+              {/* Cover image */}
+              {project.coverImage && (
+                <div className="absolute inset-12 group-hover:inset-0 transition-all duration-500 overflow-hidden rounded-xl group-hover:rounded-none">
+                  <Image
+                    src={project.coverImage}
+                    alt={project.title}
+                    fill
+                    className="object-cover object-center"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                </div>
+              )}
               {/* Hover tint */}
               <div className="absolute inset-0 bg-primary-container/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 backdrop-blur-[2px]" />
               {/* Shadow intensify on hover */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-[0_32px_64px_-16px_rgba(55,14,0,0.5)]" />
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ boxShadow: "0 32px 64px -16px color-mix(in srgb, var(--color-primary) 30%, transparent)" }} />
 
               {/* Tags */}
               <div className="absolute top-6 left-6 flex gap-2 z-10">
-                <span className="glass-card px-4 py-1.5 rounded-full text-[10px] font-headline tracking-widest text-primary border border-primary/20 shadow-[0_0_15px_rgba(255,92,0,0.2)]">
+                <span className="glass-card px-4 py-1.5 rounded-full text-[10px] font-headline tracking-widest text-primary border border-primary/20" style={{ boxShadow: "0 0 15px color-mix(in srgb, var(--color-primary) 20%, transparent)" }}>
                   {project.category}
                 </span>
                 <span className="glass-card px-4 py-1.5 rounded-full text-[10px] font-headline tracking-widest text-on-surface border border-white/10">

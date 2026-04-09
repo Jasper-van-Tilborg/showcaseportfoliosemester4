@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="w-full relative bg-surface-container-lowest mt-0 z-10">
       {/* Orange gradient separator */}
       <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary-container to-transparent opacity-40" />
-      <div className="absolute top-0 left-0 w-full h-12 bg-[radial-gradient(ellipse_at_top,rgba(255,92,0,0.08),transparent_70%)]" />
+      <div className="absolute top-0 left-0 w-full h-12" style={{ background: "radial-gradient(ellipse at top, color-mix(in srgb, var(--color-primary) 8%, transparent), transparent 70%)" }} />
 
       <div className="max-w-screen-2xl mx-auto px-8 md:px-16 py-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
         {/* Brand */}
