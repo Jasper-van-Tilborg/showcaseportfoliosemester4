@@ -6,10 +6,12 @@ import Link from "next/link";
 import Image from "next/image";
 import Icon from "@/components/Icon";
 import type { Project } from "@/data/projects";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
 export default function WorkGrid({ projects }: { projects: Project[] }) {
+  const { t } = useLanguage();
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {projects.map((project, index) => {
@@ -36,7 +38,7 @@ export default function WorkGrid({ projects }: { projects: Project[] }) {
             <Link
               href={`/work/${project.slug}`}
               style={themeVars}
-              className={`group relative flex overflow-hidden bg-surface-container-low rounded-2xl transition-transform duration-300 ease-out hover:-translate-y-2 ${
+              className={`group relative flex overflow-hidden bg-surface-container-low rounded-2xl transition-all duration-500 ease-out grayscale hover:grayscale-0 ${
                 isWide
                   ? "aspect-[16/7] min-h-[320px]"
                   : "aspect-[4/5] md:aspect-video"
@@ -48,21 +50,22 @@ export default function WorkGrid({ projects }: { projects: Project[] }) {
                 style={{ background: project.coverGradient }}
               />
               {/* Grey desaturating overlay — fades on hover to reveal colour */}
-              <div className="absolute inset-0 bg-gradient-to-br from-neutral-900/95 via-neutral-800/80 to-neutral-700/70 transition-opacity duration-500 group-hover:opacity-0" />
+              <div className="absolute inset-0 bg-neutral-900/60 transition-opacity duration-500 group-hover:opacity-0" />
               {/* Cover image */}
               {project.coverImage && (
-                <div className="absolute inset-12 group-hover:inset-0 transition-all duration-500 overflow-hidden rounded-xl group-hover:rounded-none">
+                <div className="absolute inset-0">
                   <Image
                     src={project.coverImage}
                     alt={project.title}
                     fill
-                    className="object-cover object-center"
+                    quality={100}
+                    className="object-contain scale-[0.7] group-hover:scale-[0.8] transition-transform duration-500"
                     sizes="(max-width: 768px) 100vw, 50vw"
                   />
                 </div>
               )}
               {/* Hover tint */}
-              <div className="absolute inset-0 bg-primary-container/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 backdrop-blur-[2px]" />
+              <div className="absolute inset-0 bg-primary-container/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               {/* Shadow intensify on hover */}
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ boxShadow: "0 32px 64px -16px color-mix(in srgb, var(--color-primary) 30%, transparent)" }} />
 
@@ -105,7 +108,7 @@ export default function WorkGrid({ projects }: { projects: Project[] }) {
                     </h3>
                     <div className="mt-4 flex items-center gap-2 text-on-surface-variant group-hover:text-primary transition-colors duration-300">
                       <span className="text-xs font-label tracking-widest">
-                        VIEW CASE STUDY
+                        {t.case.viewCase}
                       </span>
                       <Icon
                         name="arrow_forward"

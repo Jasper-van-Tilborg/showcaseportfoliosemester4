@@ -75,7 +75,7 @@ export const projects: Project[] = [
     ],
     tags: ["UI/UX Design", "Figma", "E-commerce", "Visuele Identiteit", "Next.js", "Tailwind CSS"],
     coverGradient: "linear-gradient(135deg, #1E2420 0%, #2D4A35 50%, #4A7A56 100%)",
-    coverImage: "/fioresque_wit.png",
+    coverImage: "/fioresque_logo.png",
     featured: true,
     links: { live: "https://fioresque.vercel.app", github: "https://github.com/Jasper-van-Tilborg/fioresque" },
     metadata: {
@@ -109,13 +109,39 @@ export const projects: Project[] = [
     description:
       "A collaborative 3-week sprint where I worked with 5 teammates to establish a complete branding agency — VARA. Responsible for brand strategy, visual identity, color system, logo design, and the homepage concept.",
     tags: ["Brand Strategy", "Visual Identity", "UI Design"],
-    coverGradient: "linear-gradient(135deg, #1a0a00 0%, #3d1500 40%, #ff5c00 100%)",
+    coverGradient: "linear-gradient(135deg, #246BF6 0%, #4d8ef8 50%, #D9F855 100%)",
+    coverImage: "/vara_logo2.png",
+    links: { live: "https://vara-agency.vercel.app", github: "https://github.com/timjonkergouw/vara_agency" },
     featured: true,
+    sections: [
+      {
+        heading: "Merkontwikkeling",
+        body: "In drie weken hebben we met een team van zes VARA Media Agency opgezet — een volledig functionerend merkbureau met eigen identiteit, positionering en visueel systeem. Ik was verantwoordelijk voor de merkstrategie en visuele identiteit.",
+      },
+      {
+        heading: "Visueel systeem",
+        body: "Het kleurenpalet combineert een diep antraciet met elektrisch blauw en een scherp geel-groen accent. Dit geeft het merk een gedurfd, modern karakter dat past bij een ambitieus mediabureau. Typografie en gridstructuur werden zorgvuldig gedefinieerd in het brand guidelines document.",
+      },
+      {
+        heading: "Logo & huisstijl",
+        body: "Het logo is opgebouwd rond een krachtige geometrische vorm die schaalbaarheid en herkenbaarheid combineert. De volledige huisstijl omvat visitekaartjes, presentatiesjablonen en social media assets.",
+      },
+    ],
     metadata: {
       duration: "3 weeks",
       teamSize: 6,
       role: "Brand Strategist & Visual Designer",
       course: "Semester 4 — Media Design",
+    },
+    theme: {
+      background:             "#343231",
+      primary:                "#D9F855",
+      primaryContainer:       "#246BF6",
+      onPrimary:              "#343231",
+      onSurface:              "#FAF9F6",
+      onSurfaceVariant:       "#92B5FB",
+      outlineVariant:         "#444342",
+      surfaceContainerLowest: "#1e1e1d",
     },
   },
   {

@@ -5,6 +5,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AtmosphericBg from "@/components/AtmosphericBg";
 import ThemeApplicator from "@/components/ThemeApplicator";
+import LanguageTransition from "@/components/LanguageTransition";
+import { LanguageProvider } from "@/contexts/LanguageContext";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -54,11 +56,15 @@ export default function RootLayout({
       <body
         className={`${spaceGrotesk.variable} ${manrope.variable} ${playfairDisplay.variable} ${dmSans.variable} font-body antialiased bg-background text-on-surface overflow-x-hidden`}
       >
-        <ThemeApplicator />
-        <AtmosphericBg />
-        <Navbar />
-        {children}
-        <Footer />
+        <LanguageProvider>
+          <ThemeApplicator />
+          <AtmosphericBg />
+          <Navbar />
+          <LanguageTransition>
+            {children}
+            <Footer />
+          </LanguageTransition>
+        </LanguageProvider>
       </body>
     </html>
   );
