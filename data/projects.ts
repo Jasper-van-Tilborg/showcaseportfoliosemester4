@@ -13,6 +13,12 @@ export interface ProjectSection {
   body: string;
 }
 
+export interface ProjectI18n {
+  description?: string;
+  shortDescription?: string;
+  sections?: ProjectSection[];
+}
+
 export interface ProjectTheme {
   background: string;        // page background colour
   primary: string;           // replaces --color-primary (vibrant accent)
@@ -47,6 +53,10 @@ export interface Project {
     course?: string;
   };
   theme?: ProjectTheme;
+  i18n?: {
+    nl?: ProjectI18n;
+    en?: ProjectI18n;
+  };
 }
 
 export const projects: Project[] = [
@@ -98,6 +108,27 @@ export const projects: Project[] = [
         "DM Sans":          "var(--font-dm-sans), system-ui, sans-serif",
       },
     },
+    i18n: {
+      en: {
+        shortDescription: "Designed and built — from visual identity to working code, live in production.",
+        description:
+          "Fioresque is a premium fashion e-commerce website I fully designed and built for a nature-inspired clothing brand. The project covers the entire trajectory from visual identity to working code, live in production.",
+        sections: [
+          {
+            heading: "Design & visual identity",
+            body: "The brand revolves around a refined colour palette of deep green, black, and cream, combined with Playfair Display and DM Sans typography. These choices give the brand a luxurious, organic feel that aligns with its nature-inspired positioning.",
+          },
+          {
+            heading: "Pages & components",
+            body: "The website spans multiple pages and components — homepage, shop overview, collections page, product detail page, and an about page — fully responsive for both mobile and desktop. Specific attention went to navigation interactions, a horizontal product carousel with peek effect, a bottom sheet filter/sort overlay for mobile, and a desktop cart drawer.",
+          },
+          {
+            heading: "Tech stack",
+            body: "Next.js · Tailwind CSS · Figma · Vercel",
+          },
+        ],
+      },
+    },
   },
   {
     id: 2,
@@ -105,9 +136,9 @@ export const projects: Project[] = [
     title: "VARA Media Agency",
     category: "BRANDING",
     year: "2026",
-    shortDescription: "Building a full branding agency from the ground up in 3 weeks.",
+    shortDescription: "Een volledig merkbureau opgezet van nul in 3 weken.",
     description:
-      "A collaborative 3-week sprint where I worked with 5 teammates to establish a complete branding agency — VARA. Responsible for brand strategy, visual identity, color system, logo design, and the homepage concept.",
+      "In drie weken hebben we met een team van zes VARA Media Agency opgezet — een volledig functionerend merkbureau met eigen identiteit, positionering en visueel systeem. Ik was verantwoordelijk voor de merkstrategie en visuele identiteit.",
     tags: ["Brand Strategy", "Visual Identity", "UI Design"],
     coverGradient: "linear-gradient(135deg, #246BF6 0%, #4d8ef8 50%, #D9F855 100%)",
     coverImage: "/vara_logo2.png",
@@ -143,6 +174,27 @@ export const projects: Project[] = [
       outlineVariant:         "#444342",
       surfaceContainerLowest: "#1e1e1d",
     },
+    i18n: {
+      en: {
+        shortDescription: "Building a full branding agency from the ground up in 3 weeks.",
+        description:
+          "A collaborative 3-week sprint where I worked with 5 teammates to establish a complete branding agency — VARA. Responsible for brand strategy, visual identity, color system, logo design, and the homepage concept.",
+        sections: [
+          {
+            heading: "Brand development",
+            body: "In three weeks we built VARA Media Agency with a team of six — a fully functioning branding agency with its own identity, positioning, and visual system. I was responsible for the brand strategy and visual identity.",
+          },
+          {
+            heading: "Visual system",
+            body: "The colour palette combines deep anthracite with electric blue and a sharp yellow-green accent. This gives the brand a bold, modern character that suits an ambitious media agency. Typography and grid structure were carefully defined in the brand guidelines document.",
+          },
+          {
+            heading: "Logo & house style",
+            body: "The logo is built around a powerful geometric shape that combines scalability and recognisability. The full house style includes business cards, presentation templates, and social media assets.",
+          },
+        ],
+      },
+    },
   },
   {
     id: 3,
@@ -162,62 +214,42 @@ export const projects: Project[] = [
       role: "Designer & Developer",
       course: "Semester 4 — ICT & Media Design",
     },
-  },
-  {
-    id: 4,
-    slug: "brand-identity-study",
-    title: "Brand Identity Study",
-    category: "IDENTITY",
-    year: "2025",
-    shortDescription: "Developing a complete visual language for a fictional tech brand.",
-    description:
-      "Deep dive into brand identity work — from mood boarding and competitive analysis to logo construction, type pairing, and a comprehensive style guide.",
-    tags: ["Figma", "Typography", "Brand Strategy"],
-    coverGradient: "linear-gradient(135deg, #0a0a14 0%, #1a1a30 50%, #2a2a50 100%)",
-    featured: true,
-    metadata: {
-      duration: "4 weeks",
-      teamSize: 1,
-      role: "Visual Designer",
-      course: "Semester 4 — Media Design",
-    },
-  },
-  {
-    id: 5,
-    slug: "motion-design-reel",
-    title: "Motion Design Reel",
-    category: "MOTION",
-    year: "2025",
-    shortDescription: "Animating static UI concepts into cinematic motion sequences.",
-    description:
-      "Collection of motion design work exploring micro-interactions, title animations, and brand reveal sequences using After Effects and Figma's prototyping engine.",
-    tags: ["After Effects", "Motion Design", "Animation"],
-    coverGradient: "linear-gradient(135deg, #100800 0%, #2a1500 50%, #6b3500 100%)",
-    featured: false,
-    metadata: {
-      duration: "6 weeks",
-      teamSize: 1,
-      role: "Motion Designer",
-      course: "Semester 4 — Media Design",
-    },
-  },
-  {
-    id: 6,
-    slug: "ux-research-sprint",
-    title: "UX Research Sprint",
-    category: "RESEARCH",
-    year: "2025",
-    shortDescription: "User research, interviews, and iterative prototyping for a mobile concept.",
-    description:
-      "Conducted user interviews, affinity mapping, and usability testing across three prototype iterations. Delivered a validated high-fidelity Figma prototype and research report.",
-    tags: ["UX Research", "Figma", "Usability Testing"],
-    coverGradient: "linear-gradient(135deg, #0a0e0e 0%, #0e1f1f 50%, #1a3030 100%)",
-    featured: false,
-    metadata: {
-      duration: "5 weeks",
-      teamSize: 3,
-      role: "Lead UX Researcher",
-      course: "Semester 4 — ICT & Media Design",
+    i18n: {
+      nl: {
+        shortDescription: "Dit portfolio ontworpen en gebouwd als een levend bewijs-archief.",
+        description:
+          "Dit portfolio ontworpen en gebouwd vanuit een Stitch-gegenereerd designconcept naar een productieklare Next.js applicatie. Gericht op design-system consistentie, toegankelijkheid en herbruikbare componenten.",
+        sections: [
+          {
+            heading: "Van concept naar code",
+            body: "Gestart vanuit een Stitch-design en volledig omgezet naar een Next.js applicatie met Tailwind CSS. Elk component is zorgvuldig vertaald van Figma naar werkende, herbruikbare code.",
+          },
+          {
+            heading: "Design system",
+            body: "Material Design 3 als basis voor het kleurensysteem, met aangepaste CSS-variabelen per project voor dynamische thematisering. Typografie, spacing en motion zijn consistent doorgevoerd via design tokens.",
+          },
+          {
+            heading: "Tech stack",
+            body: "Next.js · Tailwind CSS · Framer Motion · Figma · Vercel",
+          },
+        ],
+      },
+      en: {
+        sections: [
+          {
+            heading: "From concept to code",
+            body: "Started from a Stitch design and fully converted into a Next.js application with Tailwind CSS. Every component was carefully translated from Figma into working, reusable code.",
+          },
+          {
+            heading: "Design system",
+            body: "Material Design 3 as the foundation for the colour system, with custom CSS variables per project for dynamic theming. Typography, spacing, and motion are consistently applied through design tokens.",
+          },
+          {
+            heading: "Tech stack",
+            body: "Next.js · Tailwind CSS · Framer Motion · Figma · Vercel",
+          },
+        ],
+      },
     },
   },
 ];

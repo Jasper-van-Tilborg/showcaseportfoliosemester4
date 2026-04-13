@@ -16,17 +16,19 @@ export default function HomePage() {
     <main className="relative z-10">
       {/* ── Hero ─────────────────────────────────────────────── */}
       <section className="relative min-h-screen flex flex-col justify-center px-8 md:px-16 lg:px-24 pt-32 pb-20 overflow-hidden">
-        <HeroContent />
+        <div className="max-w-screen-2xl mx-auto w-full relative">
+          <HeroContent />
 
-        {/* Floating visual accent */}
-        <div className="absolute right-8 top-1/2 -translate-y-1/2 w-[280px] lg:w-[360px] aspect-square hidden lg:block animate-float">
-          <div className="w-full h-full glass-panel rounded-3xl border border-outline-variant/10 relative overflow-hidden cinematic-shadow">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary-container/20 via-transparent to-primary/10" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,rgba(255,92,0,0.3),transparent_60%)]" />
-            <div className="absolute bottom-8 left-8">
-              <span className="font-headline text-5xl font-bold text-primary-container/40 tracking-tighter">
-                JVT
-              </span>
+          {/* Floating visual accent */}
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[280px] lg:w-[360px] aspect-square hidden lg:block animate-float">
+            <div className="w-full h-full glass-panel rounded-3xl border border-outline-variant/10 relative overflow-hidden cinematic-shadow">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary-container/20 via-transparent to-primary/10" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,rgba(255,92,0,0.3),transparent_60%)]" />
+              <div className="absolute bottom-8 left-8">
+                <span className="font-headline text-5xl font-bold text-primary-container/40 tracking-tighter">
+                  JVT
+                </span>
+              </div>
             </div>
           </div>
         </div>
