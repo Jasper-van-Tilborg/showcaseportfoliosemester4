@@ -23,7 +23,6 @@ function renderWithFontHighlights(text: string, highlights: Record<string, strin
   );
 }
 
-/** Styled image placeholder that inherits the project's visual identity */
 function ImgPlaceholder({
   aspect = "aspect-video",
   gradient,
@@ -36,24 +35,11 @@ function ImgPlaceholder({
   className?: string;
 }) {
   return (
-    <div
-      className={`relative w-full rounded-2xl overflow-hidden ${aspect} ${className}`}
-      style={{ background: gradient }}
-    >
+    <div className={`relative w-full rounded-2xl overflow-hidden ${aspect} ${className}`} style={{ background: gradient }}>
       <div
         className="absolute inset-0"
-        style={{
-          background: `radial-gradient(circle at 40% 50%, color-mix(in srgb, ${primary} 25%, transparent), transparent 65%)`,
-        }}
+        style={{ background: `radial-gradient(circle at 35% 55%, color-mix(in srgb, ${primary} 25%, transparent), transparent 60%)` }}
       />
-      <div className="absolute inset-0 flex items-center justify-center">
-        <span
-          className="material-symbols-outlined select-none"
-          style={{ fontSize: 40, color: `color-mix(in srgb, ${primary} 40%, transparent)` }}
-        >
-          image
-        </span>
-      </div>
     </div>
   );
 }
@@ -67,6 +53,7 @@ export default function ProjectPageContent({ project, nextProject }: Props) {
   const { t, lang } = useLanguage();
 
   const i18n        = project.i18n?.[lang];
+  const tagline     = i18n?.tagline     ?? project.tagline;
   const description = i18n?.description ?? project.description;
   const sections    = i18n?.sections    ?? project.sections;
 
@@ -141,6 +128,11 @@ export default function ProjectPageContent({ project, nextProject }: Props) {
             <h1 className="font-headline text-[clamp(2.8rem,8vw,6.5rem)] font-bold text-on-surface tracking-tighter leading-[0.9]">
               {project.title}
             </h1>
+            {tagline && (
+              <p className="mt-4 text-base md:text-lg text-on-surface-variant font-body font-light max-w-xl">
+                {tagline}
+              </p>
+            )}
           </MountReveal>
         </div>
       </section>
@@ -247,74 +239,150 @@ export default function ProjectPageContent({ project, nextProject }: Props) {
         </div>
       </section>
 
-      {/* ── Full-width feature image ──────────────────────────── */}
-      <FadeUp className="max-w-screen-2xl mx-auto px-8 md:px-16 pb-4">
-        <ImgPlaceholder aspect="aspect-[21/9]" gradient={gradient} primary={primary} className="rounded-3xl cinematic-shadow" />
-      </FadeUp>
+      {/* ── Sections ─────────────────────────────────────────── */}
+      {sections && sections.length > 0 && (
+        <section className="mb-24">
+          {sections.map((section, i) => {
+            const isPalette = section.type === "palette";
+            const isVisualIdentity = section.type === "visual-identity";
+            // Only count regular sections when alternating image sides
+            const imageIndex = sections.slice(0, i).filter(s => !s.type).length;
+            const flipImage = imageIndex % 2 !== 0;
 
-      {/* ── Sections — one viewport per section ─────────────── */}
-      {sections && sections.length > 0 && sections.map((section, i) => {
-        const flipImage = i % 2 !== 0;
-        return (
-          <FadeUp key={section.heading} delay={0.05}>
-            <section
-              className="w-full flex flex-col md:flex-row"
-              style={{ height: "85vh" }}
-            >
-              {/* Image — fills its column entirely */}
-              <div className={`relative flex-1 min-h-[40vh] md:min-h-0 ${flipImage ? "md:order-2" : ""}`}>
-                <div
-                  className="absolute inset-0"
-                  style={{ background: gradient }}
-                />
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    background: `radial-gradient(circle at 40% 50%, color-mix(in srgb, ${primary} 25%, transparent), transparent 65%)`,
-                  }}
-                />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span
-                    className="material-symbols-outlined select-none"
-                    style={{ fontSize: 48, color: `color-mix(in srgb, ${primary} 35%, transparent)` }}
-                  >
-                    image
-                  </span>
+            // ── Shared draping constants (used by visual-identity) ──
+            const drapeClips = [
+              "polygon(0 0, 100% 0, 100% 83%, 90% 89%, 76% 83%, 60% 91%, 44% 85%, 28% 92%, 12% 86%, 0 90%)",
+              "polygon(0 0, 100% 0, 100% 86%, 88% 93%, 72% 87%, 55% 94%, 38% 88%, 22% 95%, 8% 89%, 0 84%)",
+              "polygon(0 0, 100% 0, 100% 81%, 84% 88%, 68% 82%, 52% 90%, 36% 84%, 20% 91%, 6% 85%, 0 88%)",
+              "polygon(0 0, 100% 0, 100% 85%, 86% 92%, 70% 86%, 53% 93%, 37% 87%, 21% 94%, 7% 88%, 0 83%)",
+              "polygon(0 0, 100% 0, 100% 84%, 92% 90%, 78% 84%, 62% 92%, 46% 86%, 30% 93%, 15% 87%, 0 91%)",
+            ];
+            const rotations = [-2, 1, -1, 1.5, -0.5];
+            const weave = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Cpath d='M0 0h1v1H0zM2 2h1v1H2z' fill='rgba(255,255,255,0.06)'/%3E%3Cpath d='M2 0h1v1H2zM0 2h1v1H0z' fill='rgba(0,0,0,0.06)'/%3E%3C/svg%3E")`;
+
+            // ── Outer shell shared by every section type ─────────────
+            // min-h-screen centres content vertically within one viewport
+            const Shell = ({ children, last = false }: { children: React.ReactNode; last?: boolean }) => (
+              <FadeUp delay={0.05}>
+                <div className={`min-h-screen flex items-center border-t border-white/5 ${last ? "border-b" : ""} max-w-screen-2xl mx-auto px-8 md:px-16`}>
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center w-full py-14">
+                    {children}
+                  </div>
                 </div>
-              </div>
+              </FadeUp>
+            );
 
-              {/* Text — vertically centered, fixed width */}
-              <div
-                className={`flex flex-col justify-center gap-5 px-10 md:px-16 py-12 md:py-0 shrink-0 md:w-[38%] ${flipImage ? "md:order-1" : ""}`}
-              >
-                <span className="font-headline text-[10px] uppercase tracking-[0.35em] text-primary font-bold">
-                  {section.heading}
-                </span>
-                <p className="text-base md:text-lg text-on-surface-variant leading-relaxed font-body">
-                  {project.theme?.fontHighlights
-                    ? renderWithFontHighlights(section.body, project.theme.fontHighlights)
-                    : section.body}
-                </p>
-              </div>
-            </section>
-          </FadeUp>
-        );
-      })}
+            const isLast = i === sections.length - 1;
 
-      {/* ── Image gallery grid ───────────────────────────────── */}
-      <FadeUp className="max-w-screen-2xl mx-auto px-8 md:px-16 py-16">
-        <div className="grid grid-cols-12 gap-4">
-          <div className="col-span-12 md:col-span-7">
+            // ── Visual identity ───────────────────────────────────────
+            if (isVisualIdentity && project.theme) {
+              const swatches = [
+                { hex: project.theme.background,       label: "Midnight" },
+                { hex: project.theme.primaryContainer, label: "Forest" },
+                { hex: project.theme.primary,          label: "Fern" },
+                { hex: project.theme.onSurface,        label: "Cream" },
+                { hex: project.theme.onSurfaceVariant, label: "Sage" },
+              ];
+              const fonts = project.theme.fontHighlights
+                ? Object.keys(project.theme.fontHighlights)
+                : [];
+
+              return (
+                <Shell key={section.heading} last={isLast}>
+                  {/* Text side — same col-span as regular sections */}
+                  <div className="lg:col-span-4 flex flex-col gap-8">
+                    <span className="font-headline text-[10px] uppercase tracking-[0.35em] text-primary font-bold">
+                      {section.heading}
+                    </span>
+                    <p className="text-base md:text-lg text-on-surface-variant leading-relaxed font-body">
+                      {section.body}
+                    </p>
+
+                    {/* Typography */}
+                    {fonts.length > 0 && (
+                      <div>
+                        <p className="font-headline text-[10px] uppercase tracking-[0.4em] text-primary/60 font-bold mb-3">
+                          {lang === "nl" ? "Typografie" : "Typography"}
+                        </p>
+                        <div className="space-y-0.5">
+                          <p className="text-xl font-bold text-on-surface font-headline">{fonts[0]}</p>
+                          {fonts[1] && <p className="text-xl text-on-surface font-body">{fonts[1]}</p>}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Fabric draping swatches */}
+                    <div>
+                      <p className="font-headline text-[10px] uppercase tracking-[0.4em] text-primary/60 font-bold mb-5">
+                        {lang === "nl" ? "Kleurenpalet" : "Color Palette"}
+                      </p>
+                      <div className="flex flex-wrap items-start gap-4">
+                        {swatches.map((s, si) => (
+                          <div
+                            key={s.hex}
+                            className="flex flex-col items-center gap-2 hover:-translate-y-1 transition-transform duration-500 cursor-default"
+                            style={{ transform: `rotate(${rotations[si]}deg)` }}
+                          >
+                            <div className="w-3 h-3 rounded-full border-2" style={{ borderColor: `color-mix(in srgb, ${s.hex} 50%, white)` }} />
+                            <div
+                              className="relative w-12"
+                              style={{ height: "76px", clipPath: drapeClips[si], backgroundColor: s.hex, boxShadow: "0 4px 16px rgba(0,0,0,0.4)" }}
+                            >
+                              <div className="absolute inset-0" style={{ backgroundImage: weave, backgroundSize: "4px 4px" }} />
+                              <div className="absolute inset-0" style={{ backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.18) 0%, rgba(255,255,255,0.07) 25%, rgba(0,0,0,0.14) 50%, rgba(255,255,255,0.05) 75%, rgba(0,0,0,0.1) 100%)` }} />
+                              <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.12) 0%, transparent 35%)" }} />
+                            </div>
+                            <p className="font-headline text-[7px] font-bold uppercase tracking-widest text-on-surface-variant/60 leading-none">{s.label}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Image side — same col-span as regular sections */}
+                  <div className="lg:col-span-7 lg:col-start-6">
+                    <ImgPlaceholder aspect="aspect-[4/3]" gradient={gradient} primary={primary} className="cinematic-shadow" />
+                  </div>
+                </Shell>
+              );
+            }
+
+            // ── Regular section ───────────────────────────────────────
+            return (
+              <Shell key={section.heading} last={isLast}>
+                <div className={`lg:col-span-7 ${flipImage ? "lg:order-2" : ""}`}>
+                  <ImgPlaceholder aspect="aspect-[4/3]" gradient={gradient} primary={primary} className="cinematic-shadow" />
+                </div>
+                <div className={`lg:col-span-4 flex flex-col gap-5 ${flipImage ? "lg:order-1" : ""}`}>
+                  <span className="font-headline text-[10px] uppercase tracking-[0.35em] text-primary font-bold">
+                    {section.heading}
+                  </span>
+                  <p className="text-base md:text-lg text-on-surface-variant leading-relaxed font-body">
+                    {project.theme?.fontHighlights
+                      ? renderWithFontHighlights(section.body, project.theme.fontHighlights)
+                      : section.body}
+                  </p>
+                </div>
+              </Shell>
+            );
+          })}
+        </section>
+      )}
+
+      {/* ── Gallery grid ─────────────────────────────────────── */}
+      <FadeUp className="max-w-screen-2xl mx-auto px-8 md:px-16 mb-24">
+        <div className="grid grid-cols-12 gap-5">
+          <div className="col-span-12 md:col-span-8">
             <ImgPlaceholder aspect="aspect-[4/3]" gradient={gradient} primary={primary} />
           </div>
-          <div className="col-span-12 md:col-span-5 flex flex-col gap-4">
+          <div className="col-span-12 md:col-span-4 flex flex-col gap-5">
             <ImgPlaceholder aspect="aspect-video" gradient={gradient} primary={primary} className="flex-1" />
             <ImgPlaceholder aspect="aspect-video" gradient={gradient} primary={primary} className="flex-1" />
           </div>
-          <div className="col-span-12 md:col-span-5">
+          <div className="col-span-12 md:col-span-4">
             <ImgPlaceholder aspect="aspect-video" gradient={gradient} primary={primary} />
           </div>
-          <div className="col-span-12 md:col-span-7">
+          <div className="col-span-12 md:col-span-8">
             <ImgPlaceholder aspect="aspect-[4/3]" gradient={gradient} primary={primary} />
           </div>
         </div>

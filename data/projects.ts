@@ -11,9 +11,11 @@ export interface EvidenceItem {
 export interface ProjectSection {
   heading: string;
   body: string;
+  type?: "palette" | "visual-identity"; // special render modes
 }
 
 export interface ProjectI18n {
+  tagline?: string;
   description?: string;
   shortDescription?: string;
   sections?: ProjectSection[];
@@ -37,6 +39,7 @@ export interface Project {
   title: string;
   category: string;
   year: string;
+  tagline?: string;
   shortDescription: string;
   description: string;
   sections?: ProjectSection[];
@@ -66,24 +69,30 @@ export const projects: Project[] = [
     title: "Fioresque",
     category: "UI/UX",
     year: "2026",
-    shortDescription: "Ontworpen én gebouwd — van visuele identiteit tot werkende code, live in productie.",
+    tagline: "Een frisse fashion webshop, van nul opgebouwd.",
+    shortDescription: "Een frisse fashion webshop, van nul opgebouwd.",
     description:
-      "Fioresque is een premium fashion e-commerce website die ik volledig heb ontworpen én gebouwd voor een natuur-geïnspireerd kledingmerk. Het project omvat het gehele traject van visuele identiteit tot werkende code, live in productie.",
+      "Fioresque is een zelf bedacht kledingmerk dat ik samen met een vriend aan het bouwen ben. Wat begon als een paar shirtontwerpen die mijn vriend had gemaakt, groeide uit tot een volledig concept. Ik nam het op me om de volledige visuele identiteit en webshop te bouwen, van eerste ontwerp tot werkende checkout.",
     sections: [
       {
-        heading: "Ontwerp & visuele identiteit",
-        body: "Het merk draait om een verfijnd kleurenpalet van donkergroen, zwart en crème, gecombineerd met de typografie van Playfair Display en DM Sans. Deze keuzes geven het merk een luxueuze, organische uitstraling die aansluit bij de natuur-geïnspireerde positionering.",
+        heading: "De uitdaging",
+        body: "Een complete e-commerce website bouwen die er premium uitziet maar fris en zomers aanvoelt voor een jong doelpubliek van 18 tot 25 jaar. De grootste technische uitdaging was het volledig responsive maken — iets waar AI-gestuurde tools zoals Cursor mee worstelden.",
       },
       {
-        heading: "Pagina's & componenten",
-        body: "De website beslaat meerdere pagina's en componenten, waaronder de homepage, shopoverzicht, collectiespagina, productdetailpagina en een over ons-pagina — volledig responsive voor zowel mobiel als desktop. Specifieke aandacht ging uit naar navigatie-interacties, een horizontale productcarousel met peek-effect, een bottom sheet filter/sort-overlay voor mobiel en een desktop cartlade.",
+        heading: "Visuele identiteit",
+        body: "Voordat er één regel code geschreven werd, begon het bij het merk zelf. Een kleurenpalet, typografie en een logo die samen het karakter van Fioresque neerzetten — fris, natuur-geïnspireerd en premium zonder zwaar te voelen.",
+        type: "visual-identity",
       },
       {
-        heading: "Tech stack",
-        body: "Next.js · Tailwind CSS · Figma · Vercel",
+        heading: "Het ontwerp",
+        body: "Met de visuele identiteit op zak begon het echte bouwen in Figma. Elk scherm — van homepage tot checkout — werd eerst uitgetekend en daarna component voor component vertaald naar Next.js code met Tailwind CSS.",
+      },
+      {
+        heading: "Resultaat",
+        body: "Een volledig werkende e-commerce website deployed op Vercel en versie beheerd op GitHub. Het merk is nog in ontwikkeling maar de technische basis is compleet. Of Fioresque een echt bedrijf wordt, dat zal de tijd uitwijzen.",
       },
     ],
-    tags: ["UI/UX Design", "Figma", "E-commerce", "Visuele Identiteit", "Next.js", "Tailwind CSS"],
+    tags: ["Next.js", "Tailwind CSS", "Stripe", "Vercel", "GitHub", "Figma"],
     coverGradient: "linear-gradient(135deg, #1E2420 0%, #2D4A35 50%, #4A7A56 100%)",
     coverImage: "/fioresque_logo.png",
     featured: true,
@@ -104,27 +113,33 @@ export const projects: Project[] = [
       outlineVariant:             "#2D4A35",
       surfaceContainerLowest:     "#141a16",
       fontHighlights: {
-        "Playfair Display": "var(--font-playfair-display), serif",
-        "DM Sans":          "var(--font-dm-sans), system-ui, sans-serif",
+        "Plus Jakarta Sans": "'Plus Jakarta Sans', sans-serif",
+        "Outfit":            "'Outfit', sans-serif",
       },
     },
     i18n: {
       en: {
-        shortDescription: "Designed and built — from visual identity to working code, live in production.",
+        tagline: "A fresh fashion e-commerce experience, built from scratch.",
+        shortDescription: "A fresh fashion e-commerce experience, built from scratch.",
         description:
-          "Fioresque is a premium fashion e-commerce website I fully designed and built for a nature-inspired clothing brand. The project covers the entire trajectory from visual identity to working code, live in production.",
+          "Fioresque is a self-conceived clothing brand that I'm building together with a friend. What started as a few shirt designs my friend had made grew into a full concept. I took it upon myself to build the complete visual identity and webshop, from initial design to working checkout.",
         sections: [
           {
-            heading: "Design & visual identity",
-            body: "The brand revolves around a refined colour palette of deep green, black, and cream, combined with Playfair Display and DM Sans typography. These choices give the brand a luxurious, organic feel that aligns with its nature-inspired positioning.",
+            heading: "The Challenge",
+            body: "Building a complete e-commerce website that looks premium while feeling fresh and summery for a young target audience of 18 to 25 year olds. The biggest technical challenge was making the website fully responsive — something AI-driven tools like Cursor struggled with.",
           },
           {
-            heading: "Pages & components",
-            body: "The website spans multiple pages and components — homepage, shop overview, collections page, product detail page, and an about page — fully responsive for both mobile and desktop. Specific attention went to navigation interactions, a horizontal product carousel with peek effect, a bottom sheet filter/sort overlay for mobile, and a desktop cart drawer.",
+            heading: "Visual Identity",
+            body: "Before a single line of code was written, it started with the brand itself. A colour palette, typography and a logo that together define the character of Fioresque — fresh, nature-inspired and premium without feeling heavy.",
+            type: "visual-identity",
           },
           {
-            heading: "Tech stack",
-            body: "Next.js · Tailwind CSS · Figma · Vercel",
+            heading: "The Design",
+            body: "With the visual identity in place, the real building began in Figma. Every screen — from homepage to checkout — was designed first and then translated component by component into Next.js code with Tailwind CSS.",
+          },
+          {
+            heading: "Outcome",
+            body: "A fully working e-commerce website deployed on Vercel and version controlled on GitHub. The brand is still in development but the technical foundation is complete. Whether Fioresque becomes a real business, time will tell.",
           },
         ],
       },
