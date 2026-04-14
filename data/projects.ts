@@ -38,7 +38,9 @@ export interface Project {
   slug: string;
   title: string;
   category: string;
+  categories?: string[];
   year: string;
+  status?: "completed" | "in-progress";
   tagline?: string;
   shortDescription: string;
   description: string;
@@ -68,7 +70,9 @@ export const projects: Project[] = [
     slug: "fioresque",
     title: "Fioresque",
     category: "UI/UX",
+    categories: ["UI/UX", "FRONT-END"],
     year: "2026",
+    status: "in-progress",
     tagline: "Een frisse fashion webshop, van nul opgebouwd.",
     shortDescription: "Een frisse fashion webshop, van nul opgebouwd.",
     description:
@@ -151,6 +155,7 @@ export const projects: Project[] = [
     title: "VARA Media Agency",
     category: "BRANDING",
     year: "2026",
+    status: "in-progress",
     shortDescription: "Een volledig merkbureau opgezet van nul in 3 weken.",
     description:
       "In drie weken hebben we met een team van zes VARA Media Agency opgezet — een volledig functionerend merkbureau met eigen identiteit, positionering en visueel systeem. Ik was verantwoordelijk voor de merkstrategie en visuele identiteit.",
@@ -213,55 +218,196 @@ export const projects: Project[] = [
   },
   {
     id: 3,
-    slug: "showcase-portfolio",
-    title: "Showcase Portfolio",
-    category: "UI/UX",
+    slug: "rosh-studios-tournament-editor",
+    title: "Rosh Studios Tournament Editor",
+    category: "FULL-STACK",
     year: "2026",
-    shortDescription: "Designing and developing this portfolio as a living evidence archive.",
+    status: "completed",
+    tagline: "AI-gestuurde toernooipagina's voor Twitch-kijkers.",
+    shortDescription: "Een customizable online toernooitool gebouwd voor Rosh Studios, gericht op kijkersengagement rondom Twitch-toernooien.",
     description:
-      "Designed and built this portfolio from a Stitch-generated design concept into a production-ready Next.js application. Focus on design-system fidelity, accessibility, and reusable components.",
-    tags: ["Next.js", "Tailwind CSS", "Design Systems"],
-    coverGradient: "linear-gradient(135deg, #0e0e0e 0%, #201f1f 50%, #353534 100%)",
+      "Een customizable online toernooitool gebouwd voor Rosh Studios, gericht op kijkersengagement rondom Twitch-toernooien. De tool stelt een admin in staat om toernooipagina's te genereren, bewerken en beheren via een AI-gestuurde wizard en live editor.",
+    sections: [
+      {
+        heading: "De uitdaging",
+        body: "Rosh Studios had een manier nodig om snel professionele toernooipagina's op te zetten die naadloos integreren met Twitch. De uitdaging: elke pagina moest uniek aanpasbaar zijn zonder technische kennis van de beheerder.",
+      },
+      {
+        heading: "AI Wizard",
+        body: "De kern van de tool is een wizard-flow die gebruikersinput omzet in een Claude-prompt. Claude genereert vervolgens een volledige toernooipagina in HTML, CSS en JavaScript — op maat, binnen seconden.",
+      },
+      {
+        heading: "Live editor & dashboard",
+        body: "Na generatie kunnen pagina's component voor component bewerkt worden via een live editor. Data wordt opgeslagen in Supabase. Het dashboard biedt overzicht van alle pagina's, publicatie via eigen slugs en Twitch-integratie.",
+      },
+    ],
+    tags: ["Next.js", "React", "Supabase", "Claude API", "Twitch API", "Tailwind CSS", "Vercel"],
+    coverGradient: "linear-gradient(135deg, #0d0d1a 0%, #1a1040 50%, #6441a5 100%)",
+    coverImage: "/rosh_studios_logo.svg",
     featured: true,
     metadata: {
-      duration: "Ongoing",
+      duration: "Semester 4",
+      teamSize: 4,
+      role: "Full-stack Developer",
+      course: "Semester 4 — ICT & Media Design",
+    },
+    theme: {
+      background:             "#0d0d1a",
+      primary:                "#9b72e6",
+      primaryContainer:       "#6441a5",
+      onPrimary:              "#ffffff",
+      onSurface:              "#e8e4f0",
+      onSurfaceVariant:       "#a89fc0",
+      outlineVariant:         "#2a2440",
+      surfaceContainerLowest: "#080810",
+    },
+    i18n: {
+      en: {
+        tagline: "AI-powered tournament pages for Twitch audiences.",
+        shortDescription: "A customizable online tournament tool built for Rosh Studios, focused on viewer engagement around Twitch tournaments.",
+        description:
+          "A customizable online tournament tool built for Rosh Studios, focused on viewer engagement around Twitch tournaments. The tool allows an admin to generate, edit, and manage tournament pages via an AI-powered wizard and live editor.",
+        sections: [
+          {
+            heading: "The challenge",
+            body: "Rosh Studios needed a way to quickly set up professional tournament pages that integrate seamlessly with Twitch. The challenge: every page had to be uniquely customisable without requiring technical knowledge from the admin.",
+          },
+          {
+            heading: "AI Wizard",
+            body: "The core of the tool is a wizard flow that converts user input into a Claude prompt. Claude then generates a complete tournament page in HTML, CSS and JavaScript — custom, within seconds.",
+          },
+          {
+            heading: "Live editor & dashboard",
+            body: "After generation, pages can be edited component by component via a live editor. Data is stored in Supabase. The dashboard provides an overview of all pages, publication via custom slugs and Twitch integration.",
+          },
+        ],
+      },
+    },
+  },
+  {
+    id: 4,
+    slug: "cookmind",
+    title: "CookMind",
+    category: "UI/UX",
+    categories: ["UI/UX", "FRONT-END"],
+    year: "2026",
+    status: "completed",
+    tagline: "Jouw AI-kookassistent, gebouwd op wat je in huis hebt.",
+    shortDescription: "Een AI-gestuurde kook-app die gebruikers helpt recepten te vinden op basis van hun voorraad, met barcode scanner en Claude AI-integratie.",
+    description:
+      "Een persoonlijk project waarbij ik een AI-gestuurde kook-app heb ontworpen en gebouwd. CookMind AI helpt gebruikers recepten te vinden op basis van hun voorraad, met een barcode scanner, houdbaarheidsbeheer en een AI-integratie via Claude.",
+    sections: [
+      {
+        heading: "Onderzoek & ontwerp",
+        body: "Op basis van CMD-methodes (benchmark creation, competitive analysis, best practices) en Apple Human Interface Guidelines ontworpen in Figma. Volledig design inclusief onboarding, authenticatie, voorraadpagina, modals, receptenpagina en kookmodus.",
+      },
+      {
+        heading: "De app",
+        body: "Volledig gebouwd in Cursor met een login flow, voorraadbeheer en barcode scanner. Claude AI analyseert de beschikbare ingrediënten en stelt passende recepten voor op basis van wat er in huis is.",
+      },
+      {
+        heading: "Testen & itereren",
+        body: "Usability tests uitgevoerd en testresultaten verwerkt in iteraties op het design. Inzichten vertaald naar concrete verbeteringen in navigatie, flow en AI-interactie.",
+      },
+    ],
+    tags: ["Figma", "Claude API", "iOS", "UX Research", "Usability Testing", "Cursor", "Supabase"],
+    coverGradient: "linear-gradient(135deg, #0a1a0e 0%, #163524 50%, #1e6b3a 100%)",
+    coverImage: "/cookmind_logo.png",
+    featured: true,
+    metadata: {
+      duration: "Semester 4",
       teamSize: 1,
       role: "Designer & Developer",
       course: "Semester 4 — ICT & Media Design",
     },
+    theme: {
+      background:             "#0a1a0e",
+      primary:                "#3ecf6e",
+      primaryContainer:       "#1e6b3a",
+      onPrimary:              "#021a0a",
+      onSurface:              "#dff5e8",
+      onSurfaceVariant:       "#8dbfa0",
+      outlineVariant:         "#1a3526",
+      surfaceContainerLowest: "#061009",
+    },
     i18n: {
-      nl: {
-        shortDescription: "Dit portfolio ontworpen en gebouwd als een levend bewijs-archief.",
+      en: {
+        tagline: "Your AI cooking assistant, built on what you have at home.",
+        shortDescription: "An AI-powered cooking app that helps users find recipes based on their pantry, with a barcode scanner and Claude AI integration.",
         description:
-          "Dit portfolio ontworpen en gebouwd vanuit een Stitch-gegenereerd designconcept naar een productieklare Next.js applicatie. Gericht op design-system consistentie, toegankelijkheid en herbruikbare componenten.",
+          "A personal project where I designed and built an AI-powered cooking app. CookMind AI helps users find recipes based on their pantry inventory, with a barcode scanner, expiry management and Claude AI integration.",
         sections: [
           {
-            heading: "Van concept naar code",
-            body: "Gestart vanuit een Stitch-design en volledig omgezet naar een Next.js applicatie met Tailwind CSS. Elk component is zorgvuldig vertaald van Figma naar werkende, herbruikbare code.",
+            heading: "Research & design",
+            body: "Designed in Figma based on CMD methods (benchmark creation, competitive analysis, best practices) and Apple Human Interface Guidelines. Full design including onboarding, authentication, pantry page, modals, recipes page and cooking mode.",
           },
           {
-            heading: "Design system",
-            body: "Material Design 3 als basis voor het kleurensysteem, met aangepaste CSS-variabelen per project voor dynamische thematisering. Typografie, spacing en motion zijn consistent doorgevoerd via design tokens.",
+            heading: "The app",
+            body: "Fully built in Cursor with a login flow, pantry management and barcode scanner. Claude AI analyses available ingredients and suggests matching recipes based on what is in the house.",
           },
           {
-            heading: "Tech stack",
-            body: "Next.js · Tailwind CSS · Framer Motion · Figma · Vercel",
+            heading: "Testing & iterating",
+            body: "Usability tests conducted and results processed into design iterations. Insights translated into concrete improvements in navigation, flow and AI interaction.",
           },
         ],
       },
+    },
+  },
+  {
+    id: 5,
+    slug: "quality-lodgings",
+    title: "Quality Lodgings",
+    category: "UI/UX",
+    year: "2026",
+    status: "completed",
+    tagline: "UX-verbeteringen voor een premium hotelwebsite.",
+    shortDescription: "Een groepsopdracht voor Fightclub waarbij we de UX van Quality Lodgings hebben verbeterd via gebruikersonderzoek, iteratief prototypen en Figma designs.",
+    description:
+      "Een groepsopdracht voor Fightclub, een creatief bureau, waarbij we de UX van de website van Quality Lodgings hebben verbeterd. Via gebruikersonderzoek, iteratief prototypen en Figma designs hebben we knelpunten in navigatie en het boekingsproces aangepakt.",
+    sections: [
+      {
+        heading: "Gebruikersonderzoek",
+        body: "User tests afgenomen en verbeterpunten gestructureerd via een prioriteringsmatrix: Big Bets, Quick Wins, Money Pits en Fill-ins. User stories opgesteld als basis voor het ontwerpproces.",
+      },
+      {
+        heading: "Ontwerp & iteraties",
+        body: "Paper prototypes gemaakt en getest. Figma designs uitgewerkt voor de hoofdpagina, hotelpagina en 'Vind jouw stijl'-pagina — met meerdere iteraties op basis van testfeedback. Expert review uitgevoerd op het werk van een ander groepje.",
+      },
+    ],
+    tags: ["Figma", "UX Research", "Usability Testing", "Prototyping", "User Stories"],
+    coverGradient: "linear-gradient(135deg, #1a1410 0%, #3d2e1a 50%, #8c6a3a 100%)",
+    coverImage: "/qualitylodgings_logo.svg",
+    featured: true,
+    metadata: {
+      duration: "Semester 4",
+      teamSize: 4,
+      role: "UX Designer",
+      course: "Semester 4 — Media Design",
+    },
+    theme: {
+      background:             "#1a1410",
+      primary:                "#c49a52",
+      primaryContainer:       "#8c6a3a",
+      onPrimary:              "#1a1410",
+      onSurface:              "#f0ebe0",
+      onSurfaceVariant:       "#b8a882",
+      outlineVariant:         "#3d3020",
+      surfaceContainerLowest: "#100e09",
+    },
+    i18n: {
       en: {
+        tagline: "UX improvements for a premium hotel website.",
+        shortDescription: "A group project for Fightclub where we improved the UX of the Quality Lodgings website through user research, iterative prototyping and Figma designs.",
+        description:
+          "A group project for Fightclub, a creative agency, where we improved the UX of the Quality Lodgings website. Through user research, iterative prototyping and Figma designs we tackled pain points in navigation and the booking process.",
         sections: [
           {
-            heading: "From concept to code",
-            body: "Started from a Stitch design and fully converted into a Next.js application with Tailwind CSS. Every component was carefully translated from Figma into working, reusable code.",
+            heading: "User research",
+            body: "User tests conducted and improvements structured via a prioritisation matrix: Big Bets, Quick Wins, Money Pits and Fill-ins. User stories drafted as the foundation for the design process.",
           },
           {
-            heading: "Design system",
-            body: "Material Design 3 as the foundation for the colour system, with custom CSS variables per project for dynamic theming. Typography, spacing, and motion are consistently applied through design tokens.",
-          },
-          {
-            heading: "Tech stack",
-            body: "Next.js · Tailwind CSS · Framer Motion · Figma · Vercel",
+            heading: "Design & iterations",
+            body: "Paper prototypes created and tested. Figma designs developed for the homepage, hotels page and 'Find your style' page — with multiple iterations based on test feedback. Expert review conducted on another group's work.",
           },
         ],
       },

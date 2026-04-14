@@ -68,7 +68,7 @@ body {
   background-color: #131313;
   color: #e5e2e1;
   font-family: var(--font-manrope), system-ui, sans-serif;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 ::selection {

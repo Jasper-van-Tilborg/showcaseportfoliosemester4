@@ -3,11 +3,24 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import Icon from "@/components/Icon";
 import MountReveal from "@/components/motion/MountReveal";
 import FadeUp from "@/components/motion/FadeUp";
 import type { Project } from "@/data/projects";
 import { useLanguage } from "@/contexts/LanguageContext";
+
+const ease = [0.16, 1, 0.3, 1] as const;
+
+const sectionContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.18 } },
+};
+
+const sectionItem = {
+  hidden: { opacity: 0, y: 28 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.85, ease } },
+};
 
 function renderWithFontHighlights(text: string, highlights: Record<string, string>) {
   const pattern = new RegExp(
@@ -140,7 +153,7 @@ export default function ProjectPageContent({ project, nextProject }: Props) {
       {/* ── Intro + Metadata ─────────────────────────────────── */}
       <section className="max-w-screen-2xl mx-auto px-8 md:px-16 pt-16 pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          <FadeUp delay={0} className="lg:col-span-7">
+          <FadeUp delay={0.05} className="lg:col-span-7">
             <p className="text-xl md:text-2xl text-on-surface leading-snug font-body font-light">
               {description}
             </p>
@@ -159,7 +172,7 @@ export default function ProjectPageContent({ project, nextProject }: Props) {
           </FadeUp>
 
           {project.metadata && (
-            <FadeUp delay={0.1} className="lg:col-span-4 lg:col-start-9">
+            <FadeUp delay={0.2} className="lg:col-span-4 lg:col-start-9">
               <div className="glass-panel rounded-2xl border border-white/8 p-7 flex flex-col gap-5">
                 {project.metadata.duration && (
                   <div>
@@ -249,27 +262,21 @@ export default function ProjectPageContent({ project, nextProject }: Props) {
             const imageIndex = sections.slice(0, i).filter(s => !s.type).length;
             const flipImage = imageIndex % 2 !== 0;
 
-            // ── Shared draping constants (used by visual-identity) ──
-            const drapeClips = [
-              "polygon(0 0, 100% 0, 100% 83%, 90% 89%, 76% 83%, 60% 91%, 44% 85%, 28% 92%, 12% 86%, 0 90%)",
-              "polygon(0 0, 100% 0, 100% 86%, 88% 93%, 72% 87%, 55% 94%, 38% 88%, 22% 95%, 8% 89%, 0 84%)",
-              "polygon(0 0, 100% 0, 100% 81%, 84% 88%, 68% 82%, 52% 90%, 36% 84%, 20% 91%, 6% 85%, 0 88%)",
-              "polygon(0 0, 100% 0, 100% 85%, 86% 92%, 70% 86%, 53% 93%, 37% 87%, 21% 94%, 7% 88%, 0 83%)",
-              "polygon(0 0, 100% 0, 100% 84%, 92% 90%, 78% 84%, 62% 92%, 46% 86%, 30% 93%, 15% 87%, 0 91%)",
-            ];
-            const rotations = [-2, 1, -1, 1.5, -0.5];
-            const weave = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Cpath d='M0 0h1v1H0zM2 2h1v1H2z' fill='rgba(255,255,255,0.06)'/%3E%3Cpath d='M2 0h1v1H2zM0 2h1v1H0z' fill='rgba(0,0,0,0.06)'/%3E%3C/svg%3E")`;
-
             // ── Outer shell shared by every section type ─────────────
-            // min-h-screen centres content vertically within one viewport
+            // min-h-[80vh] so the next section peeks into view, hinting at more content
+            // motion.div with staggerChildren coordinates child animations properly
             const Shell = ({ children, last = false }: { children: React.ReactNode; last?: boolean }) => (
-              <FadeUp delay={0.05}>
-                <div className={`min-h-screen flex items-center border-t border-white/5 ${last ? "border-b" : ""} max-w-screen-2xl mx-auto px-8 md:px-16`}>
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center w-full py-14">
-                    {children}
-                  </div>
-                </div>
-              </FadeUp>
+              <div className={`min-h-[80vh] flex items-center border-t border-white/5 ${last ? "border-b" : ""} max-w-screen-2xl mx-auto px-8 md:px-16`}>
+                <motion.div
+                  variants={sectionContainer}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: "-100px" }}
+                  className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center w-full py-14"
+                >
+                  {children}
+                </motion.div>
+              </div>
             );
 
             const isLast = i === sections.length - 1;
@@ -289,8 +296,8 @@ export default function ProjectPageContent({ project, nextProject }: Props) {
 
               return (
                 <Shell key={section.heading} last={isLast}>
-                  {/* Text side — same col-span as regular sections */}
-                  <div className="lg:col-span-4 flex flex-col gap-8">
+                  {/* Text side */}
+                  <motion.div variants={sectionItem} className="lg:col-span-4 flex flex-col gap-8">
                     <span className="font-headline text-[10px] uppercase tracking-[0.35em] text-primary font-bold">
                       {section.heading}
                     </span>
@@ -311,38 +318,34 @@ export default function ProjectPageContent({ project, nextProject }: Props) {
                       </div>
                     )}
 
-                    {/* Fabric draping swatches */}
+                    {/* Color swatches */}
                     <div>
-                      <p className="font-headline text-[10px] uppercase tracking-[0.4em] text-primary/60 font-bold mb-5">
+                      <p className="font-headline text-[10px] uppercase tracking-[0.4em] text-primary/60 font-bold mb-4">
                         {lang === "nl" ? "Kleurenpalet" : "Color Palette"}
                       </p>
-                      <div className="flex flex-wrap items-start gap-4">
-                        {swatches.map((s, si) => (
-                          <div
-                            key={s.hex}
-                            className="flex flex-col items-center gap-2 hover:-translate-y-1 transition-transform duration-500 cursor-default"
-                            style={{ transform: `rotate(${rotations[si]}deg)` }}
-                          >
-                            <div className="w-3 h-3 rounded-full border-2" style={{ borderColor: `color-mix(in srgb, ${s.hex} 50%, white)` }} />
+                      <div className="flex flex-wrap gap-3">
+                        {swatches.map((s) => (
+                          <div key={s.hex} className="flex flex-col gap-1.5">
                             <div
-                              className="relative w-12"
-                              style={{ height: "76px", clipPath: drapeClips[si], backgroundColor: s.hex, boxShadow: "0 4px 16px rgba(0,0,0,0.4)" }}
-                            >
-                              <div className="absolute inset-0" style={{ backgroundImage: weave, backgroundSize: "4px 4px" }} />
-                              <div className="absolute inset-0" style={{ backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.18) 0%, rgba(255,255,255,0.07) 25%, rgba(0,0,0,0.14) 50%, rgba(255,255,255,0.05) 75%, rgba(0,0,0,0.1) 100%)` }} />
-                              <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0.12) 0%, transparent 35%)" }} />
-                            </div>
-                            <p className="font-headline text-[7px] font-bold uppercase tracking-widest text-on-surface-variant/60 leading-none">{s.label}</p>
+                              className="w-14 h-14 rounded-lg border border-white/10"
+                              style={{
+                                backgroundColor: s.hex,
+                                boxShadow: `0 0 12px 2px ${s.hex}55`,
+                              }}
+                            />
+                            <p className="font-headline text-[8px] font-bold uppercase tracking-widest text-on-surface-variant/50 leading-none">
+                              {s.label}
+                            </p>
                           </div>
                         ))}
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
 
-                  {/* Image side — same col-span as regular sections */}
-                  <div className="lg:col-span-7 lg:col-start-6">
+                  {/* Image side — 4+8=12, fills the full grid */}
+                  <motion.div variants={sectionItem} className="lg:col-span-8">
                     <ImgPlaceholder aspect="aspect-[4/3]" gradient={gradient} primary={primary} className="cinematic-shadow" />
-                  </div>
+                  </motion.div>
                 </Shell>
               );
             }
@@ -350,10 +353,10 @@ export default function ProjectPageContent({ project, nextProject }: Props) {
             // ── Regular section ───────────────────────────────────────
             return (
               <Shell key={section.heading} last={isLast}>
-                <div className={`lg:col-span-7 ${flipImage ? "lg:order-2" : ""}`}>
+                <motion.div variants={sectionItem} className={`lg:col-span-8 ${flipImage ? "lg:order-2" : ""}`}>
                   <ImgPlaceholder aspect="aspect-[4/3]" gradient={gradient} primary={primary} className="cinematic-shadow" />
-                </div>
-                <div className={`lg:col-span-4 flex flex-col gap-5 ${flipImage ? "lg:order-1" : ""}`}>
+                </motion.div>
+                <motion.div variants={sectionItem} className={`lg:col-span-4 flex flex-col gap-5 ${flipImage ? "lg:order-1" : ""}`}>
                   <span className="font-headline text-[10px] uppercase tracking-[0.35em] text-primary font-bold">
                     {section.heading}
                   </span>
@@ -362,7 +365,7 @@ export default function ProjectPageContent({ project, nextProject }: Props) {
                       ? renderWithFontHighlights(section.body, project.theme.fontHighlights)
                       : section.body}
                   </p>
-                </div>
+                </motion.div>
               </Shell>
             );
           })}
@@ -370,23 +373,27 @@ export default function ProjectPageContent({ project, nextProject }: Props) {
       )}
 
       {/* ── Gallery grid ─────────────────────────────────────── */}
-      <FadeUp className="max-w-screen-2xl mx-auto px-8 md:px-16 mb-24">
+      <div className="max-w-screen-2xl mx-auto px-8 md:px-16 mb-24">
         <div className="grid grid-cols-12 gap-5">
-          <div className="col-span-12 md:col-span-8">
+          <FadeUp delay={0} className="col-span-12 md:col-span-8">
             <ImgPlaceholder aspect="aspect-[4/3]" gradient={gradient} primary={primary} />
-          </div>
+          </FadeUp>
           <div className="col-span-12 md:col-span-4 flex flex-col gap-5">
-            <ImgPlaceholder aspect="aspect-video" gradient={gradient} primary={primary} className="flex-1" />
-            <ImgPlaceholder aspect="aspect-video" gradient={gradient} primary={primary} className="flex-1" />
+            <FadeUp delay={0.1} className="flex-1">
+              <ImgPlaceholder aspect="aspect-video" gradient={gradient} primary={primary} className="h-full" />
+            </FadeUp>
+            <FadeUp delay={0.18} className="flex-1">
+              <ImgPlaceholder aspect="aspect-video" gradient={gradient} primary={primary} className="h-full" />
+            </FadeUp>
           </div>
-          <div className="col-span-12 md:col-span-4">
+          <FadeUp delay={0.08} className="col-span-12 md:col-span-4">
             <ImgPlaceholder aspect="aspect-video" gradient={gradient} primary={primary} />
-          </div>
-          <div className="col-span-12 md:col-span-8">
+          </FadeUp>
+          <FadeUp delay={0} className="col-span-12 md:col-span-8">
             <ImgPlaceholder aspect="aspect-[4/3]" gradient={gradient} primary={primary} />
-          </div>
+          </FadeUp>
         </div>
-      </FadeUp>
+      </div>
 
       {/* ── Next Project teaser ───────────────────────────────── */}
       <section className="max-w-screen-2xl mx-auto px-8 md:px-16 pb-28 pt-8">

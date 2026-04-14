@@ -13,10 +13,10 @@ export default function ContactPage() {
       <div className="max-w-screen-2xl mx-auto px-8 md:px-16">
         <ContactHero />
 
-        <FadeUp delay={0.1}>
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             {/* Form */}
-            <section className="lg:col-span-7">
+            <FadeUp delay={0.1} className="lg:col-span-7">
+            <section>
               <div className="glass-panel p-8 md:p-12 rounded-3xl border border-outline-variant/15 cinematic-shadow relative overflow-hidden group">
                 <form className="space-y-8 relative z-10">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -74,65 +74,71 @@ export default function ContactPage() {
                 <div className="absolute -right-20 -bottom-20 w-64 h-64 bg-primary/5 blur-[100px] pointer-events-none group-hover:bg-primary/10 transition-all duration-700" />
               </div>
             </section>
+            </FadeUp>
 
             {/* Sidebar */}
-            <aside className="lg:col-span-5 flex flex-col gap-6">
-              <div className="glass-panel p-8 rounded-3xl border border-outline-variant/15 flex flex-col justify-between min-h-[240px] relative overflow-hidden">
-                <div>
-                  <Icon name="location_on" filled className="text-primary text-4xl mb-5" />
-                  <h3 className="font-headline text-2xl md:text-3xl font-bold text-on-surface mb-2">
-                    {t.contact.location}
-                  </h3>
-                  <p className="text-on-surface-variant font-body leading-relaxed">
-                    {t.contact.locationBody}
-                  </p>
+            <div className="lg:col-span-5 flex flex-col gap-6">
+              <FadeUp delay={0.2}>
+                <div className="glass-panel p-8 rounded-3xl border border-outline-variant/15 flex flex-col justify-between min-h-[240px] relative overflow-hidden">
+                  <div>
+                    <Icon name="location_on" filled className="text-primary text-4xl mb-5" />
+                    <h3 className="font-headline text-2xl md:text-3xl font-bold text-on-surface mb-2">
+                      {t.contact.location}
+                    </h3>
+                    <p className="text-on-surface-variant font-body leading-relaxed">
+                      {t.contact.locationBody}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              </FadeUp>
 
-              <div className="bg-surface-container p-8 rounded-3xl border border-outline-variant/15">
-                <h4 className="font-headline text-lg font-bold text-on-surface mb-8 uppercase tracking-widest">
-                  {t.contact.directChannels}
-                </h4>
-                <div className="space-y-6">
-                  {[
-                    { icon: "mail", label: "Email", value: "547118@student.fontys.nl", href: "mailto:547118@student.fontys.nl" },
-                    { icon: "open_in_new", label: "LinkedIn", value: "linkedin.com/in/jaspervantilborg", href: "https://linkedin.com" },
-                  ].map(({ icon, label, value, href }) => (
+              <FadeUp delay={0.32}>
+                <div className="bg-surface-container p-8 rounded-3xl border border-outline-variant/15">
+                  <h4 className="font-headline text-lg font-bold text-on-surface mb-8 uppercase tracking-widest">
+                    {t.contact.directChannels}
+                  </h4>
+                  <div className="space-y-6">
+                    {[
+                      { icon: "mail", label: "Email", value: "547118@student.fontys.nl", href: "mailto:547118@student.fontys.nl" },
+                      { icon: "open_in_new", label: "LinkedIn", value: "linkedin.com/in/jaspervantilborg", href: "https://linkedin.com" },
+                    ].map(({ icon, label, value, href }) => (
+                      <a
+                        key={label}
+                        href={href}
+                        target={href.startsWith("http") ? "_blank" : undefined}
+                        rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                        className="flex items-center gap-4 group cursor-pointer"
+                      >
+                        <div className="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center group-hover:bg-primary-container transition-colors duration-300 shrink-0">
+                          <Icon name={icon} className="text-on-surface-variant group-hover:text-on-primary-fixed transition-colors" />
+                        </div>
+                        <div>
+                          <p className="text-xs uppercase tracking-widest text-on-surface-variant font-bold font-label">{label}</p>
+                          <p className="text-on-surface group-hover:text-primary transition-colors font-body text-sm">{value}</p>
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </FadeUp>
+
+              <FadeUp delay={0.44}>
+                <div className="flex gap-4">
+                  {["LinkedIn", "GitHub"].map((name) => (
                     <a
-                      key={label}
-                      href={href}
-                      target={href.startsWith("http") ? "_blank" : undefined}
-                      rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-                      className="flex items-center gap-4 group cursor-pointer"
+                      key={name}
+                      href="https://linkedin.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 glass-panel py-4 rounded-xl flex items-center justify-center hover:bg-surface-bright transition-all duration-300 border border-outline-variant/10"
                     >
-                      <div className="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center group-hover:bg-primary-container transition-colors duration-300 shrink-0">
-                        <Icon name={icon} className="text-on-surface-variant group-hover:text-on-primary-fixed transition-colors" />
-                      </div>
-                      <div>
-                        <p className="text-xs uppercase tracking-widest text-on-surface-variant font-bold font-label">{label}</p>
-                        <p className="text-on-surface group-hover:text-primary transition-colors font-body text-sm">{value}</p>
-                      </div>
+                      <span className="font-headline font-bold text-xs tracking-widest uppercase text-on-surface">{name}</span>
                     </a>
                   ))}
                 </div>
-              </div>
-
-              <div className="flex gap-4">
-                {["LinkedIn", "GitHub"].map((name) => (
-                  <a
-                    key={name}
-                    href="https://linkedin.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 glass-panel py-4 rounded-xl flex items-center justify-center hover:bg-surface-bright transition-all duration-300 border border-outline-variant/10"
-                  >
-                    <span className="font-headline font-bold text-xs tracking-widest uppercase text-on-surface">{name}</span>
-                  </a>
-                ))}
-              </div>
-            </aside>
+              </FadeUp>
+            </div>
           </div>
-        </FadeUp>
       </div>
     </main>
   );

@@ -57,36 +57,44 @@ export default function HomePage() {
             </div>
           </FadeUp>
 
-          <FadeUp delay={0.1}>
-            <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight mb-6">
-              {t.home.designerHeading.split("\n")[0]}
-              <br />
-              {t.home.designerHeading.split("\n")[1]}<span className="text-primary">{t.home.designerAccent}</span>.
-            </h2>
-            <p className="text-on-surface-variant text-lg mb-6 leading-relaxed font-body">
-              {t.home.designerBody}
-            </p>
-            <Link
-              href="/about"
-              className="inline-flex items-center gap-3 text-primary font-headline font-bold uppercase tracking-widest text-sm group"
-            >
-              {t.home.designerCta}
-              <Icon name="arrow_forward" className="group-hover:translate-x-2 transition-transform duration-200 text-primary" />
-            </Link>
-          </FadeUp>
+          <div>
+            <FadeUp delay={0.1}>
+              <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight mb-6">
+                {t.home.designerHeading.split("\n")[0]}
+                <br />
+                {t.home.designerHeading.split("\n")[1]}<span className="text-primary">{t.home.designerAccent}</span>.
+              </h2>
+            </FadeUp>
+            <FadeUp delay={0.22}>
+              <p className="text-on-surface-variant text-lg mb-6 leading-relaxed font-body">
+                {t.home.designerBody}
+              </p>
+            </FadeUp>
+            <FadeUp delay={0.34}>
+              <Link
+                href="/about"
+                className="inline-flex items-center gap-3 text-primary font-headline font-bold uppercase tracking-widest text-sm group"
+              >
+                {t.home.designerCta}
+                <Icon name="arrow_forward" className="group-hover:translate-x-2 transition-transform duration-200 text-primary" />
+              </Link>
+            </FadeUp>
+          </div>
         </div>
       </section>
 
       {/* ── Featured Works ───────────────────────────────────── */}
       <section className="px-8 md:px-16 lg:px-24 py-14">
         <div className="max-w-screen-2xl mx-auto">
-          <FadeUp>
-            <div className="flex justify-between items-end mb-12">
+          <div className="flex justify-between items-end mb-12">
+            <FadeUp>
               <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight uppercase">
                 {t.home.featuredLabel.split(" ")[0]}
                 <br />
                 {t.home.featuredLabel.split(" ").slice(1).join(" ")}
               </h2>
+            </FadeUp>
+            <FadeUp delay={0.15}>
               <Link
                 href="/work"
                 className="hidden md:flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors font-headline text-xs tracking-widest uppercase font-bold group"
@@ -94,8 +102,8 @@ export default function HomePage() {
                 {t.home.allProjects}
                 <Icon name="arrow_forward" className="group-hover:translate-x-1 transition-transform duration-200" />
               </Link>
-            </div>
-          </FadeUp>
+            </FadeUp>
+          </div>
 
           <div className="grid md:grid-cols-12 gap-5">
             {featuredProjects[0] && (
@@ -231,20 +239,26 @@ export default function HomePage() {
           <div className="max-w-5xl mx-auto bg-surface-container-lowest py-20 md:py-24 px-8 md:px-12 rounded-[2.5rem] border border-primary/10 relative overflow-hidden text-center cinematic-shadow">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,92,0,0.05),transparent_70%)]" />
             <div className="relative z-10">
-              <h2 className="font-headline text-3xl md:text-5xl font-bold tracking-tighter text-on-surface mb-6">
-                {t.home.ctaHeading1}
-                <br />
-                {t.home.ctaHeading2}<span className="text-primary italic">{t.home.ctaHeadingAccent}</span>.
-              </h2>
-              <p className="text-on-surface-variant text-lg max-w-xl mx-auto mb-10 leading-relaxed font-body">
-                {t.home.ctaBody}
-              </p>
-              <Link
-                href="/contact"
-                className="inline-block bg-primary text-on-primary-fixed px-12 py-5 rounded-full font-headline font-bold uppercase tracking-[0.2em] text-sm hover:scale-105 active:scale-95 transition-transform duration-150"
-              >
-                {t.home.ctaButton}
-              </Link>
+              <FadeUp delay={0.1}>
+                <h2 className="font-headline text-3xl md:text-5xl font-bold tracking-tighter text-on-surface mb-6">
+                  {t.home.ctaHeading1}
+                  <br />
+                  {t.home.ctaHeading2}<span className="text-primary italic">{t.home.ctaHeadingAccent}</span>.
+                </h2>
+              </FadeUp>
+              <FadeUp delay={0.22}>
+                <p className="text-on-surface-variant text-lg max-w-xl mx-auto mb-10 leading-relaxed font-body">
+                  {t.home.ctaBody}
+                </p>
+              </FadeUp>
+              <FadeUp delay={0.34}>
+                <Link
+                  href="/contact"
+                  className="inline-block bg-primary text-on-primary-fixed px-12 py-5 rounded-full font-headline font-bold uppercase tracking-[0.2em] text-sm hover:scale-105 active:scale-95 transition-transform duration-150"
+                >
+                  {t.home.ctaButton}
+                </Link>
+              </FadeUp>
             </div>
           </div>
         </FadeUp>

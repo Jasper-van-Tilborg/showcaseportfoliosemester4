@@ -19,13 +19,13 @@ export default function MountReveal({
   children,
   delay = 0,
   className = "",
-  distance = 24,
+  distance = 28,
 }: MountRevealProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: distance }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease, delay }}
+      transition={{ duration: 0.85, ease, delay }}
       className={className}
     >
       {children}

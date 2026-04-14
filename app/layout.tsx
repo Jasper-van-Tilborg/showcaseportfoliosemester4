@@ -54,7 +54,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${spaceGrotesk.variable} ${manrope.variable} ${playfairDisplay.variable} ${dmSans.variable} font-body antialiased bg-background text-on-surface overflow-x-hidden`}
+        className={`${spaceGrotesk.variable} ${manrope.variable} ${playfairDisplay.variable} ${dmSans.variable} font-body antialiased bg-background text-on-surface overflow-x-clip`}
       >
         <LanguageProvider>
           <ThemeApplicator />

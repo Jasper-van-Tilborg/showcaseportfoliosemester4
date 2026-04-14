@@ -1,12 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 
 interface FadeUpProps {
   children: React.ReactNode;
   delay?: number;
   className?: string;
-  /** Distance to travel upward (default: 20px) */
   distance?: number;
 }
 
@@ -16,14 +16,17 @@ export default function FadeUp({
   children,
   delay = 0,
   className = "",
-  distance = 20,
+  distance = 28,
 }: FadeUpProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-60px 0px" });
+
   return (
     <motion.div
+      ref={ref}
       initial={{ opacity: 0, y: distance }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.6, ease, delay }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: distance }}
+      transition={{ duration: 0.85, ease, delay }}
       className={className}
     >
       {children}

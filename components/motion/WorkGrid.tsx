@@ -10,15 +10,27 @@ import type { Project } from "@/data/projects";
 const ease = [0.16, 1, 0.3, 1] as const;
 
 export default function WorkGrid({ projects }: { projects: Project[] }) {
-  const categories = ["All", ...Array.from(new Set(projects.map((p) => p.category)))];
+  const categories = [
+    "All",
+    ...Array.from(new Set(projects.flatMap((p) => p.categories ?? [p.category]))),
+  ];
+  const statusFilters = ["In Progress", "Completed"];
   const [active, setActive] = useState("All");
+  const [activeStatus, setActiveStatus] = useState<string | null>(null);
 
-  const filtered = active === "All" ? projects : projects.filter((p) => p.category === active);
+  const filtered = projects.filter((p) => {
+    const categoryMatch = active === "All" || (p.categories ?? [p.category]).includes(active);
+    const statusMatch =
+      activeStatus === null ||
+      (activeStatus === "In Progress" && p.status === "in-progress") ||
+      (activeStatus === "Completed" && p.status === "completed");
+    return categoryMatch && statusMatch;
+  });
 
   return (
     <div>
       {/* Filter bar */}
-      <div className="flex flex-wrap gap-2 mb-10">
+      <div className="flex flex-wrap items-center gap-2 mb-10">
         {categories.map((cat) => (
           <button
             key={cat}
@@ -30,6 +42,28 @@ export default function WorkGrid({ projects }: { projects: Project[] }) {
             }`}
           >
             {cat}
+          </button>
+        ))}
+
+        <div className="w-px h-4 bg-outline-variant/30 mx-1" />
+
+        {statusFilters.map((s) => (
+          <button
+            key={s}
+            onClick={() => setActiveStatus(activeStatus === s ? null : s)}
+            className={`inline-flex items-center gap-1.5 px-5 py-2 rounded-full text-[11px] font-headline font-bold tracking-widest uppercase transition-all duration-200 border ${
+              activeStatus === s
+                ? "bg-primary text-on-primary-fixed border-primary"
+                : "bg-transparent text-on-surface-variant border-outline-variant/30 hover:border-primary/50 hover:text-on-surface"
+            }`}
+          >
+            {s === "In Progress" && (
+              <span className="relative flex h-1.5 w-1.5 shrink-0">
+                <span className={`absolute inline-flex h-full w-full rounded-full opacity-75 ${activeStatus === s ? "bg-on-primary-fixed animate-ping" : "bg-primary animate-ping"}`} />
+                <span className={`relative inline-flex rounded-full h-1.5 w-1.5 ${activeStatus === s ? "bg-on-primary-fixed" : "bg-primary"}`} />
+              </span>
+            )}
+            {s}
           </button>
         ))}
       </div>
@@ -56,8 +90,8 @@ export default function WorkGrid({ projects }: { projects: Project[] }) {
                 layout
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.97 }}
-                transition={{ duration: 0.45, ease, delay: (index % 2) * 0.06 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.5, ease, delay: index * 0.06 }}
                 className={isWide ? "md:col-span-2" : ""}
               >
                 <Link
