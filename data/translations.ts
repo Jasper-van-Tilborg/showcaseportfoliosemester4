@@ -93,6 +93,24 @@ export const translations = {
         { degree: "ICT & MEDIA DESIGN", school: "Fontys Hogeschool", period: "2024 — Heden" },
         { degree: "BEATRIX COLLEGE", school: "Tilburg", period: "2019 — 2024" },
       ],
+      personalHeading: "BUITEN\nHET SCHERM",
+      personalCards: [
+        {
+          label: "Voetbal",
+          icon: "sports_soccer",
+          body: "Sinds drie jaar speel ik bij SV Reeshof in Tilburg, en dat is voor mij de manier om m'n hoofd leeg te maken. Niets te maken met pixels of prototypes, gewoon spelen.",
+        },
+        {
+          label: "Skiën",
+          icon: "downhill_skiing",
+          body: "Als het seizoen het toelaat, ruil ik het veld in voor de piste. Skiën is het enige waarbij ik net zo scherp focus als achter mijn scherm, alleen dan met wat meer snelheid en een stuk minder Wi-Fi.",
+        },
+        {
+          label: "Vrienden & Bouwen",
+          icon: "handshake",
+          body: "De rest van mijn tijd gaat naar vrienden, en eerlijk gezegd ook gewoon naar het bouwen van websites. Niet omdat het moet, maar omdat ik het simpelweg leuk vind. Dat is ook precies waarom design en development voor mij geen vakken zijn, maar iets wat ik sowieso zou doen.",
+        },
+      ],
     },
     contact: {
       heroTitle1: "Laten We ",
@@ -204,6 +222,24 @@ export const translations = {
       education: [
         { degree: "ICT & MEDIA DESIGN", school: "Fontys University of Applied Sciences", period: "2024 — Present" },
         { degree: "BEATRIX COLLEGE", school: "Tilburg", period: "2019 — 2024" },
+      ],
+      personalHeading: "BEYOND\nTHE SCREEN",
+      personalCards: [
+        {
+          label: "Football",
+          icon: "sports_soccer",
+          body: "For the past three years I've been playing for SV Reeshof in Tilburg — my way of clearing my head. Nothing to do with pixels or prototypes, just playing.",
+        },
+        {
+          label: "Skiing",
+          icon: "downhill_skiing",
+          body: "When the season allows, I trade the pitch for the slopes. Skiing is the one thing where I focus just as sharply as behind my screen — just with more speed and a lot less Wi-Fi.",
+        },
+        {
+          label: "Friends & Building",
+          icon: "handshake",
+          body: "The rest of my time goes to friends, and honestly, just building websites. Not because I have to, but because I genuinely enjoy it. That's exactly why design and development aren't subjects to me — they're just what I'd do anyway.",
+        },
       ],
     },
     contact: {

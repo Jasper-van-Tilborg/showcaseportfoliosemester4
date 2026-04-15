@@ -38,16 +38,15 @@ export default function HomePage() {
       <section className="px-8 md:px-16 lg:px-24 py-10">
         <div className="max-w-screen-2xl mx-auto grid md:grid-cols-2 gap-10 items-center">
           <FadeUp delay={0} className="relative">
-            <div className="w-full aspect-[4/5] max-h-[72vh] rounded-2xl overflow-hidden glass-card cinematic-shadow">
-              <div className="w-full h-full bg-gradient-to-b from-surface-container via-surface-container-high to-surface-container-highest flex items-end p-8">
-                <p className="font-headline text-3xl md:text-5xl font-bold text-on-surface/20 tracking-tighter uppercase leading-none">
-                  Jasper
-                  <br />
-                  van
-                  <br />
-                  Tilborg
-                </p>
-              </div>
+            <div className="w-full aspect-[4/5] max-h-[72vh] rounded-2xl overflow-hidden glass-card cinematic-shadow relative">
+              <Image
+                src="/persoonlijkefotos/propodeusefoto.jpeg"
+                alt="Jasper van Tilborg"
+                fill
+                quality={90}
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
             </div>
             <div className="absolute -bottom-4 -right-2 md:-bottom-6 md:-right-8 glass-panel p-4 md:p-6 rounded-2xl border border-primary/20 cinematic-shadow">
               <span className="text-primary font-headline text-3xl md:text-4xl font-bold italic">5+</span>

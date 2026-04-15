@@ -106,7 +106,7 @@ export const projects: Project[] = [
         body: "Een volledig werkende e-commerce website deployed op Vercel en versie beheerd op GitHub. Het merk is nog in ontwikkeling maar de technische basis is compleet. Of Fioresque een echt bedrijf wordt, dat zal de tijd uitwijzen.",
       },
     ],
-    tags: ["Next.js", "Tailwind CSS", "Stripe", "Vercel", "GitHub", "Figma"],
+    tags: ["Next.js", "Tailwind CSS", "Stripe", "Vercel", "GitHub", "Figma", "Supabase"],
     coverGradient: "linear-gradient(135deg, #1E2420 0%, #2D4A35 50%, #4A7A56 100%)",
     coverImage: "/fioresque_logo.png",
     featured: true,
@@ -169,7 +169,7 @@ export const projects: Project[] = [
     shortDescription: "Een volledig merkbureau opgezet van nul in 3 weken.",
     description:
       "In drie weken hebben we met een team van zes VARA Media Agency opgezet: een volledig functionerend merkbureau met eigen identiteit, positionering en visueel systeem. Ik was verantwoordelijk voor de merkstrategie en visuele identiteit.",
-    tags: ["Brand Strategy", "Visual Identity", "UI Design"],
+    tags: ["Brand Strategy", "Visual Identity", "UI Design", "Figma"],
     coverGradient: "linear-gradient(135deg, #246BF6 0%, #4d8ef8 50%, #D9F855 100%)",
     coverImage: "/vara_logo2.png",
     links: { live: "https://vara-agency.vercel.app", github: "https://github.com/timjonkergouw/vara_agency" },
@@ -335,7 +335,7 @@ export const projects: Project[] = [
         media: { type: "video", src: "/cookmind/cookmind_poc.mp4" },
       },
     ],
-    tags: ["Figma", "Claude API", "iOS", "UX Research", "Usability Testing", "Supabase"],
+    tags: ["Figma", "Next.js", "Claude API", "iOS", "UX Research", "Usability Testing", "Supabase"],
     links: {
       live: "https://cookmind-ten.vercel.app",
       github: "https://github.com/Jasper-van-Tilborg/cookmind",
