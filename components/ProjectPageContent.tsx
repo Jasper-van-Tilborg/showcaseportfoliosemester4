@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Icon from "@/components/Icon";
 import MountReveal from "@/components/motion/MountReveal";
 import FadeUp from "@/components/motion/FadeUp";
@@ -36,6 +36,93 @@ function renderWithFontHighlights(text: string, highlights: Record<string, strin
   );
 }
 
+function Lightbox({ src, onClose }: { src: string; onClose: () => void }) {
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [onClose]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.25 }}
+      className="fixed inset-0 z-[100] flex items-center justify-center p-6 md:p-12"
+      onClick={onClose}
+    >
+      <div className="absolute inset-0 bg-black/25 backdrop-blur-2xl" />
+      <motion.div
+        initial={{ scale: 0.92, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.92, opacity: 0 }}
+        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+        className="relative max-w-5xl w-full rounded-2xl overflow-hidden cinematic-shadow"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={src}
+          alt=""
+          className="w-full max-h-[85vh] object-contain block"
+        />
+      </motion.div>
+      <button
+        onClick={onClose}
+        className="absolute top-5 right-5 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors duration-200 backdrop-blur-sm"
+      >
+        <Icon name="close" className="text-xl" />
+      </button>
+    </motion.div>
+  );
+}
+
+function VercelLink({ href, discontinuedMessage }: { href: string; discontinuedMessage?: string }) {
+  const [open, setOpen] = useState(false);
+  const hasWarning = !!discontinuedMessage;
+
+  return (
+    <div className={`rounded-xl border transition-all duration-200 overflow-hidden ${hasWarning && open ? "border-amber-500/40" : "border-white/10"}`}>
+      <div className="flex items-stretch">
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-2 px-3 py-2.5 flex-1 text-on-surface-variant hover:text-primary transition-colors duration-200"
+        >
+          <svg className="w-4 h-4 shrink-0" viewBox="0 0 76 65" fill="currentColor"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z" /></svg>
+          <span className="text-xs font-headline font-bold tracking-widest uppercase">Vercel</span>
+        </a>
+        {hasWarning && (
+          <button
+            onClick={() => setOpen((v) => !v)}
+            className={`flex items-center px-2.5 border-l transition-colors duration-200 ${open ? "border-amber-500/40 text-amber-400 bg-amber-500/5" : "border-white/10 text-amber-400/40 hover:text-amber-400 hover:bg-amber-500/5"}`}
+          >
+            <Icon name="warning" className="text-sm" />
+          </button>
+        )}
+      </div>
+      <AnimatePresence initial={false}>
+        {hasWarning && open && (
+          <motion.div
+            key="discontinued"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            style={{ overflow: "hidden" }}
+          >
+            <p className="px-3 py-2.5 border-t border-amber-500/20 text-[11px] text-amber-300/80 font-body leading-relaxed bg-amber-500/5">
+              {discontinuedMessage}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 function ImgPlaceholder({
   aspect = "aspect-video",
   gradient,
@@ -57,12 +144,63 @@ function ImgPlaceholder({
   );
 }
 
+function SectionMedia({
+  section,
+  aspect = "aspect-[4/3]",
+  gradient,
+  primary,
+  className = "",
+  onImageClick,
+}: {
+  section: import("@/data/projects").ProjectSection;
+  aspect?: string;
+  gradient: string;
+  primary: string;
+  className?: string;
+  onImageClick?: (src: string) => void;
+}) {
+  if (section.media?.type === "video") {
+    return (
+      <div className={`relative w-full rounded-2xl overflow-hidden ${aspect} ${className}`}>
+        <video
+          src={section.media.src}
+          poster={section.media.poster}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      </div>
+    );
+  }
+  if (section.media?.type === "image") {
+    const src = section.media.src;
+    return (
+      <div
+        className={`group relative w-full rounded-2xl overflow-hidden ${aspect} ${className} ${onImageClick ? "cursor-pointer" : ""}`}
+        style={{ background: gradient }}
+        onClick={() => onImageClick?.(src)}
+      >
+        <Image src={src} alt="" fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
+        {onImageClick && (
+          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center">
+            <Icon name="open_in_full" className="text-white text-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          </div>
+        )}
+      </div>
+    );
+  }
+  return <ImgPlaceholder aspect={aspect} gradient={gradient} primary={primary} className={className} />;
+}
+
 interface Props {
   project: Project;
   nextProject: Project;
+  prevProject: Project;
 }
 
-export default function ProjectPageContent({ project, nextProject }: Props) {
+export default function ProjectPageContent({ project, nextProject, prevProject }: Props) {
   const { t, lang } = useLanguage();
 
   const i18n        = project.i18n?.[lang];
@@ -77,9 +215,15 @@ export default function ProjectPageContent({ project, nextProject }: Props) {
   const gradient = project.coverGradient;
   const primary  = project.theme?.primary ?? "var(--color-primary)";
   const isOngoing = project.metadata?.duration?.toLowerCase() === "ongoing";
+  const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
 
   return (
     <main className="relative z-10" style={themeVars}>
+      <AnimatePresence>
+        {lightboxSrc && (
+          <Lightbox src={lightboxSrc} onClose={() => setLightboxSrc(null)} />
+        )}
+      </AnimatePresence>
       {project.theme && (
         <style>{`
           ::selection {
@@ -108,7 +252,7 @@ export default function ProjectPageContent({ project, nextProject }: Props) {
           }}
         />
         {project.coverImage && (
-          <div className="absolute inset-0">
+          <div className="absolute inset-0 -translate-y-12">
             <Image
               src={project.coverImage}
               alt={project.title}
@@ -122,14 +266,16 @@ export default function ProjectPageContent({ project, nextProject }: Props) {
         )}
 
         {/* Back link */}
-        <MountReveal delay={0.05} className="absolute top-0 left-0 pt-32 px-8 md:px-16 z-20">
-          <Link
-            href="/work"
-            className="inline-flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors font-headline text-xs tracking-widest uppercase font-bold group"
-          >
-            <Icon name="arrow_back" className="group-hover:-translate-x-1 transition-transform duration-200" />
-            {t.case.backLabel}
-          </Link>
+        <MountReveal delay={0.05} className="absolute top-0 left-0 right-0 pt-32 z-20">
+          <div className="max-w-screen-2xl mx-auto px-8 md:px-16">
+            <Link
+              href="/work"
+              className="inline-flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors font-headline text-xs tracking-widest uppercase font-bold group"
+            >
+              <Icon name="arrow_back" className="group-hover:-translate-x-1 transition-transform duration-200" />
+              {t.case.backLabel}
+            </Link>
+          </div>
         </MountReveal>
 
         {/* Title */}
@@ -171,7 +317,7 @@ export default function ProjectPageContent({ project, nextProject }: Props) {
             )}
           </FadeUp>
 
-          {project.metadata && (
+          {(project.metadata || project.discontinued) && (
             <FadeUp delay={0.2} className="lg:col-span-4 lg:col-start-9">
               <div className="glass-panel rounded-2xl border border-white/8 p-7 flex flex-col gap-5">
                 {project.metadata.duration && (
@@ -224,11 +370,10 @@ export default function ProjectPageContent({ project, nextProject }: Props) {
                       {t.case.links}
                     </p>
                     {project.links.live && (
-                      <a href={project.links.live} target="_blank" rel="noopener noreferrer"
-                        className="flex items-center gap-2 px-3 py-2.5 rounded-xl border border-white/10 hover:border-primary/40 hover:text-primary text-on-surface-variant transition-all duration-200">
-                        <svg className="w-4 h-4 shrink-0" viewBox="0 0 76 65" fill="currentColor"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z" /></svg>
-                        <span className="text-xs font-headline font-bold tracking-widest uppercase">Vercel</span>
-                      </a>
+                      <VercelLink
+                        href={project.links.live}
+                        discontinuedMessage={project.discontinued?.[lang]}
+                      />
                     )}
                     {project.links.github && (
                       <a href={project.links.github} target="_blank" rel="noopener noreferrer"
@@ -344,7 +489,7 @@ export default function ProjectPageContent({ project, nextProject }: Props) {
 
                   {/* Image side — 4+8=12, fills the full grid */}
                   <motion.div variants={sectionItem} className="lg:col-span-8">
-                    <ImgPlaceholder aspect="aspect-[4/3]" gradient={gradient} primary={primary} className="cinematic-shadow" />
+                    <SectionMedia section={section} aspect="aspect-[4/3]" gradient={gradient} primary={primary} className="cinematic-shadow" onImageClick={setLightboxSrc} />
                   </motion.div>
                 </Shell>
               );
@@ -354,7 +499,7 @@ export default function ProjectPageContent({ project, nextProject }: Props) {
             return (
               <Shell key={section.heading} last={isLast}>
                 <motion.div variants={sectionItem} className={`lg:col-span-8 ${flipImage ? "lg:order-2" : ""}`}>
-                  <ImgPlaceholder aspect="aspect-[4/3]" gradient={gradient} primary={primary} className="cinematic-shadow" />
+                  <SectionMedia section={section} aspect="aspect-[4/3]" gradient={gradient} primary={primary} className="cinematic-shadow" onImageClick={setLightboxSrc} />
                 </motion.div>
                 <motion.div variants={sectionItem} className={`lg:col-span-4 flex flex-col gap-5 ${flipImage ? "lg:order-1" : ""}`}>
                   <span className="font-headline text-[10px] uppercase tracking-[0.35em] text-primary font-bold">
@@ -374,81 +519,134 @@ export default function ProjectPageContent({ project, nextProject }: Props) {
 
       {/* ── Gallery grid ─────────────────────────────────────── */}
       <div className="max-w-screen-2xl mx-auto px-8 md:px-16 mb-24">
-        <div className="grid grid-cols-12 gap-5">
-          <FadeUp delay={0} className="col-span-12 md:col-span-8">
-            <ImgPlaceholder aspect="aspect-[4/3]" gradient={gradient} primary={primary} />
-          </FadeUp>
-          <div className="col-span-12 md:col-span-4 flex flex-col gap-5">
-            <FadeUp delay={0.1} className="flex-1">
-              <ImgPlaceholder aspect="aspect-video" gradient={gradient} primary={primary} className="h-full" />
-            </FadeUp>
-            <FadeUp delay={0.18} className="flex-1">
-              <ImgPlaceholder aspect="aspect-video" gradient={gradient} primary={primary} className="h-full" />
-            </FadeUp>
-          </div>
-          <FadeUp delay={0.08} className="col-span-12 md:col-span-4">
-            <ImgPlaceholder aspect="aspect-video" gradient={gradient} primary={primary} />
-          </FadeUp>
-          <FadeUp delay={0} className="col-span-12 md:col-span-8">
-            <ImgPlaceholder aspect="aspect-[4/3]" gradient={gradient} primary={primary} />
-          </FadeUp>
-        </div>
+        <FadeUp>
+          <p className="text-xs uppercase tracking-[0.35em] text-on-surface-variant font-headline font-bold mb-8">
+            Gallery
+          </p>
+        </FadeUp>
+        {(() => {
+          const g = project.gallery ?? [];
+          const img = (i: number, aspect: string, className = "") =>
+            g[i] ? (
+              <div
+                className={`group relative w-full rounded-2xl overflow-hidden cursor-pointer ${aspect} ${className}`}
+                style={{ background: gradient }}
+                onClick={() => setLightboxSrc(g[i])}
+              >
+                <Image src={g[i]} alt="" fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center">
+                  <Icon name="open_in_full" className="text-white text-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </div>
+              </div>
+            ) : (
+              <ImgPlaceholder aspect={aspect} gradient={gradient} primary={primary} className={className} />
+            );
+          return (
+            <div className="grid grid-cols-12 gap-5">
+              <FadeUp delay={0} className="col-span-12 md:col-span-8">
+                {img(0, "aspect-[4/3]")}
+              </FadeUp>
+              <div className="col-span-12 md:col-span-4 flex flex-col gap-5">
+                <FadeUp delay={0.1} className="flex-1">
+                  {img(1, "aspect-video", "h-full")}
+                </FadeUp>
+                <FadeUp delay={0.18} className="flex-1">
+                  {img(2, "aspect-video", "h-full")}
+                </FadeUp>
+              </div>
+              {(g[3] || g[4] || g[5]) && (
+                <>
+                  <div className="col-span-12 md:col-span-4 flex flex-col gap-5">
+                    {g[3] && (
+                      <FadeUp delay={0.08} className="flex-1">
+                        {img(3, "aspect-video", "h-full")}
+                      </FadeUp>
+                    )}
+                    {g[4] && (
+                      <FadeUp delay={0.14} className="flex-1">
+                        {img(4, "aspect-video", "h-full")}
+                      </FadeUp>
+                    )}
+                  </div>
+                  {g[5] && (
+                    <FadeUp delay={0} className="col-span-12 md:col-span-8">
+                      {img(5, "aspect-[4/3]")}
+                    </FadeUp>
+                  )}
+                </>
+              )}
+            </div>
+          );
+        })()}
       </div>
 
-      {/* ── Next Project teaser ───────────────────────────────── */}
+      {/* ── Prev / Next Project ───────────────────────────────── */}
       <section className="max-w-screen-2xl mx-auto px-8 md:px-16 pb-28 pt-8">
         <FadeUp>
           <p className="text-xs uppercase tracking-[0.35em] text-on-surface-variant font-headline font-bold mb-8">
             {t.case.nextProject}
           </p>
-          <Link
-            href={`/work/${nextProject.slug}`}
-            className="group block relative w-full aspect-[21/9] rounded-3xl overflow-hidden cinematic-shadow"
-            style={
-              nextProject.theme
-                ? ({
-                    "--color-primary":            nextProject.theme.primary,
-                    "--color-primary-container":  nextProject.theme.primaryContainer,
-                    "--color-on-primary":         nextProject.theme.onPrimary,
-                    "--color-on-surface":         nextProject.theme.onSurface,
-                    "--color-on-surface-variant": nextProject.theme.onSurfaceVariant,
-                  } as React.CSSProperties)
-                : undefined
-            }
-          >
-            <div
-              className="absolute inset-0 transition-transform duration-700 group-hover:scale-105"
-              style={{ background: nextProject.coverGradient }}
-            />
-            <div className="absolute inset-0 bg-neutral-900/50 transition-opacity duration-500 group-hover:opacity-0" />
-            {nextProject.coverImage && (
-              <div className="absolute inset-0">
-                <Image
-                  src={nextProject.coverImage}
-                  alt={nextProject.title}
-                  fill
-                  quality={90}
-                  className="object-contain scale-[0.5] group-hover:scale-[0.55] transition-transform duration-500"
-                  sizes="100vw"
-                />
-              </div>
-            )}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-            <div className="absolute bottom-8 left-8 right-8 flex items-end justify-between">
-              <div>
-                <span className="text-[10px] font-bold text-primary tracking-widest uppercase mb-2 block font-label">
-                  {nextProject.category} / {nextProject.year}
-                </span>
-                <h3 className="font-headline text-3xl md:text-5xl font-bold text-on-surface tracking-tight">
-                  {nextProject.title}
-                </h3>
-              </div>
-              <Icon
-                name="arrow_outward"
-                className="text-3xl text-primary shrink-0 ml-6 opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200"
-              />
-            </div>
-          </Link>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {[
+              { p: prevProject, dir: "prev" },
+              { p: nextProject, dir: "next" },
+            ].map(({ p, dir }) => (
+              <Link
+                key={p.slug}
+                href={`/work/${p.slug}`}
+                className="group relative aspect-video rounded-3xl overflow-hidden cinematic-shadow block"
+                style={
+                  p.theme
+                    ? ({
+                        "--color-primary":            p.theme.primary,
+                        "--color-primary-container":  p.theme.primaryContainer,
+                        "--color-on-primary":         p.theme.onPrimary,
+                        "--color-on-surface":         p.theme.onSurface,
+                        "--color-on-surface-variant": p.theme.onSurfaceVariant,
+                      } as React.CSSProperties)
+                    : undefined
+                }
+              >
+                <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-105" style={{ background: p.coverGradient }} />
+                <div className="absolute inset-0 bg-neutral-900/50 transition-opacity duration-500 group-hover:opacity-0" />
+                {p.coverImage && (
+                  <div className="absolute inset-0">
+                    <Image
+                      src={p.coverImage}
+                      alt={p.title}
+                      fill
+                      quality={90}
+                      className="object-contain scale-[0.5] group-hover:scale-[0.55] transition-transform duration-500"
+                      sizes="50vw"
+                    />
+                  </div>
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
+                  {dir === "prev" && (
+                    <Icon
+                      name="arrow_back"
+                      className="text-2xl text-primary shrink-0 mr-4 opacity-70 group-hover:opacity-100 group-hover:-translate-x-0.5 transition-all duration-200"
+                    />
+                  )}
+                  <div>
+                    <span className="text-[10px] font-bold text-primary tracking-widest uppercase mb-1 block font-label">
+                      {dir === "prev" ? (lang === "nl" ? "Vorig project" : "Previous project") : (lang === "nl" ? "Volgend project" : "Next project")}
+                    </span>
+                    <h3 className="font-headline text-xl md:text-2xl font-bold text-on-surface tracking-tight">
+                      {p.title}
+                    </h3>
+                  </div>
+                  {dir === "next" && (
+                    <Icon
+                      name="arrow_forward"
+                      className="text-2xl text-primary shrink-0 ml-4 opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-200"
+                    />
+                  )}
+                </div>
+              </Link>
+            ))}
+          </div>
         </FadeUp>
       </section>
     </main>

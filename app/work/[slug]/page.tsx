@@ -17,6 +17,7 @@ export default async function ProjectPage({ params }: Props) {
 
   const currentIndex = projects.findIndex((p) => p.slug === slug);
   const nextProject = projects[(currentIndex + 1) % projects.length];
+  const prevProject = projects[(currentIndex - 1 + projects.length) % projects.length];
 
-  return <ProjectPageContent project={project} nextProject={nextProject} />;
+  return <ProjectPageContent project={project} nextProject={nextProject} prevProject={prevProject} />;
 }

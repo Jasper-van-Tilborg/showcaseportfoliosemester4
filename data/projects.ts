@@ -12,6 +12,11 @@ export interface ProjectSection {
   heading: string;
   body: string;
   type?: "palette" | "visual-identity"; // special render modes
+  media?: {
+    type: "video" | "image";
+    src: string;
+    poster?: string;
+  };
 }
 
 export interface ProjectI18n {
@@ -57,10 +62,15 @@ export interface Project {
     role?: string;
     course?: string;
   };
+  gallery?: string[];
   theme?: ProjectTheme;
   i18n?: {
     nl?: ProjectI18n;
     en?: ProjectI18n;
+  };
+  discontinued?: {
+    nl: string;
+    en: string;
   };
 }
 
@@ -80,16 +90,16 @@ export const projects: Project[] = [
     sections: [
       {
         heading: "De uitdaging",
-        body: "Een complete e-commerce website bouwen die er premium uitziet maar fris en zomers aanvoelt voor een jong doelpubliek van 18 tot 25 jaar. De grootste technische uitdaging was het volledig responsive maken — iets waar AI-gestuurde tools zoals Cursor mee worstelden.",
+        body: "Een complete e-commerce website bouwen die er premium uitziet maar fris en zomers aanvoelt voor een jong doelpubliek van 18 tot 25 jaar. De grootste technische uitdaging was het volledig responsive maken, iets waar AI-gestuurde tools zoals Cursor mee worstelden.",
       },
       {
         heading: "Visuele identiteit",
-        body: "Voordat er één regel code geschreven werd, begon het bij het merk zelf. Een kleurenpalet, typografie en een logo die samen het karakter van Fioresque neerzetten — fris, natuur-geïnspireerd en premium zonder zwaar te voelen.",
+        body: "Voordat er één regel code geschreven werd, begon het bij het merk zelf. Een kleurenpalet, typografie en een logo die samen het karakter van Fioresque neerzetten: fris, natuur-geïnspireerd en premium zonder zwaar te voelen.",
         type: "visual-identity",
       },
       {
         heading: "Het ontwerp",
-        body: "Met de visuele identiteit op zak begon het echte bouwen in Figma. Elk scherm — van homepage tot checkout — werd eerst uitgetekend en daarna component voor component vertaald naar Next.js code met Tailwind CSS.",
+        body: "Met de visuele identiteit op zak begon het echte bouwen in Figma. Elk scherm, van homepage tot checkout, werd eerst uitgetekend en daarna component voor component vertaald naar Next.js code met Tailwind CSS.",
       },
       {
         heading: "Resultaat",
@@ -130,16 +140,16 @@ export const projects: Project[] = [
         sections: [
           {
             heading: "The Challenge",
-            body: "Building a complete e-commerce website that looks premium while feeling fresh and summery for a young target audience of 18 to 25 year olds. The biggest technical challenge was making the website fully responsive — something AI-driven tools like Cursor struggled with.",
+            body: "Building a complete e-commerce website that looks premium while feeling fresh and summery for a young target audience of 18 to 25 year olds. The biggest technical challenge was making the website fully responsive, something AI-driven tools like Cursor struggled with.",
           },
           {
             heading: "Visual Identity",
-            body: "Before a single line of code was written, it started with the brand itself. A colour palette, typography and a logo that together define the character of Fioresque — fresh, nature-inspired and premium without feeling heavy.",
+            body: "Before a single line of code was written, it started with the brand itself. A colour palette, typography and a logo that together define the character of Fioresque: fresh, nature-inspired and premium without feeling heavy.",
             type: "visual-identity",
           },
           {
             heading: "The Design",
-            body: "With the visual identity in place, the real building began in Figma. Every screen — from homepage to checkout — was designed first and then translated component by component into Next.js code with Tailwind CSS.",
+            body: "With the visual identity in place, the real building began in Figma. Every screen, from homepage to checkout, was designed first and then translated component by component into Next.js code with Tailwind CSS.",
           },
           {
             heading: "Outcome",
@@ -158,7 +168,7 @@ export const projects: Project[] = [
     status: "in-progress",
     shortDescription: "Een volledig merkbureau opgezet van nul in 3 weken.",
     description:
-      "In drie weken hebben we met een team van zes VARA Media Agency opgezet — een volledig functionerend merkbureau met eigen identiteit, positionering en visueel systeem. Ik was verantwoordelijk voor de merkstrategie en visuele identiteit.",
+      "In drie weken hebben we met een team van zes VARA Media Agency opgezet: een volledig functionerend merkbureau met eigen identiteit, positionering en visueel systeem. Ik was verantwoordelijk voor de merkstrategie en visuele identiteit.",
     tags: ["Brand Strategy", "Visual Identity", "UI Design"],
     coverGradient: "linear-gradient(135deg, #246BF6 0%, #4d8ef8 50%, #D9F855 100%)",
     coverImage: "/vara_logo2.png",
@@ -167,7 +177,7 @@ export const projects: Project[] = [
     sections: [
       {
         heading: "Merkontwikkeling",
-        body: "In drie weken hebben we met een team van zes VARA Media Agency opgezet — een volledig functionerend merkbureau met eigen identiteit, positionering en visueel systeem. Ik was verantwoordelijk voor de merkstrategie en visuele identiteit.",
+        body: "In drie weken hebben we met een team van zes VARA Media Agency opgezet: een volledig functionerend merkbureau met eigen identiteit, positionering en visueel systeem. Ik was verantwoordelijk voor de merkstrategie en visuele identiteit.",
       },
       {
         heading: "Visueel systeem",
@@ -182,7 +192,7 @@ export const projects: Project[] = [
       duration: "3 weeks",
       teamSize: 6,
       role: "Brand Strategist & Visual Designer",
-      course: "Semester 4 — Media Design",
+      course: "Semester 4, Media Design",
     },
     theme: {
       background:             "#343231",
@@ -198,11 +208,11 @@ export const projects: Project[] = [
       en: {
         shortDescription: "Building a full branding agency from the ground up in 3 weeks.",
         description:
-          "A collaborative 3-week sprint where I worked with 5 teammates to establish a complete branding agency — VARA. Responsible for brand strategy, visual identity, color system, logo design, and the homepage concept.",
+          "A collaborative 3-week sprint where I worked with 5 teammates to establish a complete branding agency called VARA. Responsible for brand strategy, visual identity, color system, logo design, and the homepage concept.",
         sections: [
           {
             heading: "Brand development",
-            body: "In three weeks we built VARA Media Agency with a team of six — a fully functioning branding agency with its own identity, positioning, and visual system. I was responsible for the brand strategy and visual identity.",
+            body: "In three weeks we built VARA Media Agency with a team of six: a fully functioning branding agency with its own identity, positioning, and visual system. I was responsible for the brand strategy and visual identity.",
           },
           {
             heading: "Visual system",
@@ -219,9 +229,9 @@ export const projects: Project[] = [
   {
     id: 3,
     slug: "rosh-studios-tournament-editor",
-    title: "Rosh Studios Tournament Editor",
+    title: "Tournament Editor",
     category: "FULL-STACK",
-    year: "2026",
+    year: "2025",
     status: "completed",
     tagline: "AI-gestuurde toernooipagina's voor Twitch-kijkers.",
     shortDescription: "Een customizable online toernooitool gebouwd voor Rosh Studios, gericht op kijkersengagement rondom Twitch-toernooien.",
@@ -230,36 +240,46 @@ export const projects: Project[] = [
     sections: [
       {
         heading: "De uitdaging",
-        body: "Rosh Studios had een manier nodig om snel professionele toernooipagina's op te zetten die naadloos integreren met Twitch. De uitdaging: elke pagina moest uniek aanpasbaar zijn zonder technische kennis van de beheerder.",
+        body: "Rosh Studios maakte eerder gebruik van Challonge voor het beheren van toernooien. Hoewel functioneel, bood het platform nauwelijks mogelijkheden om de uitstraling aan te passen aan de Rosh Studios-branding. De uitdaging: een tool bouwen die wél volledig customisable is, zonder dat de beheerder technische kennis nodig heeft.",
+        media: { type: "image", src: "/roshproject/challongetoernooipage_rosh.png" },
       },
       {
         heading: "AI Wizard",
-        body: "De kern van de tool is een wizard-flow die gebruikersinput omzet in een Claude-prompt. Claude genereert vervolgens een volledige toernooipagina in HTML, CSS en JavaScript — op maat, binnen seconden.",
+        body: "De kern van de tool is een wizard-flow die gebruikersinput omzet in een Claude-prompt. Claude genereert vervolgens een volledige toernooipagina in HTML, CSS en JavaScript, op maat en binnen seconden.",
+        media: { type: "video", src: "/roshproject/rosh_project_poc.mp4" },
       },
       {
         heading: "Live editor & dashboard",
         body: "Na generatie kunnen pagina's component voor component bewerkt worden via een live editor. Data wordt opgeslagen in Supabase. Het dashboard biedt overzicht van alle pagina's, publicatie via eigen slugs en Twitch-integratie.",
+        media: { type: "image", src: "/roshproject/customeditorpagina_rosh.png" },
       },
     ],
-    tags: ["Next.js", "React", "Supabase", "Claude API", "Twitch API", "Tailwind CSS", "Vercel"],
-    coverGradient: "linear-gradient(135deg, #0d0d1a 0%, #1a1040 50%, #6441a5 100%)",
+    gallery: [
+      "/roshproject/dashboardpage_rosh.png",
+      "/roshproject/toernooibeherenpage_rosh.png",
+      "/roshproject/loginpage_rosh.png",
+    ],
+    tags: ["Next.js", "React", "Supabase", "Claude API", "Tailwind CSS", "Vercel", "Groepsproject"],
+    links: {
+      live: "https://roshproject.vercel.app",
+      github: "https://github.com/Jasper-van-Tilborg/roshproject",
+    },
+    coverGradient: "linear-gradient(135deg, #111827 0%, #1A2335 50%, #482CFF 100%)",
     coverImage: "/rosh_studios_logo.svg",
     featured: true,
     metadata: {
-      duration: "Semester 4",
-      teamSize: 4,
+      duration: "Semester 3, Front-end Development",
       role: "Full-stack Developer",
-      course: "Semester 4 — ICT & Media Design",
     },
     theme: {
-      background:             "#0d0d1a",
-      primary:                "#9b72e6",
-      primaryContainer:       "#6441a5",
-      onPrimary:              "#ffffff",
-      onSurface:              "#e8e4f0",
-      onSurfaceVariant:       "#a89fc0",
-      outlineVariant:         "#2a2440",
-      surfaceContainerLowest: "#080810",
+      background:             "#111827",
+      primary:                "#482CFF",
+      primaryContainer:       "#420AB2",
+      onPrimary:              "#F2F1EF",
+      onSurface:              "#F2F1EF",
+      onSurfaceVariant:       "#8B9EB8",
+      outlineVariant:         "#2D3E5A",
+      surfaceContainerLowest: "#0D1420",
     },
     i18n: {
       en: {
@@ -270,11 +290,12 @@ export const projects: Project[] = [
         sections: [
           {
             heading: "The challenge",
-            body: "Rosh Studios needed a way to quickly set up professional tournament pages that integrate seamlessly with Twitch. The challenge: every page had to be uniquely customisable without requiring technical knowledge from the admin.",
+            body: "Rosh Studios previously used Challonge to manage their tournaments. While functional, the platform offered little flexibility to match the Rosh Studios branding. The challenge: build a tool that is fully customisable, without requiring any technical knowledge from the admin.",
+            media: { type: "image", src: "/roshproject/challongetoernooipage_rosh.png" },
           },
           {
             heading: "AI Wizard",
-            body: "The core of the tool is a wizard flow that converts user input into a Claude prompt. Claude then generates a complete tournament page in HTML, CSS and JavaScript — custom, within seconds.",
+            body: "The core of the tool is a wizard flow that converts user input into a Claude prompt. Claude then generates a complete tournament page in HTML, CSS and JavaScript, custom and within seconds.",
           },
           {
             heading: "Live editor & dashboard",
@@ -283,6 +304,10 @@ export const projects: Project[] = [
         ],
       },
     },
+    discontinued: {
+      nl: "Dit project is stilgelegd. De tool maakt gebruik van de Claude AI API, waarvoor credits nodig zijn die momenteel niet meer beschikbaar zijn. De applicatie is daardoor niet meer functioneel.",
+      en: "This project has been discontinued. The tool relies on the Claude AI API, which requires credits that are no longer available. As a result, the application is no longer functional.",
+    },
   },
   {
     id: 4,
@@ -290,7 +315,7 @@ export const projects: Project[] = [
     title: "CookMind",
     category: "UI/UX",
     categories: ["UI/UX", "FRONT-END"],
-    year: "2026",
+    year: "2025",
     status: "completed",
     tagline: "Jouw AI-kookassistent, gebouwd op wat je in huis hebt.",
     shortDescription: "Een AI-gestuurde kook-app die gebruikers helpt recepten te vinden op basis van hun voorraad, met barcode scanner en Claude AI-integratie.",
@@ -312,13 +337,13 @@ export const projects: Project[] = [
     ],
     tags: ["Figma", "Claude API", "iOS", "UX Research", "Usability Testing", "Cursor", "Supabase"],
     coverGradient: "linear-gradient(135deg, #0a1a0e 0%, #163524 50%, #1e6b3a 100%)",
-    coverImage: "/cookmind_logo.png",
+    coverImage: "/cookmind_logo2.svg",
     featured: true,
     metadata: {
       duration: "Semester 4",
       teamSize: 1,
       role: "Designer & Developer",
-      course: "Semester 4 — ICT & Media Design",
+      course: "Semester 4, ICT & Media Design",
     },
     theme: {
       background:             "#0a1a0e",
@@ -358,7 +383,7 @@ export const projects: Project[] = [
     slug: "quality-lodgings",
     title: "Quality Lodgings",
     category: "UI/UX",
-    year: "2026",
+    year: "2025",
     status: "completed",
     tagline: "UX-verbeteringen voor een premium hotelwebsite.",
     shortDescription: "Een groepsopdracht voor Fightclub waarbij we de UX van Quality Lodgings hebben verbeterd via gebruikersonderzoek, iteratief prototypen en Figma designs.",
@@ -371,7 +396,7 @@ export const projects: Project[] = [
       },
       {
         heading: "Ontwerp & iteraties",
-        body: "Paper prototypes gemaakt en getest. Figma designs uitgewerkt voor de hoofdpagina, hotelpagina en 'Vind jouw stijl'-pagina — met meerdere iteraties op basis van testfeedback. Expert review uitgevoerd op het werk van een ander groepje.",
+        body: "Paper prototypes gemaakt en getest. Figma designs uitgewerkt voor de hoofdpagina, hotelpagina en 'Vind jouw stijl'-pagina, met meerdere iteraties op basis van testfeedback. Expert review uitgevoerd op het werk van een ander groepje.",
       },
     ],
     tags: ["Figma", "UX Research", "Usability Testing", "Prototyping", "User Stories"],
@@ -382,7 +407,7 @@ export const projects: Project[] = [
       duration: "Semester 4",
       teamSize: 4,
       role: "UX Designer",
-      course: "Semester 4 — Media Design",
+      course: "Semester 4, Media Design",
     },
     theme: {
       background:             "#1a1410",
@@ -407,7 +432,7 @@ export const projects: Project[] = [
           },
           {
             heading: "Design & iterations",
-            body: "Paper prototypes created and tested. Figma designs developed for the homepage, hotels page and 'Find your style' page — with multiple iterations based on test feedback. Expert review conducted on another group's work.",
+            body: "Paper prototypes created and tested. Figma designs developed for the homepage, hotels page and 'Find your style' page, with multiple iterations based on test feedback. Expert review conducted on another group's work.",
           },
         ],
       },

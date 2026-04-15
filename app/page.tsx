@@ -211,6 +211,18 @@ export default function HomePage() {
                       className="absolute inset-0 transition-transform duration-700 group-hover:scale-105"
                       style={{ background: featuredProjects[2].coverGradient }}
                     />
+                    {featuredProjects[2].coverImage && (
+                      <div className="absolute inset-0">
+                        <Image
+                          src={featuredProjects[2].coverImage}
+                          alt={featuredProjects[2].title}
+                          fill
+                          quality={100}
+                          className="object-contain scale-[0.7] group-hover:scale-[0.8] transition-transform duration-500"
+                          sizes="100vw"
+                        />
+                      </div>
+                    )}
                     <div className="absolute inset-0 bg-neutral-900/60 transition-opacity duration-500 group-hover:opacity-0" />
                     <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-90" />
                     <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-primary-container/5" />
