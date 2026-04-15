@@ -17,7 +17,7 @@ export default function ContactPage() {
             {/* Form */}
             <FadeUp delay={0.1} className="lg:col-span-7">
             <section>
-              <div className="glass-panel p-8 md:p-12 rounded-3xl border border-outline-variant/15 cinematic-shadow relative overflow-hidden group">
+              <div className="glass-panel p-5 md:p-12 rounded-3xl border border-outline-variant/15 cinematic-shadow relative overflow-hidden group">
                 <form className="space-y-8 relative z-10">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
@@ -79,7 +79,7 @@ export default function ContactPage() {
             {/* Sidebar */}
             <div className="lg:col-span-5 flex flex-col gap-6">
               <FadeUp delay={0.2}>
-                <div className="glass-panel p-8 rounded-3xl border border-outline-variant/15 flex flex-col justify-between min-h-[240px] relative overflow-hidden">
+                <div className="glass-panel p-6 md:p-8 rounded-3xl border border-outline-variant/15 flex flex-col justify-between min-h-[200px] md:min-h-[240px] relative overflow-hidden">
                   <div>
                     <Icon name="location_on" filled className="text-primary text-4xl mb-5" />
                     <h3 className="font-headline text-2xl md:text-3xl font-bold text-on-surface mb-2">
@@ -93,7 +93,7 @@ export default function ContactPage() {
               </FadeUp>
 
               <FadeUp delay={0.32}>
-                <div className="bg-surface-container p-8 rounded-3xl border border-outline-variant/15">
+                <div className="bg-surface-container p-6 md:p-8 rounded-3xl border border-outline-variant/15">
                   <h4 className="font-headline text-lg font-bold text-on-surface mb-8 uppercase tracking-widest">
                     {t.contact.directChannels}
                   </h4>

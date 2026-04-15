@@ -13,7 +13,7 @@ export interface ProjectSection {
   body: string;
   type?: "palette" | "visual-identity"; // special render modes
   media?: {
-    type: "video" | "image";
+    type: "video" | "image" | "figma";
     src: string;
     poster?: string;
   };
@@ -296,10 +296,12 @@ export const projects: Project[] = [
           {
             heading: "AI Wizard",
             body: "The core of the tool is a wizard flow that converts user input into a Claude prompt. Claude then generates a complete tournament page in HTML, CSS and JavaScript, custom and within seconds.",
+            media: { type: "video", src: "/roshproject/rosh_project_poc.mp4" },
           },
           {
             heading: "Live editor & dashboard",
             body: "After generation, pages can be edited component by component via a live editor. Data is stored in Supabase. The dashboard provides an overview of all pages, publication via custom slugs and Twitch integration.",
+            media: { type: "image", src: "/roshproject/customeditorpagina_rosh.png" },
           },
         ],
       },
@@ -324,23 +326,25 @@ export const projects: Project[] = [
     sections: [
       {
         heading: "Onderzoek & ontwerp",
-        body: "Op basis van CMD-methodes (benchmark creation, competitive analysis, best practices) en Apple Human Interface Guidelines ontworpen in Figma. Volledig design inclusief onboarding, authenticatie, voorraadpagina, modals, receptenpagina en kookmodus.",
+        body: "Ontworpen in Figma op basis van Apple Human Interface Guidelines. Volledig design inclusief onboarding, authenticatie, voorraadpagina, modals, receptenpagina en kookmodus.",
+        media: { type: "figma", src: "https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/xtzCaZRWxFfrnutndvnbwQ/CookMind-AI?node-id=67-63&viewport=-3213%2C415%2C0.52&t=1AqZQC2l6nIonDsl-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=67%3A63&show-proto-sidebar=1&page-id=0%3A1", poster: "/cookmind/onboardingpage_cookmind.png" },
       },
       {
         heading: "De app",
         body: "Volledig gebouwd in Cursor met een login flow, voorraadbeheer en barcode scanner. Claude AI analyseert de beschikbare ingrediënten en stelt passende recepten voor op basis van wat er in huis is.",
-      },
-      {
-        heading: "Testen & itereren",
-        body: "Usability tests uitgevoerd en testresultaten verwerkt in iteraties op het design. Inzichten vertaald naar concrete verbeteringen in navigatie, flow en AI-interactie.",
+        media: { type: "video", src: "/cookmind/cookmind_poc.mp4" },
       },
     ],
-    tags: ["Figma", "Claude API", "iOS", "UX Research", "Usability Testing", "Cursor", "Supabase"],
+    tags: ["Figma", "Claude API", "iOS", "UX Research", "Usability Testing", "Supabase"],
+    links: {
+      live: "https://cookmind-ten.vercel.app",
+      github: "https://github.com/Jasper-van-Tilborg/cookmind",
+    },
     coverGradient: "linear-gradient(135deg, #0a1a0e 0%, #163524 50%, #1e6b3a 100%)",
     coverImage: "/cookmind_logo2.svg",
     featured: true,
     metadata: {
-      duration: "Semester 4",
+      duration: "Semester 3, Front-end Development",
       teamSize: 1,
       role: "Designer & Developer",
       course: "Semester 4, ICT & Media Design",
@@ -355,6 +359,10 @@ export const projects: Project[] = [
       outlineVariant:         "#1a3526",
       surfaceContainerLowest: "#061009",
     },
+    discontinued: {
+      nl: "De app maakt gebruik van Supabase en de Claude AI API. Supabase verwijdert inactieve databases na 13 dagen, waardoor de app mogelijk niet werkt. Ook zijn er credits nodig voor de Claude API die niet altijd beschikbaar zijn.",
+      en: "The app uses Supabase and the Claude AI API. Supabase removes inactive databases after 13 days, which may cause the app to stop working. Claude API credits are also required and may not always be available.",
+    },
     i18n: {
       en: {
         tagline: "Your AI cooking assistant, built on what you have at home.",
@@ -364,15 +372,13 @@ export const projects: Project[] = [
         sections: [
           {
             heading: "Research & design",
-            body: "Designed in Figma based on CMD methods (benchmark creation, competitive analysis, best practices) and Apple Human Interface Guidelines. Full design including onboarding, authentication, pantry page, modals, recipes page and cooking mode.",
+            body: "Designed in Figma based on Apple Human Interface Guidelines. Full design including onboarding, authentication, pantry page, modals, recipes page and cooking mode.",
+            media: { type: "figma", src: "https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/xtzCaZRWxFfrnutndvnbwQ/CookMind-AI?node-id=67-63&viewport=-3213%2C415%2C0.52&t=1AqZQC2l6nIonDsl-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=67%3A63&show-proto-sidebar=1&page-id=0%3A1", poster: "/cookmind/onboardingpage_cookmind.png" },
           },
           {
             heading: "The app",
             body: "Fully built in Cursor with a login flow, pantry management and barcode scanner. Claude AI analyses available ingredients and suggests matching recipes based on what is in the house.",
-          },
-          {
-            heading: "Testing & iterating",
-            body: "Usability tests conducted and results processed into design iterations. Insights translated into concrete improvements in navigation, flow and AI interaction.",
+            media: { type: "video", src: "/cookmind/cookmind_poc.mp4" },
           },
         ],
       },

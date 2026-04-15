@@ -29,43 +29,89 @@ export default function WorkGrid({ projects }: { projects: Project[] }) {
 
   return (
     <div>
-      {/* Filter bar */}
-      <div className="flex flex-wrap items-center gap-2 mb-10">
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setActive(cat)}
-            className={`px-5 py-2 rounded-full text-[11px] font-headline font-bold tracking-widest uppercase transition-all duration-200 border ${
-              active === cat
-                ? "bg-primary text-on-primary-fixed border-primary"
-                : "bg-transparent text-on-surface-variant border-outline-variant/30 hover:border-primary/50 hover:text-on-surface"
-            }`}
-          >
-            {cat}
-          </button>
-        ))}
+      {/* Filter bar — mobile: two scrollable rows, desktop: one wrapped row */}
+      <div className="mb-10">
 
-        <div className="w-px h-4 bg-outline-variant/30 mx-1" />
+        {/* Mobile layout */}
+        <div className="flex flex-col gap-3 md:hidden">
+          <div className="flex flex-wrap gap-2">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActive(cat)}
+                className={`px-4 py-2 rounded-full text-[10px] font-headline font-bold tracking-widest uppercase transition-all duration-200 border ${
+                  active === cat
+                    ? "bg-primary text-on-primary-fixed border-primary"
+                    : "bg-transparent text-on-surface-variant border-outline-variant/30"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
 
-        {statusFilters.map((s) => (
-          <button
-            key={s}
-            onClick={() => setActiveStatus(activeStatus === s ? null : s)}
-            className={`inline-flex items-center gap-1.5 px-5 py-2 rounded-full text-[11px] font-headline font-bold tracking-widest uppercase transition-all duration-200 border ${
-              activeStatus === s
-                ? "bg-primary text-on-primary-fixed border-primary"
-                : "bg-transparent text-on-surface-variant border-outline-variant/30 hover:border-primary/50 hover:text-on-surface"
-            }`}
-          >
-            {s === "In Progress" && (
-              <span className="relative flex h-1.5 w-1.5 shrink-0">
-                <span className={`absolute inline-flex h-full w-full rounded-full opacity-75 ${activeStatus === s ? "bg-on-primary-fixed animate-ping" : "bg-primary animate-ping"}`} />
-                <span className={`relative inline-flex rounded-full h-1.5 w-1.5 ${activeStatus === s ? "bg-on-primary-fixed" : "bg-primary"}`} />
-              </span>
-            )}
-            {s}
-          </button>
-        ))}
+          <div className="h-px w-full bg-outline-variant/20" />
+
+          <div className="flex flex-wrap gap-2">
+            {statusFilters.map((s) => (
+              <button
+                key={s}
+                onClick={() => setActiveStatus(activeStatus === s ? null : s)}
+                className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-[10px] font-headline font-bold tracking-widest uppercase transition-all duration-200 border ${
+                  activeStatus === s
+                    ? "bg-primary text-on-primary-fixed border-primary"
+                    : "bg-surface-container text-on-surface-variant border-outline-variant/20"
+                }`}
+              >
+                {s === "In Progress" && (
+                  <span className="relative flex h-1.5 w-1.5 shrink-0">
+                    <span className={`absolute inline-flex h-full w-full rounded-full opacity-75 ${activeStatus === s ? "bg-on-primary-fixed animate-ping" : "bg-primary animate-ping"}`} />
+                    <span className={`relative inline-flex rounded-full h-1.5 w-1.5 ${activeStatus === s ? "bg-on-primary-fixed" : "bg-primary"}`} />
+                  </span>
+                )}
+                {s}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Desktop layout */}
+        <div className="hidden md:flex flex-wrap items-center gap-2">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActive(cat)}
+              className={`px-5 py-2 rounded-full text-[11px] font-headline font-bold tracking-widest uppercase transition-all duration-200 border ${
+                active === cat
+                  ? "bg-primary text-on-primary-fixed border-primary"
+                  : "bg-transparent text-on-surface-variant border-outline-variant/30 hover:border-primary/50 hover:text-on-surface"
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+          <div className="w-px h-4 bg-outline-variant/30 mx-1" />
+          {statusFilters.map((s) => (
+            <button
+              key={s}
+              onClick={() => setActiveStatus(activeStatus === s ? null : s)}
+              className={`inline-flex items-center gap-1.5 px-5 py-2 rounded-full text-[11px] font-headline font-bold tracking-widest uppercase transition-all duration-200 border ${
+                activeStatus === s
+                  ? "bg-primary text-on-primary-fixed border-primary"
+                  : "bg-transparent text-on-surface-variant border-outline-variant/30 hover:border-primary/50 hover:text-on-surface"
+              }`}
+            >
+              {s === "In Progress" && (
+                <span className="relative flex h-1.5 w-1.5 shrink-0">
+                  <span className={`absolute inline-flex h-full w-full rounded-full opacity-75 ${activeStatus === s ? "bg-on-primary-fixed animate-ping" : "bg-primary animate-ping"}`} />
+                  <span className={`relative inline-flex rounded-full h-1.5 w-1.5 ${activeStatus === s ? "bg-on-primary-fixed" : "bg-primary"}`} />
+                </span>
+              )}
+              {s}
+            </button>
+          ))}
+        </div>
+
       </div>
 
       {/* Grid */}
@@ -99,7 +145,7 @@ export default function WorkGrid({ projects }: { projects: Project[] }) {
                   style={themeVars}
                   className={`group relative flex overflow-hidden bg-surface-container-low rounded-2xl transition-all duration-500 ease-out grayscale hover:grayscale-0 ${
                     isWide
-                      ? "aspect-[16/7] min-h-[320px]"
+                      ? "aspect-[4/5] md:aspect-[16/7] md:min-h-[320px]"
                       : "aspect-[4/5] md:aspect-video"
                   }`}
                 >

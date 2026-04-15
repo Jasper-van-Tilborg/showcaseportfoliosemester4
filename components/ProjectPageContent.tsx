@@ -12,6 +12,10 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
+const tagTranslations: Record<string, { nl: string; en: string }> = {
+  "Groepsproject": { nl: "Groepsproject", en: "Group project" },
+};
+
 const sectionContainer = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.18 } },
@@ -144,6 +148,67 @@ function ImgPlaceholder({
   );
 }
 
+function FigmaEmbed({
+  src,
+  poster,
+  aspect = "aspect-[4/3]",
+  className = "",
+  gradient,
+  primary,
+}: {
+  src: string;
+  poster?: string;
+  aspect?: string;
+  className?: string;
+  gradient: string;
+  primary: string;
+}) {
+  const [loaded, setLoaded] = useState(false);
+
+  if (loaded) {
+    return (
+      <div className={`relative w-full rounded-2xl overflow-hidden ${aspect} ${className}`}>
+        <iframe
+          src={src}
+          className="absolute inset-0 w-full border-0"
+          style={{ height: "calc(100% + 50px)" }}
+          allowFullScreen
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className={`group relative w-full rounded-2xl overflow-hidden cursor-pointer ${aspect} ${className}`}
+      onClick={() => setLoaded(true)}
+    >
+      <div className="absolute inset-0" style={{ background: gradient }} />
+      <div
+        className="absolute inset-0"
+        style={{ background: `radial-gradient(circle at 35% 55%, color-mix(in srgb, ${primary} 25%, transparent), transparent 60%)` }}
+      />
+      {poster && (
+        <Image src={poster} alt="Figma prototype preview" fill className="object-contain scale-75" />
+      )}
+      <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-colors duration-300 flex flex-col items-center justify-center gap-3">
+        <div className="flex items-center justify-center w-14 h-14 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 group-hover:bg-white/20 transition-colors duration-300">
+          <svg className="w-6 h-6 text-white" viewBox="0 0 38 57" fill="currentColor">
+            <path d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z"/>
+            <path d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 0 1-19 0z"/>
+            <path d="M19 0v19h9.5a9.5 9.5 0 0 0 0-19H19z"/>
+            <path d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5z"/>
+            <path d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5z"/>
+          </svg>
+        </div>
+        <span className="text-xs font-headline font-bold tracking-widest uppercase text-white/80 group-hover:text-white transition-colors duration-300">
+          Laad prototype
+        </span>
+      </div>
+    </div>
+  );
+}
+
 function SectionMedia({
   section,
   aspect = "aspect-[4/3]",
@@ -159,6 +224,9 @@ function SectionMedia({
   className?: string;
   onImageClick?: (src: string) => void;
 }) {
+  if (section.media?.type === "figma") {
+    return <FigmaEmbed src={section.media.src} poster={section.media.poster} aspect={aspect} className={className} gradient={gradient} primary={primary} />;
+  }
   if (section.media?.type === "video") {
     return (
       <div className={`relative w-full rounded-2xl overflow-hidden ${aspect} ${className}`}>
@@ -284,7 +352,7 @@ export default function ProjectPageContent({ project, nextProject, prevProject }
             <span className="text-[10px] font-bold text-primary tracking-widest uppercase mb-3 block font-label">
               {project.category} / {project.year}
             </span>
-            <h1 className="font-headline text-[clamp(2.8rem,8vw,6.5rem)] font-bold text-on-surface tracking-tighter leading-[0.9]">
+            <h1 className="font-headline text-[clamp(1.8rem,7vw,6.5rem)] font-bold text-on-surface tracking-tighter leading-[0.9]">
               {project.title}
             </h1>
             {tagline && (
@@ -303,14 +371,19 @@ export default function ProjectPageContent({ project, nextProject, prevProject }
             <p className="text-xl md:text-2xl text-on-surface leading-snug font-body font-light">
               {description}
             </p>
-            {project.tags.length > 0 && (
+            {(project.tags.length > 0 || project.metadata?.teamSize) && (
               <div className="flex flex-wrap gap-2 mt-8">
+                {project.metadata?.teamSize && (
+                  <span className="px-4 py-1.5 rounded-full text-xs font-headline tracking-widest text-on-surface-variant border border-white/10 hover:border-primary/30 hover:text-primary transition-colors duration-200">
+                    {project.metadata.teamSize === 1 ? t.case.solo : `${t.case.team} ${project.metadata.teamSize}`}
+                  </span>
+                )}
                 {project.tags.map((tag) => (
                   <span
                     key={tag}
                     className="px-4 py-1.5 rounded-full text-xs font-headline tracking-widest text-on-surface-variant border border-white/10 hover:border-primary/30 hover:text-primary transition-colors duration-200"
                   >
-                    {tag}
+                    {tagTranslations[tag]?.[lang] ?? tag}
                   </span>
                 ))}
               </div>
@@ -344,24 +417,6 @@ export default function ProjectPageContent({ project, nextProject, prevProject }
                       {lang === "nl" ? "Rol" : "Role"}
                     </p>
                     <p className="font-body text-sm text-on-surface">{project.metadata.role}</p>
-                  </div>
-                )}
-                {project.metadata.teamSize && (
-                  <div className="border-t border-white/8 pt-5">
-                    <p className="text-[10px] font-headline font-bold tracking-widest uppercase text-on-surface-variant mb-1">
-                      Team
-                    </p>
-                    <p className="font-body text-sm text-on-surface">
-                      {project.metadata.teamSize === 1 ? t.case.solo : `${t.case.team} ${project.metadata.teamSize}`}
-                    </p>
-                  </div>
-                )}
-                {project.metadata.course && (
-                  <div className="border-t border-white/8 pt-5">
-                    <p className="text-[10px] font-headline font-bold tracking-widest uppercase text-on-surface-variant mb-1">
-                      Context
-                    </p>
-                    <p className="font-body text-sm text-on-surface">{project.metadata.course}</p>
                   </div>
                 )}
                 {project.links && Object.values(project.links).some(Boolean) && (
@@ -417,7 +472,7 @@ export default function ProjectPageContent({ project, nextProject, prevProject }
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true, margin: "-100px" }}
-                  className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center w-full py-14"
+                  className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-10 items-center w-full py-8 md:py-14"
                 >
                   {children}
                 </motion.div>
@@ -518,7 +573,7 @@ export default function ProjectPageContent({ project, nextProject, prevProject }
       )}
 
       {/* ── Gallery grid ─────────────────────────────────────── */}
-      <div className="max-w-screen-2xl mx-auto px-8 md:px-16 mb-24">
+      {project.gallery && project.gallery.length > 0 && <div className="max-w-screen-2xl mx-auto px-8 md:px-16 mb-24">
         <FadeUp>
           <p className="text-xs uppercase tracking-[0.35em] text-on-surface-variant font-headline font-bold mb-8">
             Gallery
@@ -578,7 +633,7 @@ export default function ProjectPageContent({ project, nextProject, prevProject }
             </div>
           );
         })()}
-      </div>
+      </div>}
 
       {/* ── Prev / Next Project ───────────────────────────────── */}
       <section className="max-w-screen-2xl mx-auto px-8 md:px-16 pb-28 pt-8">
@@ -633,7 +688,7 @@ export default function ProjectPageContent({ project, nextProject, prevProject }
                     <span className="text-[10px] font-bold text-primary tracking-widest uppercase mb-1 block font-label">
                       {dir === "prev" ? (lang === "nl" ? "Vorig project" : "Previous project") : (lang === "nl" ? "Volgend project" : "Next project")}
                     </span>
-                    <h3 className="font-headline text-xl md:text-2xl font-bold text-on-surface tracking-tight">
+                    <h3 className="font-headline text-base md:text-2xl font-bold text-on-surface tracking-tight">
                       {p.title}
                     </h3>
                   </div>

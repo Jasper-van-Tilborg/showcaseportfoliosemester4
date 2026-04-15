@@ -20,13 +20,13 @@ export default function AboutPage() {
       <section className="max-w-screen-2xl mx-auto px-8 md:px-16 mb-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           <FadeUp className="lg:col-span-4">
-            <h2 className="text-3xl font-headline font-bold tracking-tight border-l-4 border-primary-container pl-8 py-2 uppercase">
+            <h2 className="text-2xl md:text-3xl font-headline font-bold tracking-tight border-l-4 border-primary-container pl-5 md:pl-8 py-2 uppercase">
               {t.about.journeyHeading.split("\n")[0]}
               <br />
               {t.about.journeyHeading.split("\n")[1]}
             </h2>
           </FadeUp>
-          <div className="lg:col-span-8 space-y-8 text-2xl leading-relaxed text-on-surface-variant font-light font-body">
+          <div className="lg:col-span-8 space-y-8 text-lg md:text-2xl leading-relaxed text-on-surface-variant font-light font-body">
             <FadeUp delay={0.1}><p>{t.about.journeyP1}</p></FadeUp>
             <FadeUp delay={0.22}><p>{t.about.journeyP2}</p></FadeUp>
           </div>
@@ -46,14 +46,14 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 relative z-10 divide-y md:divide-y-0 md:divide-x divide-white/5">
             {t.about.capabilities.map((cap, i) => (
               <FadeUp key={cap.title} delay={i * 0.12}>
-                <div className="p-10 md:p-12 lg:p-16 hover:bg-white/5 transition-colors duration-500 group">
-                  <div className="flex justify-between items-start mb-16">
+                <div className="p-6 md:p-12 lg:p-16 hover:bg-white/5 transition-colors duration-500 group">
+                  <div className="flex justify-between items-start mb-8 md:mb-16">
                     <span className="font-headline text-primary/30 text-lg tracking-widest">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <Icon name={capabilityIcons[i]} className="text-primary/40 group-hover:text-primary transition-colors duration-500" />
                   </div>
-                  <h3 className="text-5xl md:text-6xl font-headline font-bold tracking-tighter uppercase mb-5 leading-none group-hover:text-primary transition-colors duration-300">
+                  <h3 className="text-3xl md:text-6xl font-headline font-bold tracking-tighter uppercase mb-5 leading-none group-hover:text-primary transition-colors duration-300">
                     {cap.title}
                     <br />
                     <span className="text-outline group-hover:text-white transition-colors">
@@ -75,7 +75,7 @@ export default function AboutPage() {
             <div className="flex animate-marquee whitespace-nowrap">
               {[...tools, ...tools].map((tool, i) => (
                 <span key={i} className="inline-flex items-center gap-6 px-6">
-                  <span className="font-headline font-bold text-2xl md:text-3xl tracking-tighter text-on-surface/40 uppercase">
+                  <span className="font-headline font-bold text-lg md:text-3xl tracking-tighter text-on-surface/40 uppercase">
                     {tool}
                   </span>
                   <span className="text-primary/30 text-xl font-headline">✦</span>
@@ -98,7 +98,7 @@ export default function AboutPage() {
             <FadeUp key={edu.degree} delay={i * 0.1}>
               <div className="group flex flex-col md:flex-row justify-between items-start md:items-center py-10 border-t border-white/5 hover:bg-white/5 transition-colors px-4 -mx-4 rounded-xl">
                 <div>
-                  <h4 className="text-2xl md:text-3xl font-headline font-bold mb-1 uppercase tracking-tighter group-hover:text-primary transition-colors">
+                  <h4 className="text-xl md:text-3xl font-headline font-bold mb-1 uppercase tracking-tighter group-hover:text-primary transition-colors">
                     {edu.degree}
                   </h4>
                   <p className="text-on-surface-variant font-label text-lg">{edu.school}</p>

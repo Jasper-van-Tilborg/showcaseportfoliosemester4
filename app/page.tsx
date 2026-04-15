@@ -40,7 +40,7 @@ export default function HomePage() {
           <FadeUp delay={0} className="relative">
             <div className="w-full aspect-[4/5] max-h-[72vh] rounded-2xl overflow-hidden glass-card cinematic-shadow">
               <div className="w-full h-full bg-gradient-to-b from-surface-container via-surface-container-high to-surface-container-highest flex items-end p-8">
-                <p className="font-headline text-5xl font-bold text-on-surface/20 tracking-tighter uppercase leading-none">
+                <p className="font-headline text-3xl md:text-5xl font-bold text-on-surface/20 tracking-tighter uppercase leading-none">
                   Jasper
                   <br />
                   van
@@ -49,8 +49,8 @@ export default function HomePage() {
                 </p>
               </div>
             </div>
-            <div className="absolute -bottom-6 -right-4 md:-right-8 glass-panel p-5 md:p-6 rounded-2xl border border-primary/20 cinematic-shadow">
-              <span className="text-primary font-headline text-4xl font-bold italic">5+</span>
+            <div className="absolute -bottom-4 -right-2 md:-bottom-6 md:-right-8 glass-panel p-4 md:p-6 rounded-2xl border border-primary/20 cinematic-shadow">
+              <span className="text-primary font-headline text-3xl md:text-4xl font-bold italic">5+</span>
               <p className="text-[10px] tracking-widest uppercase text-on-surface-variant mt-1 font-bold font-label">
                 {t.home.projects}
               </p>
@@ -88,7 +88,7 @@ export default function HomePage() {
         <div className="max-w-screen-2xl mx-auto">
           <div className="flex justify-between items-end mb-12">
             <FadeUp>
-              <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight uppercase">
+              <h2 className="font-headline text-2xl md:text-4xl font-bold tracking-tight uppercase">
                 {t.home.featuredLabel.split(" ")[0]}
                 <br />
                 {t.home.featuredLabel.split(" ").slice(1).join(" ")}
@@ -144,7 +144,7 @@ export default function HomePage() {
                       <span className="text-[10px] font-bold text-primary tracking-widest uppercase mb-2 block font-label">
                         {featuredProjects[0].category} / {featuredProjects[0].year}
                       </span>
-                      <h3 className="font-headline text-3xl font-bold text-on-surface tracking-tight">
+                      <h3 className="font-headline text-xl md:text-3xl font-bold text-on-surface tracking-tight">
                         {featuredProjects[0].title}
                       </h3>
                     </div>
@@ -191,7 +191,7 @@ export default function HomePage() {
                       <span className="text-[10px] font-bold text-primary tracking-widest uppercase mb-2 block font-label">
                         {featuredProjects[1].category}
                       </span>
-                      <h3 className="font-headline text-2xl font-bold text-on-surface tracking-tight">
+                      <h3 className="font-headline text-xl md:text-2xl font-bold text-on-surface tracking-tight">
                         {featuredProjects[1].title}
                       </h3>
                     </div>
@@ -206,7 +206,7 @@ export default function HomePage() {
                   href={`/work/${featuredProjects[2].slug}`}
                   className="group block transition-all duration-500 ease-out grayscale hover:grayscale-0"
                 >
-                  <div className="relative w-full aspect-[21/9] glass-card rounded-3xl overflow-hidden border border-outline-variant/10 cinematic-shadow">
+                  <div className="relative w-full aspect-video md:aspect-[21/9] glass-card rounded-3xl overflow-hidden border border-outline-variant/10 cinematic-shadow">
                     <div
                       className="absolute inset-0 transition-transform duration-700 group-hover:scale-105"
                       style={{ background: featuredProjects[2].coverGradient }}
@@ -231,7 +231,7 @@ export default function HomePage() {
                         <span className="text-[10px] font-bold text-primary tracking-widest uppercase mb-2 block font-label">
                           {featuredProjects[2].category} / {featuredProjects[2].year}
                         </span>
-                        <h3 className="font-headline text-3xl font-bold text-on-surface tracking-tight">
+                        <h3 className="font-headline text-xl md:text-3xl font-bold text-on-surface tracking-tight">
                           {featuredProjects[2].title}
                         </h3>
                       </div>
@@ -248,11 +248,11 @@ export default function HomePage() {
       {/* ── Contact CTA ──────────────────────────────────────── */}
       <section className="px-8 md:px-16 lg:px-24 py-14 pb-20 md:pb-20">
         <FadeUp>
-          <div className="max-w-5xl mx-auto bg-surface-container-lowest py-20 md:py-24 px-8 md:px-12 rounded-[2.5rem] border border-primary/10 relative overflow-hidden text-center cinematic-shadow">
+          <div className="max-w-5xl mx-auto bg-surface-container-lowest py-12 md:py-24 px-6 md:px-12 rounded-[2rem] md:rounded-[2.5rem] border border-primary/10 relative overflow-hidden text-center cinematic-shadow">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,92,0,0.05),transparent_70%)]" />
             <div className="relative z-10">
               <FadeUp delay={0.1}>
-                <h2 className="font-headline text-3xl md:text-5xl font-bold tracking-tighter text-on-surface mb-6">
+                <h2 className="font-headline text-2xl md:text-5xl font-bold tracking-tighter text-on-surface mb-6">
                   {t.home.ctaHeading1}
                   <br />
                   {t.home.ctaHeading2}<span className="text-primary italic">{t.home.ctaHeadingAccent}</span>.

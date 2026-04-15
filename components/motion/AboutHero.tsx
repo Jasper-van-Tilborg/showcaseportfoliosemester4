@@ -28,7 +28,7 @@ export default function AboutHero() {
 
         <motion.h1
           {...item(0.2)}
-          className="font-headline text-[clamp(2.5rem,6vw,4.5rem)] font-bold leading-[0.9] tracking-tighter mb-8 uppercase text-on-surface"
+          className="font-headline text-[clamp(1.8rem,5.5vw,4.5rem)] font-bold leading-[0.9] tracking-tighter mb-8 uppercase text-on-surface"
         >
           {t.about.heroTitle1}
           <br />
@@ -60,12 +60,12 @@ export default function AboutHero() {
         transition={{ duration: 0.8, ease, delay: 0.05 }}
         className="lg:col-span-7 order-1 lg:order-2"
       >
-        <div className="relative aspect-[4/5] w-full max-h-[72vh] overflow-hidden rounded-2xl glass-card cinematic-shadow">
+        <div className="relative aspect-[4/5] w-full max-h-[45vh] md:max-h-[72vh] overflow-hidden rounded-2xl glass-card cinematic-shadow">
           <div className="w-full h-full bg-gradient-to-b from-surface-container-high via-surface-container to-surface-container-lowest" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(255,92,0,0.12),transparent_60%)]" />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-60" />
           <div className="absolute bottom-8 left-8">
-            <p className="font-headline text-6xl font-bold text-on-surface/10 tracking-tighter uppercase leading-none">
+            <p className="font-headline text-4xl md:text-6xl font-bold text-on-surface/10 tracking-tighter uppercase leading-none">
               JVT
             </p>
           </div>
