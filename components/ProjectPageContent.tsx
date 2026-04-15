@@ -393,7 +393,7 @@ export default function ProjectPageContent({ project, nextProject, prevProject }
           {(project.metadata || project.discontinued) && (
             <FadeUp delay={0.2} className="lg:col-span-4 lg:col-start-9">
               <div className="glass-panel rounded-2xl border border-white/8 p-7 flex flex-col gap-5">
-                {project.metadata.duration && (
+                {project.metadata?.duration && (
                   <div>
                     <p className="text-[10px] font-headline font-bold tracking-widest uppercase text-on-surface-variant mb-1">
                       {lang === "nl" ? "Looptijd" : "Timeline"}
@@ -407,16 +407,16 @@ export default function ProjectPageContent({ project, nextProject, prevProject }
                         {t.case.ongoing}
                       </span>
                     ) : (
-                      <p className="font-headline text-sm font-bold text-on-surface">{project.metadata.duration}</p>
+                      <p className="font-headline text-sm font-bold text-on-surface">{project.metadata?.duration}</p>
                     )}
                   </div>
                 )}
-                {project.metadata.role && (
+                {project.metadata?.role && (
                   <div className="border-t border-white/8 pt-5">
                     <p className="text-[10px] font-headline font-bold tracking-widest uppercase text-on-surface-variant mb-1">
                       {lang === "nl" ? "Rol" : "Role"}
                     </p>
-                    <p className="font-body text-sm text-on-surface">{project.metadata.role}</p>
+                    <p className="font-body text-sm text-on-surface">{project.metadata?.role}</p>
                   </div>
                 )}
                 {project.links && Object.values(project.links).some(Boolean) && (
