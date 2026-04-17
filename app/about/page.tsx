@@ -40,7 +40,7 @@ function ScrollGroup({
     if (!el) return;
     const observer = new IntersectionObserver(
       ([entry]) => setActive(entry.isIntersecting),
-      { rootMargin: "-37.5% 0px -37.5% 0px", threshold: 0 }
+      { rootMargin: "-42.5% 0px -42.5% 0px", threshold: 0 }
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -187,7 +187,7 @@ export default function AboutPage() {
               { src: "/persoonlijkefotos/persoonlijkefoto5.JPG",   position: "50% 50%",  offset: "mt-10" },
               { src: "/persoonlijkefotos/persoonlijkefoto12.jpeg", position: "75% 50%",  offset: "" },
             ].map((photo, i) => (
-              <FadeUp key={photo.src} delay={i * 0.07} className={`shrink-0 w-[42vw] md:w-[20vw] ${photo.offset}`}>
+              <FadeUp key={photo.src} delay={i * 0.07} className={`shrink-0 w-[65vw] md:w-[20vw] ${photo.offset}`}>
                 <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden cinematic-shadow">
                   <Image
                     src={photo.src}
@@ -357,11 +357,6 @@ export default function AboutPage() {
                                   <Image src={p.coverImage} alt={p.title} fill quality={90} className={`object-contain transition-transform duration-500 pointer-events-none ${isMobileActive ? "scale-[0.8]" : "scale-[0.7]"} group-hover:scale-[0.8]`} draggable={false} sizes="(max-width: 768px) 80vw, 35vw" />
                                 </div>
                               )}
-                              <div className="absolute top-4 left-4 z-10">
-                                <span className="glass-card px-3 py-1 rounded-full text-[10px] font-headline tracking-widest text-primary border border-primary/20">
-                                  {p.category}
-                                </span>
-                              </div>
                               <div className="absolute bottom-0 left-0 w-full px-5 py-5 bg-gradient-to-t from-black/80 to-transparent z-10 flex items-end justify-between">
                                 <h3 className="font-headline font-bold text-on-surface tracking-tight text-lg md:text-xl">{p.title}</h3>
                                 <Icon name="arrow_outward" className={`text-xl text-primary shrink-0 ml-3 transition-opacity ${isMobileActive ? "opacity-100" : "opacity-60"} group-hover:opacity-100`} />
