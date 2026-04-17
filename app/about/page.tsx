@@ -79,6 +79,7 @@ export default function AboutPage() {
     projectCarouselRef.current = el;
     if (!el) return;
 
+    const carousel = el;
     let startX = 0;
     let scrollLeft = 0;
     let dragging = false;
@@ -87,19 +88,19 @@ export default function AboutPage() {
       dragging = true;
       projectHasDragged.current = false;
       startX = e.clientX;
-      scrollLeft = el.scrollLeft;
-      el.style.cursor = "grabbing";
+      scrollLeft = carousel.scrollLeft;
+      carousel.style.cursor = "grabbing";
       e.preventDefault();
     }
     function onMouseMove(e: MouseEvent) {
       if (!dragging) return;
       const moved = e.clientX - startX;
       if (Math.abs(moved) > 4) projectHasDragged.current = true;
-      el.scrollLeft = scrollLeft - moved;
+      carousel.scrollLeft = scrollLeft - moved;
     }
     function onMouseUp() {
       dragging = false;
-      el.style.cursor = "grab";
+      carousel.style.cursor = "grab";
     }
 
     el.addEventListener("mousedown", onMouseDown);
