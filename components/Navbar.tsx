@@ -47,6 +47,7 @@ export default function Navbar() {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease, delay: 0.05 }}
       className="fixed top-0 w-full z-50 bg-surface/30 backdrop-blur-3xl border-b border-white/15"
+      style={{ paddingTop: "env(safe-area-inset-top)" }}
     >
       <div className="flex justify-between items-center px-8 md:px-16 py-5 max-w-screen-2xl mx-auto">
         {/* Logo */}
