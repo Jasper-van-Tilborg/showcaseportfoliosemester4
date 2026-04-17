@@ -39,8 +39,8 @@ function ScrollGroup({
     const el = ref.current;
     if (!el) return;
     const observer = new IntersectionObserver(
-      ([entry]) => setActive(entry.isIntersecting && entry.intersectionRatio >= 0.5),
-      { threshold: 0.5 }
+      ([entry]) => setActive(entry.isIntersecting),
+      { rootMargin: "-25% 0px -25% 0px", threshold: 0 }
     );
     observer.observe(el);
     return () => observer.disconnect();
