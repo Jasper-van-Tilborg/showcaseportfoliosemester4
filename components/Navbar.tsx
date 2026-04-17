@@ -100,14 +100,37 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile hamburger */}
-        <button
-          className="md:hidden p-1"
-          onClick={() => setMobileOpen((v) => !v)}
-          aria-label="Toggle navigation"
-        >
-          <HamburgerIcon open={mobileOpen} />
-        </button>
+        {/* Mobile: lang toggle + hamburger */}
+        <div className="md:hidden flex items-center gap-4">
+          <div className="flex items-center gap-1 p-1 rounded-full border border-white/10 bg-surface-container/40">
+            {(["nl", "en"] as const).map((l) => (
+              <button
+                key={l}
+                onClick={() => setLang(l)}
+                className="relative px-3 py-1 font-headline text-sm tracking-widest uppercase transition-colors duration-300 rounded-full"
+                aria-label={`Switch to ${l.toUpperCase()}`}
+              >
+                {lang === l && (
+                  <motion.span
+                    layoutId="lang-pill-mobile"
+                    className="absolute inset-0 rounded-full bg-primary"
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                  />
+                )}
+                <span className={`relative z-10 font-bold ${lang === l ? "text-on-primary-fixed" : "text-on-surface-variant"}`}>
+                  {l.toUpperCase()}
+                </span>
+              </button>
+            ))}
+          </div>
+          <button
+            className="p-1"
+            onClick={() => setMobileOpen((v) => !v)}
+            aria-label="Toggle navigation"
+          >
+            <HamburgerIcon open={mobileOpen} />
+          </button>
+        </div>
       </div>
 
       {/* Mobile drawer */}
@@ -145,33 +168,6 @@ export default function Navbar() {
                 );
               })}
 
-              <motion.div
-                initial={{ opacity: 0, x: -16 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3, ease, delay: 0.08 + links.length * 0.06 }}
-                className="mt-4 pt-4 border-t border-white/10"
-              >
-                <div className="flex items-center gap-1 p-1 rounded-full border border-white/10 bg-surface-container/40 w-fit">
-                  {(["nl", "en"] as const).map((l) => (
-                    <button
-                      key={l}
-                      onClick={() => setLang(l)}
-                      className="relative px-4 py-1.5 font-headline text-sm tracking-widest uppercase transition-colors duration-300 rounded-full"
-                    >
-                      {lang === l && (
-                        <motion.span
-                          layoutId="lang-pill-mobile"
-                          className="absolute inset-0 rounded-full bg-primary"
-                          transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                        />
-                      )}
-                      <span className={`relative z-10 font-bold ${lang === l ? "text-on-primary-fixed" : "text-on-surface-variant"}`}>
-                        {l.toUpperCase()}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              </motion.div>
             </div>
           </motion.div>
         )}

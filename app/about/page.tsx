@@ -40,7 +40,7 @@ function ScrollGroup({
     if (!el) return;
     const observer = new IntersectionObserver(
       ([entry]) => setActive(entry.isIntersecting),
-      { rootMargin: "-25% 0px -25% 0px", threshold: 0 }
+      { rootMargin: "-37.5% 0px -37.5% 0px", threshold: 0 }
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -346,7 +346,7 @@ export default function AboutPage() {
                             <Link
                               key={p.slug}
                               href={`/work/${p.slug}`}
-                              className={`group relative flex overflow-hidden bg-surface-container-low rounded-2xl shrink-0 w-[80vw] md:w-[calc(33vw-2.5rem)] aspect-video transition-all duration-500 ease-out md:grayscale md:hover:grayscale-0${isTouch && !isMobileActive ? " grayscale" : ""}`}
+                              className={`group relative flex overflow-hidden bg-surface-container-low rounded-2xl shrink-0 w-[72vw] md:w-[calc(33vw-2.5rem)] aspect-video transition-all duration-500 ease-out md:grayscale md:hover:grayscale-0${isTouch && !isMobileActive ? " grayscale" : ""}`}
                               onClick={(e) => { if (projectHasDragged.current) e.preventDefault(); }}
                               style={themeVars}
                             >
