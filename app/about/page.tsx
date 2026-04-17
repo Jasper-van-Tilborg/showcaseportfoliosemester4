@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Icon from "@/components/Icon";
 import FadeUp from "@/components/motion/FadeUp";
@@ -22,14 +22,96 @@ const toolTagMap: Record<string, string[]> = {
 
 const capabilityIcons = ["design_services", "code", "photo_camera"];
 
+function ScrollGroup({
+  children,
+  className = "",
+  activeClassName = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+  activeClassName?: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(false);
+
+  useEffect(() => {
+    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setActive(entry.isIntersecting && entry.intersectionRatio >= 0.5),
+      { threshold: 0.5 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className={`group${active ? ` active ${activeClassName}` : ""} ${className}`}
+    >
+      {children}
+    </div>
+  );
+}
+
 export default function AboutPage() {
   const { t, lang } = useLanguage();
   const [activeTool, setActiveTool] = useState<string | null>(null);
+  const [mobileActiveCard, setMobileActiveCard] = useState(0);
+  const [isTouch, setIsTouch] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
   const projectCarouselRef = useRef<HTMLDivElement>(null);
-  const projectDragState = useRef({ startX: 0, scrollLeft: 0 });
+  const projectCarouselCleanup = useRef<(() => void) | null>(null);
   const projectHasDragged = useRef(false);
   const [projectsAtEnd, setProjectsAtEnd] = useState(false);
+
+  useEffect(() => {
+    setIsTouch(!window.matchMedia("(hover: hover) and (pointer: fine)").matches);
+  }, []);
+
+  const setProjectCarouselRef = useCallback((el: HTMLDivElement | null) => {
+    if (projectCarouselCleanup.current) {
+      projectCarouselCleanup.current();
+      projectCarouselCleanup.current = null;
+    }
+    projectCarouselRef.current = el;
+    if (!el) return;
+
+    let startX = 0;
+    let scrollLeft = 0;
+    let dragging = false;
+
+    function onMouseDown(e: MouseEvent) {
+      dragging = true;
+      projectHasDragged.current = false;
+      startX = e.clientX;
+      scrollLeft = el.scrollLeft;
+      el.style.cursor = "grabbing";
+      e.preventDefault();
+    }
+    function onMouseMove(e: MouseEvent) {
+      if (!dragging) return;
+      const moved = e.clientX - startX;
+      if (Math.abs(moved) > 4) projectHasDragged.current = true;
+      el.scrollLeft = scrollLeft - moved;
+    }
+    function onMouseUp() {
+      dragging = false;
+      el.style.cursor = "grab";
+    }
+
+    el.addEventListener("mousedown", onMouseDown);
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
+
+    projectCarouselCleanup.current = () => {
+      el.removeEventListener("mousedown", onMouseDown);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
+    };
+  }, []);
 
   const activeProjects = activeTool
     ? projects.filter((p) =>
@@ -41,6 +123,7 @@ export default function AboutPage() {
 
   function handleSetTool(tool: string | null) {
     setActiveTool(tool);
+    setMobileActiveCard(0);
     setTimeout(() => {
       if (projectCarouselRef.current) {
         projectCarouselRef.current.scrollLeft = 0;
@@ -49,32 +132,13 @@ export default function AboutPage() {
     }, 50);
   }
 
-  function onProjectPointerDown(e: React.PointerEvent<HTMLDivElement>) {
-    const el = projectCarouselRef.current;
-    if (!el) return;
-    projectHasDragged.current = false;
-    projectDragState.current = { startX: e.clientX, scrollLeft: el.scrollLeft };
-    el.setPointerCapture(e.pointerId);
-    el.style.cursor = "grabbing";
-  }
-  function onProjectPointerMove(e: React.PointerEvent<HTMLDivElement>) {
-    const el = projectCarouselRef.current;
-    if (!el?.hasPointerCapture(e.pointerId)) return;
-    e.preventDefault();
-    const moved = e.clientX - projectDragState.current.startX;
-    if (Math.abs(moved) > 4) projectHasDragged.current = true;
-    el.scrollLeft = projectDragState.current.scrollLeft - moved;
-  }
-  function onProjectPointerUp(e: React.PointerEvent<HTMLDivElement>) {
-    const el = projectCarouselRef.current;
-    if (!el) return;
-    el.releasePointerCapture(e.pointerId);
-    el.style.cursor = "grab";
-  }
   function onProjectScroll() {
     const el = projectCarouselRef.current;
     if (!el) return;
     setProjectsAtEnd(el.scrollLeft + el.clientWidth >= el.scrollWidth - 8);
+    if (isTouch && activeProjects.length > 1) {
+      setMobileActiveCard(Math.round(el.scrollLeft / (el.scrollWidth / activeProjects.length)));
+    }
   }
   const dragState = useRef({ startX: 0, scrollLeft: 0 });
 
@@ -169,14 +233,17 @@ export default function AboutPage() {
         <div>
           {t.about.capabilities.map((cap, i) => (
             <FadeUp key={cap.title} delay={i * 0.1}>
-              <div className="group grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-center py-10 md:py-14 border-t border-white/5 hover:border-primary/20 transition-colors duration-300 cursor-default">
+              <ScrollGroup
+                className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-center py-10 md:py-14 border-t border-white/5 hover:border-primary/20 transition-colors duration-300 cursor-default"
+                activeClassName="border-primary/20"
+              >
                 <div className="md:col-span-7 flex gap-5 md:gap-8 items-start">
-                  <span className="font-headline text-primary/20 text-xs tracking-widest pt-2 group-hover:text-primary/50 transition-colors duration-300 shrink-0 select-none">
+                  <span className="font-headline text-primary/20 text-xs tracking-widest pt-2 group-hover:text-primary/50 group-[.active]:text-primary/50 transition-colors duration-300 shrink-0 select-none">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <h3 className="font-headline text-[clamp(2.2rem,6vw,5.5rem)] font-bold tracking-tighter uppercase leading-none group-hover:text-primary transition-colors duration-500">
+                  <h3 className="font-headline text-[clamp(2.2rem,6vw,5.5rem)] font-bold tracking-tighter uppercase leading-none group-hover:text-primary group-[.active]:text-primary transition-colors duration-500">
                     {cap.title}{" "}
-                    <span className="text-on-surface-variant group-hover:text-white transition-colors duration-300">
+                    <span className="text-on-surface-variant group-hover:text-white group-[.active]:text-white transition-colors duration-300">
                       {cap.subtitle}
                     </span>
                   </h3>
@@ -184,13 +251,13 @@ export default function AboutPage() {
                 <div className="md:col-span-5 flex gap-4 items-start pl-10 md:pl-0">
                   <Icon
                     name={capabilityIcons[i]}
-                    className="text-primary/30 group-hover:text-primary transition-colors duration-500 shrink-0 mt-0.5"
+                    className="text-primary/30 group-hover:text-primary group-[.active]:text-primary transition-colors duration-500 shrink-0 mt-0.5"
                   />
                   <p className="text-on-surface-variant text-base leading-relaxed font-body">
                     {cap.description}
                   </p>
                 </div>
-              </div>
+              </ScrollGroup>
             </FadeUp>
           ))}
           <div className="border-t border-white/5" />
@@ -258,16 +325,14 @@ export default function AboutPage() {
                 {activeProjects.length > 0 ? (
                   <div className="relative">
                     <div
-                      ref={projectCarouselRef}
-                      className="overflow-x-auto scrollbar-hide cursor-grab select-none"
+                      ref={setProjectCarouselRef}
+                      className="overflow-x-auto scrollbar-hide select-none md:cursor-grab"
                       style={{ msOverflowStyle: "none", scrollbarWidth: "none" } as React.CSSProperties}
-                      onPointerDown={onProjectPointerDown}
-                      onPointerMove={onProjectPointerMove}
-                      onPointerUp={onProjectPointerUp}
                       onScroll={onProjectScroll}
                     >
-                      <div className="flex gap-4 w-full">
-                        {activeProjects.map((p) => {
+                      <div className="flex gap-4" style={{ width: "max-content" }}>
+                        {activeProjects.map((p, idx) => {
+                          const isMobileActive = isTouch && idx === mobileActiveCard;
                           const themeVars = p.theme ? ({
                             "--color-primary":            p.theme.primary,
                             "--color-primary-container":  p.theme.primaryContainer,
@@ -280,15 +345,15 @@ export default function AboutPage() {
                             <Link
                               key={p.slug}
                               href={`/work/${p.slug}`}
-                              className="group relative flex overflow-hidden bg-surface-container-low rounded-2xl shrink-0 w-[calc(33.333%-0.677rem)] aspect-video transition-all duration-500 ease-out grayscale hover:grayscale-0"
+                              className={`group relative flex overflow-hidden bg-surface-container-low rounded-2xl shrink-0 w-[80vw] md:w-[calc(33vw-2.5rem)] aspect-video transition-all duration-500 ease-out md:grayscale md:hover:grayscale-0${isTouch && !isMobileActive ? " grayscale" : ""}`}
                               onClick={(e) => { if (projectHasDragged.current) e.preventDefault(); }}
                               style={themeVars}
                             >
-                              <div className="absolute inset-0 scale-105 group-hover:scale-100 transition-transform duration-700" style={{ background: p.coverGradient }} />
-                              <div className="absolute inset-0 bg-neutral-900/60 transition-opacity duration-500 group-hover:opacity-0" />
+                              <div className={`absolute inset-0 transition-transform duration-700 ${isMobileActive ? "scale-100" : "scale-105"} group-hover:scale-100`} style={{ background: p.coverGradient }} />
+                              <div className={`absolute inset-0 bg-neutral-900/60 transition-opacity duration-500 ${isMobileActive ? "opacity-0" : ""} group-hover:opacity-0`} />
                               {p.coverImage && (
                                 <div className="absolute inset-0">
-                                  <Image src={p.coverImage} alt={p.title} fill quality={90} className="object-contain scale-[0.7] group-hover:scale-[0.8] transition-transform duration-500 pointer-events-none" draggable={false} sizes="(max-width: 768px) 75vw, 35vw" />
+                                  <Image src={p.coverImage} alt={p.title} fill quality={90} className={`object-contain transition-transform duration-500 pointer-events-none ${isMobileActive ? "scale-[0.8]" : "scale-[0.7]"} group-hover:scale-[0.8]`} draggable={false} sizes="(max-width: 768px) 80vw, 35vw" />
                                 </div>
                               )}
                               <div className="absolute top-4 left-4 z-10">
@@ -298,7 +363,7 @@ export default function AboutPage() {
                               </div>
                               <div className="absolute bottom-0 left-0 w-full px-5 py-5 bg-gradient-to-t from-black/80 to-transparent z-10 flex items-end justify-between">
                                 <h3 className="font-headline font-bold text-on-surface tracking-tight text-lg md:text-xl">{p.title}</h3>
-                                <Icon name="arrow_outward" className="text-xl text-primary opacity-60 group-hover:opacity-100 shrink-0 ml-3" />
+                                <Icon name="arrow_outward" className={`text-xl text-primary shrink-0 ml-3 transition-opacity ${isMobileActive ? "opacity-100" : "opacity-60"} group-hover:opacity-100`} />
                               </div>
                             </Link>
                           );
@@ -306,11 +371,7 @@ export default function AboutPage() {
                       </div>
                     </div>
                     {activeProjects.length > 1 && !projectsAtEnd && (
-                      <div className="absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-surface-container-lowest to-transparent pointer-events-none flex items-center justify-end pr-3">
-                        <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center">
-                          <Icon name="chevron_right" className="text-white/70 text-base" />
-                        </div>
-                      </div>
+                      <div className="absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-surface-container-lowest to-transparent pointer-events-none" />
                     )}
                   </div>
                 ) : (
@@ -336,9 +397,12 @@ export default function AboutPage() {
         <div className="space-y-0">
           {t.about.education.map((edu, i) => (
             <FadeUp key={edu.degree} delay={i * 0.1}>
-              <div className="group flex flex-col md:flex-row justify-between items-start md:items-center py-10 border-t border-white/5 hover:bg-white/5 transition-colors px-4 -mx-4 rounded-xl">
+              <ScrollGroup
+                className="flex flex-col md:flex-row justify-between items-start md:items-center py-10 border-t border-white/5 hover:bg-white/5 transition-colors px-4 -mx-4 rounded-xl"
+                activeClassName="bg-white/5"
+              >
                 <div>
-                  <h4 className="text-xl md:text-3xl font-headline font-bold mb-1 uppercase tracking-tighter group-hover:text-primary transition-colors">
+                  <h4 className="text-xl md:text-3xl font-headline font-bold mb-1 uppercase tracking-tighter group-hover:text-primary group-[.active]:text-primary transition-colors">
                     {edu.degree}
                   </h4>
                   <p className="text-on-surface-variant font-label text-lg">{edu.school}</p>
@@ -346,7 +410,7 @@ export default function AboutPage() {
                 <span className="text-primary/60 font-headline text-xl mt-4 md:mt-0 tracking-widest">
                   {edu.period}
                 </span>
-              </div>
+              </ScrollGroup>
             </FadeUp>
           ))}
           <div className="border-b border-white/5" />
