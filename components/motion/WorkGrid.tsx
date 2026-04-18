@@ -143,7 +143,7 @@ export default function WorkGrid({ projects }: { projects: Project[] }) {
                 <Link
                   href={`/work/${project.slug}`}
                   style={themeVars}
-                  className={`group relative flex overflow-hidden bg-surface-container-low rounded-2xl transition-all duration-500 ease-out grayscale hover:grayscale-0 ${
+                  className={`group relative flex overflow-hidden bg-surface-container-low rounded-2xl transition-all duration-500 ease-out [&:not(:hover)]:grayscale ${
                     isWide
                       ? "aspect-[4/5] md:aspect-[16/7] md:min-h-[320px]"
                       : "aspect-[4/5] md:aspect-video"

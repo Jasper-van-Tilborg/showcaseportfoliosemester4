@@ -109,7 +109,7 @@ export default function HomePage() {
               <FadeUp delay={0.05} className="md:col-span-8">
                 <Link
                   href={`/work/${featuredProjects[0].slug}`}
-                  className="group block transition-all duration-500 ease-out grayscale hover:grayscale-0"
+                  className="group block transition-all duration-500 ease-out [&:not(:hover)]:grayscale"
                   style={featuredProjects[0].theme ? ({
                     "--color-primary":            featuredProjects[0].theme.primary,
                     "--color-primary-container":  featuredProjects[0].theme.primaryContainer,
@@ -156,7 +156,7 @@ export default function HomePage() {
               <FadeUp delay={0.12} className="md:col-span-4">
                 <Link
                   href={`/work/${featuredProjects[1].slug}`}
-                  className="group block h-full transition-all duration-500 ease-out grayscale hover:grayscale-0"
+                  className="group block h-full transition-all duration-500 ease-out [&:not(:hover)]:grayscale"
                   style={featuredProjects[1].theme ? ({
                     "--color-primary":            featuredProjects[1].theme.primary,
                     "--color-primary-container":  featuredProjects[1].theme.primaryContainer,
@@ -203,7 +203,7 @@ export default function HomePage() {
               <FadeUp delay={0.08} className="md:col-span-12">
                 <Link
                   href={`/work/${featuredProjects[2].slug}`}
-                  className="group block transition-all duration-500 ease-out grayscale hover:grayscale-0"
+                  className="group block transition-all duration-500 ease-out [&:not(:hover)]:grayscale"
                 >
                   <div className="relative w-full aspect-video md:aspect-[21/9] glass-card rounded-3xl overflow-hidden border border-outline-variant/10 cinematic-shadow">
                     <div

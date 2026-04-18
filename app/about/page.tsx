@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState, useCallback, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useAnimationFrame } from "framer-motion";
 import Icon from "@/components/Icon";
 import FadeUp from "@/components/motion/FadeUp";
 import AboutHero from "@/components/motion/AboutHero";
@@ -61,11 +61,47 @@ export default function AboutPage() {
   const [activeTool, setActiveTool] = useState<string | null>(null);
   const [mobileActiveCard, setMobileActiveCard] = useState(0);
   const [isTouch, setIsTouch] = useState(false);
-  const carouselRef = useRef<HTMLDivElement>(null);
   const projectCarouselRef = useRef<HTMLDivElement>(null);
   const projectCarouselCleanup = useRef<(() => void) | null>(null);
   const projectHasDragged = useRef(false);
   const [projectsAtEnd, setProjectsAtEnd] = useState(false);
+
+  // Infinite photo carousel
+  const photoTrackRef = useRef<HTMLDivElement>(null);
+  const photoX = useMotionValue(0);
+  const photoIsDragging = useRef(false);
+  const photoDragStartX = useRef(0);
+  const photoDragStartMotionX = useRef(0);
+
+  useAnimationFrame((_, delta) => {
+    if (photoIsDragging.current) return;
+    const halfW = (photoTrackRef.current?.scrollWidth ?? 0) / 2;
+    if (halfW === 0) return;
+    let next = photoX.get() - delta * 0.04;
+    if (next < -halfW) next += halfW;
+    photoX.set(next);
+  });
+
+  function onPhotoPointerDown(e: React.PointerEvent<HTMLElement>) {
+    photoIsDragging.current = true;
+    photoDragStartX.current = e.clientX;
+    photoDragStartMotionX.current = photoX.get();
+    e.currentTarget.setPointerCapture(e.pointerId);
+    e.currentTarget.style.cursor = "grabbing";
+  }
+  function onPhotoPointerMove(e: React.PointerEvent<HTMLElement>) {
+    if (!photoIsDragging.current) return;
+    const halfW = (photoTrackRef.current?.scrollWidth ?? 0) / 2;
+    let next = photoDragStartMotionX.current + (e.clientX - photoDragStartX.current);
+    if (next > 0) next -= halfW;
+    if (next < -halfW) next += halfW;
+    photoX.set(next);
+  }
+  function onPhotoPointerUp(e: React.PointerEvent<HTMLElement>) {
+    photoIsDragging.current = false;
+    e.currentTarget.releasePointerCapture(e.pointerId);
+    e.currentTarget.style.cursor = "grab";
+  }
 
   useEffect(() => {
     setIsTouch(!window.matchMedia("(hover: hover) and (pointer: fine)").matches);
@@ -141,68 +177,56 @@ export default function AboutPage() {
       setMobileActiveCard(Math.round(el.scrollLeft / (el.scrollWidth / activeProjects.length)));
     }
   }
-  const dragState = useRef({ startX: 0, scrollLeft: 0 });
-
-  function onPointerDown(e: React.PointerEvent<HTMLDivElement>) {
-    const el = carouselRef.current;
-    if (!el) return;
-    dragState.current = { startX: e.clientX, scrollLeft: el.scrollLeft };
-    el.setPointerCapture(e.pointerId);
-    el.style.cursor = "grabbing";
-  }
-  function onPointerMove(e: React.PointerEvent<HTMLDivElement>) {
-    if (!carouselRef.current?.hasPointerCapture(e.pointerId)) return;
-    e.preventDefault();
-    carouselRef.current.scrollLeft = dragState.current.scrollLeft - (e.clientX - dragState.current.startX);
-  }
-  function onPointerUp(e: React.PointerEvent<HTMLDivElement>) {
-    const el = carouselRef.current;
-    if (!el) return;
-    el.releasePointerCapture(e.pointerId);
-    el.style.cursor = "grab";
-  }
 
   return (
     <main className="relative z-10 pt-32 pb-28 md:pb-20">
       <AboutHero />
 
       {/* ── Personal Photos ───────────────────────────────────── */}
-      <section className="mb-24 -mx-8 md:-mx-16">
-        <div
-          ref={carouselRef}
-          className="overflow-x-auto scrollbar-hide px-8 md:px-16 cursor-grab select-none"
-          style={{ msOverflowStyle: "none", scrollbarWidth: "none" } as React.CSSProperties}
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={onPointerUp}
+      <section
+        className="mb-24 -mx-8 md:-mx-16 overflow-hidden cursor-grab select-none"
+        onPointerDown={onPhotoPointerDown}
+        onPointerMove={onPhotoPointerMove}
+        onPointerUp={onPhotoPointerUp}
+      >
+        <motion.div
+          ref={photoTrackRef}
+          style={{ x: photoX, width: "max-content" }}
+          className="flex gap-3 md:gap-5 py-10"
         >
-          <div className="flex gap-3 md:gap-5 py-10" style={{ width: "max-content" }}>
-            {[
-              { src: "/persoonlijkefotos/persoonlijkefoto6.jpeg",  position: "50% 50%",  offset: "" },
-              { src: "/persoonlijkefotos/persoonlijkefoto2.jpeg",  position: "50% 50%",  offset: "-mt-10" },
-              { src: "/persoonlijkefotos/persoonlijkefoto11.jpeg", position: "50% 50%",  offset: "" },
-              { src: "/persoonlijkefotos/persoonlijkefoto4.jpeg",  position: "50% 50%",  offset: "mt-10" },
-              { src: "/persoonlijkefotos/persoonlijkefoto1.jpeg",  position: "100% 50%", offset: "" },
-              { src: "/persoonlijkefotos/persoonlijkefoto7.jpeg",  position: "50% 50%",  offset: "-mt-10" },
-              { src: "/persoonlijkefotos/persoonlijkefoto5.JPG",   position: "50% 50%",  offset: "mt-10" },
-              { src: "/persoonlijkefotos/persoonlijkefoto12.jpeg", position: "75% 50%",  offset: "" },
-            ].map((photo, i) => (
-              <FadeUp key={photo.src} delay={i * 0.07} className={`shrink-0 w-[65vw] md:w-[20vw] ${photo.offset}`}>
-                <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden cinematic-shadow">
-                  <Image
-                    src={photo.src}
-                    alt=""
-                    fill
-                    quality={100}
-                    className="object-cover pointer-events-none"
-                    style={{ objectPosition: photo.position }}
-                    draggable={false}
-                  />
-                </div>
-              </FadeUp>
-            ))}
-          </div>
-        </div>
+          {[
+            { src: "/persoonlijkefotos/persoonlijkefoto6.jpeg",  position: "50% 50%",  offset: "" },
+            { src: "/persoonlijkefotos/persoonlijkefoto2.jpeg",  position: "50% 50%",  offset: "-mt-10" },
+            { src: "/persoonlijkefotos/persoonlijkefoto11.jpeg", position: "50% 50%",  offset: "" },
+            { src: "/persoonlijkefotos/persoonlijkefoto4.jpeg",  position: "50% 50%",  offset: "mt-10" },
+            { src: "/persoonlijkefotos/persoonlijkefoto1.jpeg",  position: "100% 50%", offset: "" },
+            { src: "/persoonlijkefotos/persoonlijkefoto7.jpeg",  position: "50% 50%",  offset: "-mt-10" },
+            { src: "/persoonlijkefotos/persoonlijkefoto5.JPG",   position: "50% 50%",  offset: "mt-10" },
+            { src: "/persoonlijkefotos/persoonlijkefoto12.jpeg", position: "75% 50%",  offset: "" },
+            { src: "/persoonlijkefotos/persoonlijkefoto6.jpeg",  position: "50% 50%",  offset: "" },
+            { src: "/persoonlijkefotos/persoonlijkefoto2.jpeg",  position: "50% 50%",  offset: "-mt-10" },
+            { src: "/persoonlijkefotos/persoonlijkefoto11.jpeg", position: "50% 50%",  offset: "" },
+            { src: "/persoonlijkefotos/persoonlijkefoto4.jpeg",  position: "50% 50%",  offset: "mt-10" },
+            { src: "/persoonlijkefotos/persoonlijkefoto1.jpeg",  position: "100% 50%", offset: "" },
+            { src: "/persoonlijkefotos/persoonlijkefoto7.jpeg",  position: "50% 50%",  offset: "-mt-10" },
+            { src: "/persoonlijkefotos/persoonlijkefoto5.JPG",   position: "50% 50%",  offset: "mt-10" },
+            { src: "/persoonlijkefotos/persoonlijkefoto12.jpeg", position: "75% 50%",  offset: "" },
+          ].map((photo, i) => (
+            <div key={i} className={`shrink-0 w-[65vw] md:w-[20vw] ${photo.offset}`}>
+              <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden cinematic-shadow">
+                <Image
+                  src={photo.src}
+                  alt=""
+                  fill
+                  quality={100}
+                  className="object-cover pointer-events-none"
+                  style={{ objectPosition: photo.position }}
+                  draggable={false}
+                />
+              </div>
+            </div>
+          ))}
+        </motion.div>
       </section>
 
       {/* ── Journey ──────────────────────────────────────────── */}
@@ -346,7 +370,7 @@ export default function AboutPage() {
                             <Link
                               key={p.slug}
                               href={`/work/${p.slug}`}
-                              className={`group relative flex overflow-hidden bg-surface-container-low rounded-2xl shrink-0 w-[72vw] md:w-[calc(33vw-2.5rem)] aspect-video transition-all duration-500 ease-out md:grayscale md:hover:grayscale-0${isTouch && !isMobileActive ? " grayscale" : ""}`}
+                              className={`group relative flex overflow-hidden bg-surface-container-low rounded-2xl shrink-0 w-[72vw] md:w-[calc(33vw-2.5rem)] aspect-video transition-all duration-500 ease-out [&:not(:hover)]:grayscale${isTouch && !isMobileActive ? " grayscale" : ""}`}
                               onClick={(e) => { if (projectHasDragged.current) e.preventDefault(); }}
                               style={themeVars}
                             >
