@@ -128,6 +128,8 @@ export const translations = {
       location: "Tilburg, Nederland",
       locationBody: "Beschikbaar voor remote werk wereldwijd & lokale afspraken in Nederland.",
       directChannels: "Directe Kanalen",
+      successMessage: "Bericht verzonden!",
+      errorMessage: "Er ging iets mis. Probeer opnieuw.",
     },
   },
 
@@ -258,6 +260,8 @@ export const translations = {
       location: "Tilburg, Netherlands",
       locationBody: "Available for remote work globally & local meetings within the Netherlands.",
       directChannels: "Direct Channels",
+      successMessage: "Message sent!",
+      errorMessage: "Something went wrong. Try again.",
     },
   },
 } as const;

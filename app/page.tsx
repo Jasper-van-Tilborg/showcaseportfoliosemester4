@@ -15,8 +15,8 @@ export default function HomePage() {
   return (
     <main className="relative z-10">
       {/* ── Hero ─────────────────────────────────────────────── */}
-      <section className="relative min-h-screen flex flex-col justify-center px-8 md:px-16 lg:px-24 pt-32 pb-20 overflow-hidden">
-        <div className="max-w-screen-2xl mx-auto w-full relative">
+      <section className="relative min-h-screen flex flex-col justify-center max-w-screen-2xl mx-auto px-8 md:px-16 pt-32 pb-20 overflow-hidden">
+        <div className="w-full relative">
           <HeroContent />
 
           {/* Floating visual accent */}
@@ -35,8 +35,8 @@ export default function HomePage() {
       </section>
 
       {/* ── About Preview ────────────────────────────────────── */}
-      <section className="px-8 md:px-16 lg:px-24 py-10">
-        <div className="max-w-screen-2xl mx-auto grid md:grid-cols-2 gap-10 items-center">
+      <section className="max-w-screen-2xl mx-auto px-8 md:px-16 py-10">
+        <div className="grid md:grid-cols-2 gap-10 items-center">
           <FadeUp delay={0} className="relative">
             <div className="w-full aspect-[4/5] max-h-[72vh] rounded-2xl overflow-hidden glass-card cinematic-shadow relative">
               <Image
@@ -83,8 +83,8 @@ export default function HomePage() {
       </section>
 
       {/* ── Featured Works ───────────────────────────────────── */}
-      <section className="px-8 md:px-16 lg:px-24 py-14">
-        <div className="max-w-screen-2xl mx-auto">
+      <section className="max-w-screen-2xl mx-auto px-8 md:px-16 py-14">
+        <div>
           <div className="flex justify-between items-end mb-12">
             <FadeUp>
               <h2 className="font-headline text-2xl md:text-4xl font-bold tracking-tight uppercase">
@@ -245,7 +245,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Contact CTA ──────────────────────────────────────── */}
-      <section className="px-8 md:px-16 lg:px-24 py-14 pb-20 md:pb-20">
+      <section className="max-w-screen-2xl mx-auto px-8 md:px-16 py-14 pb-20 md:pb-20">
         <FadeUp>
           <div className="max-w-5xl mx-auto bg-surface-container-lowest py-12 md:py-24 px-6 md:px-12 rounded-[2rem] md:rounded-[2.5rem] border border-primary/10 relative overflow-hidden text-center cinematic-shadow">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,92,0,0.05),transparent_70%)]" />
