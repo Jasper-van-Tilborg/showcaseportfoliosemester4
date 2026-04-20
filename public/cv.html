@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CV — Jasper van Tilborg</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── Tokens ─────────────────────────────────────────────────── */
+    :root {
+      --bg:           #131313;
+      --surface:      #1c1b1b;
+      --surface-high: #252424;
+      --primary:      #ff5c00;
+      --primary-dim:  #ff7a2e;
+      --text:         #e5e2e1;
+      --text-muted:   #c4a89a;
+      --border:       rgba(255,255,255,0.07);
+      --border-accent:rgba(255,92,0,0.25);
+
+      --font-head: 'Space Grotesk', sans-serif;
+      --font-body: 'Manrope', system-ui, sans-serif;
+    }
+
+    /* ─── Reset ──────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ─── Page / Body ────────────────────────────────────────────── */
+    html { font-size: 10pt; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-weight: 400;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    /* ─── CV Shell ───────────────────────────────────────────────── */
+    .cv {
+      width: 210mm;
+      min-height: 297mm;
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle atmospheric glow */
+    .cv::before {
+      content: '';
+      position: absolute;
+      top: -120px;
+      right: -80px;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,92,0,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ─── Header ─────────────────────────────────────────────────── */
+    .header {
+      padding: 40px 44px 32px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 24px;
+    }
+
+    .header-left {}
+
+    .header-tagline {
+      font-family: var(--font-head);
+      font-size: 7.5pt;
+      font-weight: 700;
+      letter-spacing: 0.45em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .header-name {
+      font-family: var(--font-head);
+      font-size: 36pt;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .header-name span {
+      color: var(--primary);
+    }
+
+    .header-title {
+      font-family: var(--font-head);
+      font-size: 10pt;
+      font-weight: 400;
+      color: var(--text-muted);
+      margin-top: 8px;
+      letter-spacing: 0.02em;
+    }
+
+    .header-right {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      font-size: 8pt;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+      font-family: var(--font-body);
+    }
+
+    .contact-item a {
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+
+    .contact-item a:hover {
+      color: var(--primary);
+    }
+
+    .contact-dot {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--primary);
+      flex-shrink: 0;
+    }
+
+    /* Orange accent bar below header */
+    .header-bar {
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dim) 40%, transparent 100%);
+    }
+
+    /* ─── Body Layout ────────────────────────────────────────────── */
+    .body {
+      display: grid;
+      grid-template-columns: 62mm 1fr;
+      gap: 0;
+      min-height: calc(297mm - 140px);
+    }
+
+    /* ─── Sidebar ────────────────────────────────────────────────── */
+    .sidebar {
+      padding: 32px 28px 40px 44px;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* ─── Main Content ───────────────────────────────────────────── */
+    .main {
+      padding: 32px 44px 40px 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* ─── Section ────────────────────────────────────────────────── */
+    .section {}
+
+    .section-label {
+      font-family: var(--font-head);
+      font-size: 6.5pt;
+      font-weight: 700;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-accent);
+    }
+
+    /* ─── Profile ────────────────────────────────────────────────── */
+    .profile-text {
+      font-size: 9pt;
+      color: var(--text-muted);
+      line-height: 1.75;
+      font-weight: 300;
+    }
+
+    /* ─── Skill list ─────────────────────────────────────────────── */
+    .skill-list {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .skill-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .skill-name {
+      font-family: var(--font-head);
+      font-size: 8pt;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: 0.01em;
+    }
+
+    .skill-bar-track {
+      height: 2px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .skill-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--primary-dim));
+      border-radius: 2px;
+    }
+
+    /* ─── Tag pills ──────────────────────────────────────────────── */
+    .tag-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .tag {
+      font-family: var(--font-head);
+      font-size: 7pt;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border: 1px solid rgba(255,255,255,0.09);
+      background: var(--surface);
+      border-radius: 100px;
+      padding: 3px 9px;
+    }
+
+    .tag.accent {
+      color: var(--primary);
+      border-color: var(--border-accent);
+      background: rgba(255,92,0,0.06);
+    }
+
+    /* ─── Education item ─────────────────────────────────────────── */
+    .edu-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .edu-item {}
+
+    .edu-degree {
+      font-family: var(--font-head);
+      font-size: 8.5pt;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+    }
+
+    .edu-school {
+      font-size: 7.5pt;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .edu-period {
+      font-family: var(--font-head);
+      font-size: 7pt;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--primary);
+      margin-top: 3px;
+    }
+
+    /* ─── Project / Experience card ──────────────────────────────── */
+    .entry-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .entry {
+      padding-left: 14px;
+      border-left: 2px solid var(--border-accent);
+      position: relative;
+    }
+
+    .entry::before {
+      content: '';
+      position: absolute;
+      left: -4px;
+      top: 5px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--primary);
+    }
+
+    .entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 3px;
+    }
+
+    .entry-title {
+      font-family: var(--font-head);
+      font-size: 9.5pt;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+    }
+
+    .entry-year {
+      font-family: var(--font-head);
+      font-size: 7pt;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--primary);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .entry-role {
+      font-size: 7.5pt;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+    }
+
+    .entry-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 7px;
+    }
+
+    .entry-body {
+      font-size: 8pt;
+      color: var(--text-muted);
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* ─── Language meter ─────────────────────────────────────────── */
+    .lang-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .lang-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .lang-name {
+      font-family: var(--font-head);
+      font-size: 8pt;
+      font-weight: 600;
+      color: var(--text);
+      min-width: 64px;
+    }
+
+    .lang-level {
+      font-size: 7pt;
+      color: var(--text-muted);
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    .lang-dots {
+      display: flex;
+      gap: 3px;
+    }
+
+    .lang-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+    }
+
+    .lang-dot.filled {
+      background: var(--primary);
+    }
+
+    /* ─── Divider ────────────────────────────────────────────────── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 4px 0;
+    }
+
+    /* ─── Status badge ───────────────────────────────────────────── */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: var(--font-head);
+      font-size: 6.5pt;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--primary);
+      padding: 2px 7px;
+      border: 1px solid var(--border-accent);
+      border-radius: 100px;
+      background: rgba(255,92,0,0.06);
+    }
+
+    .status-ping {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--primary);
+      animation: ping 1.5s ease-in-out infinite;
+    }
+
+    @keyframes ping {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(1.3); }
+    }
+
+    /* ─── Print Styles ───────────────────────────────────────────── */
+    @media print {
+      @page {
+        size: A4;
+        margin: 0;
+      }
+
+      body {
+        background: #131313;
+        padding: 0;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .cv {
+        width: 210mm;
+        min-height: 297mm;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="cv">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <p class="header-tagline">Merkstrateeg &amp; Visueel Ontwerper</p>
+        <h1 class="header-name">Jasper <span>van Tilborg</span></h1>
+        <p class="header-title">Media Design Student — UI/UX · Front-End · Branding</p>
+      </div>
+      <div class="header-right">
+        <div class="contact-item">
+          <span class="contact-dot"></span>
+          <span>Tilburg, Nederland</span>
+        </div>
+        <div class="contact-item">
+          <span class="contact-dot"></span>
+          <a href="mailto:jasper.van.tilborg@ziggo.nl">jasper.van.tilborg@ziggo.nl</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-dot"></span>
+          <a href="https://github.com/Jasper-van-Tilborg" target="_blank">github.com/Jasper-van-Tilborg</a>
+        </div>
+        <div class="contact-item">
+          <span class="contact-dot"></span>
+          <a href="#">Portfolio Website</a>
+        </div>
+      </div>
+    </header>
+    <div class="header-bar"></div>
+
+    <!-- Body -->
+    <div class="body">
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+
+        <!-- Skills -->
+        <div class="section">
+          <p class="section-label">Vaardigheden</p>
+          <div class="skill-list">
+            <div class="skill-item">
+              <span class="skill-name">UI / UX Design</span>
+              <div class="skill-bar-track"><div class="skill-bar-fill" style="width:90%"></div></div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">Front-End Development</span>
+              <div class="skill-bar-track"><div class="skill-bar-fill" style="width:80%"></div></div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">Merkstrategie</span>
+              <div class="skill-bar-track"><div class="skill-bar-fill" style="width:85%"></div></div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">Prototyping</span>
+              <div class="skill-bar-track"><div class="skill-bar-fill" style="width:88%"></div></div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">Fotografie</span>
+              <div class="skill-bar-track"><div class="skill-bar-fill" style="width:65%"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Tools -->
+        <div class="section">
+          <p class="section-label">Toolset</p>
+          <div class="tag-group">
+            <span class="tag accent">Next.js</span>
+            <span class="tag accent">Figma</span>
+            <span class="tag accent">Supabase</span>
+            <span class="tag accent">AI API</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">Tailwind CSS</span>
+            <span class="tag">Framer Motion</span>
+            <span class="tag">React</span>
+            <span class="tag">Git</span>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Education -->
+        <div class="section">
+          <p class="section-label">Opleiding</p>
+          <div class="edu-list">
+            <div class="edu-item">
+              <p class="edu-degree">ICT &amp; Media Design</p>
+              <p class="edu-school">Fontys Hogeschool</p>
+              <p class="edu-period">2024 — Heden</p>
+            </div>
+            <div class="edu-item">
+              <p class="edu-degree">Beatrix College</p>
+              <p class="edu-school">Tilburg</p>
+              <p class="edu-period">2019 — 2024</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Languages -->
+        <div class="section">
+          <p class="section-label">Talen</p>
+          <div class="lang-list">
+            <div class="lang-item">
+              <span class="lang-name">Nederlands</span>
+              <div class="lang-dots">
+                <span class="lang-dot filled"></span>
+                <span class="lang-dot filled"></span>
+                <span class="lang-dot filled"></span>
+                <span class="lang-dot filled"></span>
+                <span class="lang-dot filled"></span>
+              </div>
+              <span class="lang-level">Moedertaal</span>
+            </div>
+            <div class="lang-item">
+              <span class="lang-name">Engels</span>
+              <div class="lang-dots">
+                <span class="lang-dot filled"></span>
+                <span class="lang-dot filled"></span>
+                <span class="lang-dot filled"></span>
+                <span class="lang-dot filled"></span>
+                <span class="lang-dot"></span>
+              </div>
+              <span class="lang-level">Vloeiend</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Interests -->
+        <div class="section">
+          <p class="section-label">Interesses</p>
+          <div class="tag-group">
+            <span class="tag">Voetbal</span>
+            <span class="tag">Skiën</span>
+            <span class="tag">Web Bouwen</span>
+            <span class="tag">AI</span>
+          </div>
+        </div>
+
+      </aside>
+
+      <!-- Main -->
+      <main class="main">
+
+        <!-- Profile -->
+        <div class="section">
+          <p class="section-label">Profiel</p>
+          <p class="profile-text">
+            Ik combineer design intuïtie met AI om sneller, slimmer en beter te werken.
+            Van UI/UX tot front-end development, altijd gericht op resultaat.
+            Mijn werk bevindt zich op het snijpunt van helder strategisch denken en aansprekende esthetiek.
+            Momenteel focus ik me op UI/UX en front-end development en staan de eerste freelance projecten op de planning.
+          </p>
+        </div>
+
+        <!-- Projects -->
+        <div class="section">
+          <p class="section-label">Projecten</p>
+          <div class="entry-list">
+
+            <div class="entry">
+              <div class="entry-header">
+                <span class="entry-title">Fioresque</span>
+                <span class="entry-year">2026</span>
+              </div>
+              <p class="entry-role">UI/UX Design · Front-End Development</p>
+              <div class="entry-tags">
+                <span class="tag accent">Next.js</span>
+                <span class="tag accent">Figma</span>
+                <span class="tag">E-commerce</span>
+                <span class="tag">Branding</span>
+                <span class="status-badge"><span class="status-ping"></span>In Progress</span>
+              </div>
+              <p class="entry-body">
+                Volledig zelfbedacht kledingmerk — van visuele identiteit tot werkende webshop met checkout.
+                Verantwoordelijk voor merkstrategie, ontwerp en implementatie.
+              </p>
+            </div>
+
+            <div class="entry">
+              <div class="entry-header">
+                <span class="entry-title">Rosh Studios</span>
+                <span class="entry-year">2025</span>
+              </div>
+              <p class="entry-role">Full-Stack Development · UI Design</p>
+              <div class="entry-tags">
+                <span class="tag accent">Next.js</span>
+                <span class="tag accent">Supabase</span>
+                <span class="tag">Tournament Editor</span>
+              </div>
+              <p class="entry-body">
+                Toernooi-editor voor Rosh Studios met live bewerkbare pagina's, custom slug publicatie
+                en Twitch-integratie. Data opgeslagen in Supabase.
+              </p>
+            </div>
+
+            <div class="entry">
+              <div class="entry-header">
+                <span class="entry-title">Vara Media Agency</span>
+                <span class="entry-year">2025</span>
+              </div>
+              <p class="entry-role">Brand Identity · UI/UX Design</p>
+              <div class="entry-tags">
+                <span class="tag accent">Figma</span>
+                <span class="tag">Branding</span>
+                <span class="tag">Identity System</span>
+              </div>
+              <p class="entry-body">
+                Volledige merkidentiteit voor een creatief mediabureau — logo, kleurenpalet,
+                typografie en digitale richtlijnen.
+              </p>
+            </div>
+
+            <div class="entry">
+              <div class="entry-header">
+                <span class="entry-title">Cookmind</span>
+                <span class="entry-year">2025</span>
+              </div>
+              <p class="entry-role">UI/UX Design · AI Integration</p>
+              <div class="entry-tags">
+                <span class="tag accent">AI API</span>
+                <span class="tag accent">Figma</span>
+                <span class="tag">Mobile App</span>
+              </div>
+              <p class="entry-body">
+                AI-gestuurde recepten-app die gepersonaliseerde maaltijdideeën genereert
+                op basis van beschikbare ingrediënten.
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Services -->
+        <div class="section">
+          <p class="section-label">Diensten</p>
+          <div class="entry-list">
+
+            <div class="entry">
+              <div class="entry-header">
+                <span class="entry-title">UI / UX Design</span>
+              </div>
+              <p class="entry-body">
+                Van wireframe tot high-fidelity. Interfaces ontwerpen die logisch aanvoelen en er goed uitzien.
+              </p>
+            </div>
+
+            <div class="entry">
+              <div class="entry-header">
+                <span class="entry-title">Web &amp; Front-End</span>
+              </div>
+              <p class="entry-body">
+                Designs die ook echt werken. Met Next.js en een oog voor detail bouw ik wat ik ontwerp.
+              </p>
+            </div>
+
+            <div class="entry">
+              <div class="entry-header">
+                <span class="entry-title">Media Creatie</span>
+              </div>
+              <p class="entry-body">
+                Fotografie en social media content als serieus onderdeel van mijn toolkit.
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+</body>
+</html>

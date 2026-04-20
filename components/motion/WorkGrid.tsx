@@ -118,7 +118,7 @@ export default function WorkGrid({ projects }: { projects: Project[] }) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <AnimatePresence mode="popLayout">
           {filtered.map((project, index) => {
-            const isWide = active === "All" && index === 2;
+            const isWide = active === "All" && project.slug === "rosh-studios-tournament-editor";
             const themeVars = project.theme
               ? ({
                   "--color-primary":            project.theme.primary,
@@ -133,21 +133,17 @@ export default function WorkGrid({ projects }: { projects: Project[] }) {
             return (
               <motion.div
                 key={project.slug}
-                layout
+                layout="position"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.5, ease, delay: index * 0.06 }}
-                className={isWide ? "md:col-span-2" : ""}
+                className={isWide ? "col-span-1 md:col-span-2" : ""}
               >
                 <Link
                   href={`/work/${project.slug}`}
                   style={themeVars}
-                  className={`group relative flex overflow-hidden bg-surface-container-low rounded-2xl transition-all duration-500 ease-out [&:not(:hover)]:grayscale ${
-                    isWide
-                      ? "aspect-[4/5] md:aspect-[16/7] md:min-h-[320px]"
-                      : "aspect-[4/5] md:aspect-video"
-                  }`}
+                  className={`group relative flex overflow-hidden bg-surface-container-low rounded-2xl transition-all duration-500 ease-out [&:not(:hover)]:grayscale aspect-[4/5] ${isWide ? "md:aspect-[21/9]" : "md:aspect-video"}`}
                 >
                   {/* Cover gradient */}
                   <div
@@ -157,7 +153,17 @@ export default function WorkGrid({ projects }: { projects: Project[] }) {
                   {/* Desaturating overlay */}
                   <div className="absolute inset-0 bg-neutral-900/60 transition-opacity duration-500 group-hover:opacity-0" />
                   {/* Cover image */}
-                  {project.coverImage && (
+                  {project.coverLogos ? (
+                    <div className="absolute inset-0 flex items-center justify-center gap-4 scale-[0.7] group-hover:scale-[0.8] transition-transform duration-500">
+                      <div className="relative h-16 w-28 shrink-0">
+                        <Image src={project.coverLogos[0]} alt="" fill className="object-contain" />
+                      </div>
+                      <span className="font-headline font-bold text-white/60 text-3xl select-none">×</span>
+                      <div className="relative h-16 w-28 shrink-0">
+                        <Image src={project.coverLogos[1]} alt="" fill className="object-contain" />
+                      </div>
+                    </div>
+                  ) : project.coverImage && (
                     <div className="absolute inset-0">
                       <Image
                         src={project.coverImage}

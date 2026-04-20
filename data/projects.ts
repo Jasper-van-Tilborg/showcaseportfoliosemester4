@@ -10,8 +10,9 @@ export interface EvidenceItem {
 
 export interface ProjectSection {
   heading: string;
+  subheading?: string;
   body: string;
-  type?: "palette" | "visual-identity"; // special render modes
+  type?: "palette" | "visual-identity" | "text"; // special render modes
   media?: {
     type: "video" | "image" | "figma";
     src: string;
@@ -35,6 +36,9 @@ export interface ProjectTheme {
   onSurfaceVariant: string;  // replaces --color-on-surface-variant (secondary text)
   outlineVariant: string;    // replaces --color-outline-variant (borders)
   surfaceContainerLowest: string; // replaces --color-surface-container-lowest (footer bg)
+  surfaceContainerLow?: string;   // replaces --color-surface-container-low
+  surfaceContainer?: string;      // replaces --color-surface-container
+  surfaceContainerHigh?: string;  // replaces --color-surface-container-high
   fontHighlights?: Record<string, string>; // word → font-family, renders that word in its own font
 }
 
@@ -53,6 +57,8 @@ export interface Project {
   tags: string[];
   coverGradient: string; // CSS gradient string used as cover
   coverImage?: string;  // Optional hero image for cards
+  coverLogos?: string[]; // Multiple logos rendered side by side with × between them
+  heroSplit?: { left: string; right: string }; // Split hero gradient: left half / right half
   featured: boolean;
   evidence?: EvidenceItem[];
   links?: { live?: string; github?: string; figma?: string };
@@ -162,65 +168,83 @@ export const projects: Project[] = [
   {
     id: 2,
     slug: "vara-media-agency",
-    title: "VARA Media Agency",
+    title: "Virtual Production Marketing",
     category: "BRANDING",
+    categories: ["BRANDING", "UI/UX"],
     year: "2026",
     status: "in-progress",
-    shortDescription: "Een volledig merkbureau opgezet van nul in 3 weken.",
+    tagline: "Eerst een bureau. Toen een campagne.",
+    shortDescription: "We richtten VARA Media Agency op van nul — en als VARA namen we meteen de eerste echte opdracht aan: de marketingcampagne voor de Virtual Production minor van Fontys.",
     description:
-      "In drie weken hebben we met een team van zes VARA Media Agency opgezet: een volledig functionerend merkbureau met eigen identiteit, positionering en visueel systeem. Ik was verantwoordelijk voor de merkstrategie en visuele identiteit.",
-    tags: ["Brand Strategy", "Visual Identity", "UI Design", "Figma"],
-    coverGradient: "linear-gradient(135deg, #246BF6 0%, #4d8ef8 50%, #D9F855 100%)",
-    coverImage: "/vara_logo2.png",
+      "Dit project heeft twee lagen. Eerst richtten we als groep VARA Media Agency op: een volwaardig creatief bureau met eigen naam, identiteit en positionering. Daarna gingen we als dat bureau aan de slag met een echte opdracht — het marketen van de Virtual Production minor van Fontys, een opleiding over filmproductie met LED walls, real-time rendering en virtuele sets.",
+    tags: ["Brand Strategy", "Visual Identity", "Figma", "Marketing", "Campagne"],
+    coverGradient: "linear-gradient(135deg, #0e0a14 0%, #2a1040 55%, #7B2D8B 100%)",
+    coverLogos: ["/vara_logo2.png", "/virtualproductionlogo.png"],
+    heroSplit: {
+      left:  "linear-gradient(135deg, #0a1a4a 0%, #246BF6 50%, #b8d400 100%)",
+      right: "linear-gradient(225deg, #1a0a2e 0%, #7B2D8B 50%, #3d0060 100%)",
+    },
     links: { live: "https://vara-agency.vercel.app", github: "https://github.com/timjonkergouw/vara_agency" },
     featured: true,
     sections: [
       {
-        heading: "Merkontwikkeling",
-        body: "In drie weken hebben we met een team van zes VARA Media Agency opgezet: een volledig functionerend merkbureau met eigen identiteit, positionering en visueel systeem. Ik was verantwoordelijk voor de merkstrategie en visuele identiteit.",
+        heading: "Stap 1 — Het bureau",
+        subheading: "VARA Media Agency, opgericht in drie weken.",
+        type: "text",
+        body: "Voordat we als bureau konden werken, moesten we er één zijn. Met een team van zes bouwden we VARA Media Agency op van nul: een eigen naam, merkidentiteit, positionering en visueel systeem. Ik was verantwoordelijk voor de merkstrategie en visuele identiteit — van kleurenpalet en typografie tot logo en tone of voice.",
       },
       {
-        heading: "Visueel systeem",
-        body: "Het kleurenpalet combineert een diep antraciet met elektrisch blauw en een scherp geel-groen accent. Dit geeft het merk een gedurfd, modern karakter dat past bij een ambitieus mediabureau. Typografie en gridstructuur werden zorgvuldig gedefinieerd in het brand guidelines document.",
+        heading: "Stap 2 — De opdracht",
+        subheading: "De VP minor van Fontys marketen als VARA.",
+        type: "text",
+        body: "Als VARA kregen we de opdracht om de Virtual Production minor van Fontys te marketen. De minor leidt studenten op in cutting-edge filmproductietechnieken — LED walls die complete werelden simuleren, real-time rendering en virtuele sets. Een wereld die de meeste media-studenten nog nooit van dichtbij hebben gezien. Onze taak: maak dat tastbaar.",
       },
       {
-        heading: "Logo & huisstijl",
-        body: "Het logo is opgebouwd rond een krachtige geometrische vorm die schaalbaarheid en herkenbaarheid combineert. De volledige huisstijl omvat visitekaartjes, presentatiesjablonen en social media assets.",
+        heading: "De campagne",
+        body: "VARA ontwikkelde een campagne die de technologie niet uitlegt maar laat voelen. Tone of voice, kanaalkeuze en beeldtaal zijn volledig gericht op creatieve media-studenten die klaar zijn voor het volgende niveau. De centrale belofte: jij staat straks in een wereld die er niet is.",
       },
     ],
     metadata: {
-      duration: "3 weeks",
+      duration: "Semester 4",
       teamSize: 6,
       role: "Brand Strategist & Visual Designer",
       course: "Semester 4, Media Design",
     },
     theme: {
-      background:             "#343231",
-      primary:                "#D9F855",
-      primaryContainer:       "#246BF6",
-      onPrimary:              "#343231",
-      onSurface:              "#FAF9F6",
-      onSurfaceVariant:       "#92B5FB",
-      outlineVariant:         "#444342",
-      surfaceContainerLowest: "#1e1e1d",
+      background:             "#0e0a14",
+      primary:                "#7B2D8B",
+      primaryContainer:       "#9B3DAB",
+      onPrimary:              "#ffffff",
+      onSurface:              "#f5f0f8",
+      onSurfaceVariant:       "#b89fc7",
+      outlineVariant:         "#2a1a35",
+      surfaceContainerLowest: "#080610",
+      surfaceContainerLow:    "#130e1c",
+      surfaceContainer:       "#1a1226",
+      surfaceContainerHigh:   "#221830",
     },
     i18n: {
       en: {
-        shortDescription: "Building a full branding agency from the ground up in 3 weeks.",
+        tagline: "First an agency. Then a campaign.",
+        shortDescription: "We founded VARA Media Agency from scratch — and as VARA we immediately took on our first real brief: the marketing campaign for the Virtual Production minor at Fontys.",
         description:
-          "A collaborative 3-week sprint where I worked with 5 teammates to establish a complete branding agency called VARA. Responsible for brand strategy, visual identity, color system, logo design, and the homepage concept.",
+          "This project has two layers. First we founded VARA Media Agency as a group: a fully functioning creative bureau with its own name, identity and positioning. Then, as that agency, we took on a real brief — marketing the Virtual Production minor at Fontys, a programme about film production with LED walls, real-time rendering and virtual sets.",
         sections: [
           {
-            heading: "Brand development",
-            body: "In three weeks we built VARA Media Agency with a team of six: a fully functioning branding agency with its own identity, positioning, and visual system. I was responsible for the brand strategy and visual identity.",
+            heading: "Step 1 — The agency",
+            subheading: "VARA Media Agency, founded in three weeks.",
+            type: "text",
+            body: "Before we could work as an agency, we had to be one. With a team of six we built VARA Media Agency from scratch: a name, brand identity, positioning and visual system. I was responsible for brand strategy and visual identity — from colour palette and typography to logo and tone of voice.",
           },
           {
-            heading: "Visual system",
-            body: "The colour palette combines deep anthracite with electric blue and a sharp yellow-green accent. This gives the brand a bold, modern character that suits an ambitious media agency. Typography and grid structure were carefully defined in the brand guidelines document.",
+            heading: "Step 2 — The brief",
+            subheading: "Marketing the VP minor at Fontys as VARA.",
+            type: "text",
+            body: "As VARA we were briefed to market the Virtual Production minor at Fontys. The minor trains students in cutting-edge film production techniques — LED walls that simulate entire worlds, real-time rendering and virtual sets. A world most media students have never seen up close. Our task: make it tangible.",
           },
           {
-            heading: "Logo & house style",
-            body: "The logo is built around a powerful geometric shape that combines scalability and recognisability. The full house style includes business cards, presentation templates, and social media assets.",
+            heading: "The campaign",
+            body: "VARA developed a campaign that doesn't explain the technology — it makes you feel it. Tone of voice, channel choice and visual language are entirely focused on creative media students ready for the next level. The central promise: you'll soon be standing in a world that doesn't exist.",
           },
         ],
       },
@@ -391,24 +415,28 @@ export const projects: Project[] = [
     category: "UI/UX",
     year: "2025",
     status: "completed",
-    tagline: "UX-verbeteringen voor een premium hotelwebsite.",
-    shortDescription: "Een groepsopdracht voor Fightclub waarbij we de UX van Quality Lodgings hebben verbeterd via gebruikersonderzoek, iteratief prototypen en Figma designs.",
+    tagline: "Een herontworpen premium hotelwebsite voor Fightclub.",
+    shortDescription: "Voor Fightclub hebben we als groep de website van Quality Lodgings herontworpen. Het eindresultaat is een strakker navigatiesysteem en een vereenvoudigd boekingsproces, uitgewerkt in een volledig klikbaar Figma prototype.",
     description:
-      "Een groepsopdracht voor Fightclub, een creatief bureau, waarbij we de UX van de website van Quality Lodgings hebben verbeterd. Via gebruikersonderzoek, iteratief prototypen en Figma designs hebben we knelpunten in navigatie en het boekingsproces aangepakt.",
+      "Quality Lodgings is een premium hotelketen waarvan de website moeizaam te navigeren was en een omslachtig boekingsproces had. De opdracht van Fightclub: maak de site intuïtiever zonder de luxe uitstraling aan te tasten. Het eindresultaat is een herontworpen website met een overzichtelijke structuur, een vloeiend boekingsproces en een nieuwe 'Vind jouw stijl'-pagina die gasten helpt het juiste hotel te kiezen.",
     sections: [
       {
-        heading: "Gebruikersonderzoek",
-        body: "User tests afgenomen en verbeterpunten gestructureerd via een prioriteringsmatrix: Big Bets, Quick Wins, Money Pits en Fill-ins. User stories opgesteld als basis voor het ontwerpproces.",
-      },
-      {
-        heading: "Ontwerp & iteraties",
-        body: "Paper prototypes gemaakt en getest. Figma designs uitgewerkt voor de hoofdpagina, hotelpagina en 'Vind jouw stijl'-pagina, met meerdere iteraties op basis van testfeedback. Expert review uitgevoerd op het werk van een ander groepje.",
+        heading: "Het eindresultaat",
+        body: "Een volledig klikbaar Figma prototype met een herontworpen hoofdpagina, een vernieuwde hotelpagina en een nieuwe 'Vind jouw stijl'-pagina. De navigatie is vereenvoudigd, het boekingsproces teruggebracht tot de essentiële stappen en de visuele hiërarchie geoptimaliseerd voor conversie.",
+        media: {
+          type: "figma",
+          src: "https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/QbTLSUu7nLg4ucJ7FT0cOQ/Quality-Lodgings?node-id=32-386&p=f&scaling=scale-down-width&content-scaling=fixed&starting-point-node-id=32%3A386&page-id=0%3A1",
+          poster: "/qualitylodgings/qualitylodgingsposter.png",
+        },
       },
     ],
     tags: ["Figma", "UX Research", "Usability Testing", "Prototyping", "User Stories"],
-    coverGradient: "linear-gradient(135deg, #1a1410 0%, #3d2e1a 50%, #8c6a3a 100%)",
+    coverGradient: "linear-gradient(160deg, #0a1210 0%, #0f2420 50%, #1a4a3e 100%)",
     coverImage: "/qualitylodgings_logo.svg",
     featured: true,
+    links: {
+      figma: "https://www.figma.com/proto/QbTLSUu7nLg4ucJ7FT0cOQ/Quality-Lodgings?node-id=32-386&p=f&viewport=-212%2C681%2C0.07&t=XvOpodFHIX8QC2vy-1&scaling=scale-down-width&content-scaling=fixed&starting-point-node-id=32%3A386&show-proto-sidebar=1&page-id=0%3A1",
+    },
     metadata: {
       duration: "Semester 4",
       teamSize: 4,
@@ -416,29 +444,36 @@ export const projects: Project[] = [
       course: "Semester 4, Media Design",
     },
     theme: {
-      background:             "#1a1410",
-      primary:                "#c49a52",
-      primaryContainer:       "#8c6a3a",
-      onPrimary:              "#1a1410",
-      onSurface:              "#f0ebe0",
-      onSurfaceVariant:       "#b8a882",
-      outlineVariant:         "#3d3020",
-      surfaceContainerLowest: "#100e09",
+      background:             "#0f1a18",
+      primary:                "#789F90",
+      primaryContainer:       "#5a7d70",
+      onPrimary:              "#0f1a18",
+      onSurface:              "#ffffff",
+      onSurfaceVariant:       "#789F90",
+      outlineVariant:         "#1e3530",
+      surfaceContainerLowest: "#0a1210",
+      surfaceContainerLow:    "#142420",
+      surfaceContainer:       "#1a2e2a",
+      surfaceContainerHigh:   "#223d38",
+      fontHighlights: {
+        "Quality Lodgings": "Times New Roman, Georgia, serif",
+      },
     },
     i18n: {
       en: {
-        tagline: "UX improvements for a premium hotel website.",
-        shortDescription: "A group project for Fightclub where we improved the UX of the Quality Lodgings website through user research, iterative prototyping and Figma designs.",
+        tagline: "A redesigned premium hotel website for Fightclub.",
+        shortDescription: "For Fightclub we redesigned the Quality Lodgings website as a group. The end result is a cleaner navigation system and a simplified booking process, delivered as a fully interactive Figma prototype.",
         description:
-          "A group project for Fightclub, a creative agency, where we improved the UX of the Quality Lodgings website. Through user research, iterative prototyping and Figma designs we tackled pain points in navigation and the booking process.",
+          "Quality Lodgings is a premium hotel chain whose website was hard to navigate and had a cumbersome booking process. Fightclub's brief: make the site more intuitive without compromising its luxury feel. The end result is a redesigned website with a clear structure, a streamlined booking flow and a new 'Find your style' page that helps guests choose the right hotel.",
         sections: [
           {
-            heading: "User research",
-            body: "User tests conducted and improvements structured via a prioritisation matrix: Big Bets, Quick Wins, Money Pits and Fill-ins. User stories drafted as the foundation for the design process.",
-          },
-          {
-            heading: "Design & iterations",
-            body: "Paper prototypes created and tested. Figma designs developed for the homepage, hotels page and 'Find your style' page, with multiple iterations based on test feedback. Expert review conducted on another group's work.",
+            heading: "The result",
+            body: "A fully interactive Figma prototype with a redesigned homepage, a revamped hotel page and a new 'Find your style' page. Navigation has been simplified, the booking process reduced to its essential steps and the visual hierarchy optimised for conversion.",
+            media: {
+              type: "figma",
+              src: "https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/QbTLSUu7nLg4ucJ7FT0cOQ/Quality-Lodgings?node-id=32-386&p=f&scaling=scale-down-width&content-scaling=fixed&starting-point-node-id=32%3A386&page-id=0%3A1",
+              poster: "/qualitylodgings/qualitylodgingsposter.png",
+            },
           },
         ],
       },

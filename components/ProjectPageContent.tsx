@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import Icon from "@/components/Icon";
+import LightPillar from "@/components/LightPillar";
 import MountReveal from "@/components/motion/MountReveal";
 import FadeUp from "@/components/motion/FadeUp";
 import type { Project } from "@/data/projects";
@@ -303,7 +304,31 @@ export default function ProjectPageContent({ project, nextProject, prevProject }
 
       {/* ── Hero ─────────────────────────────────────────────── */}
       <section className="relative w-full" style={{ minHeight: "90vh" }}>
-        <div className="absolute inset-0" style={{ background: gradient }} />
+        {project.heroSplit ? (
+          <>
+            {/* Left half */}
+            <div className="absolute inset-0" style={{ background: project.heroSplit.left, clipPath: "inset(0 50% 0 0)" }} />
+            {/* Right half */}
+            <div className="absolute inset-0" style={{ background: project.heroSplit.right, clipPath: "inset(0 0 0 50%)" }} />
+
+            {/* LightPillar — screen blend: zwarte gebieden zijn transparant, glow addt op de achtergrond */}
+            <LightPillar
+              topColor="#246BF6"
+              bottomColor="#7B2D8B"
+              intensity={2.5}
+              rotationSpeed={0.2}
+              glowAmount={0.018}
+              pillarWidth={1.6}
+              pillarHeight={0.45}
+              noiseIntensity={0.2}
+              pillarRotation={0}
+              mixBlendMode="screen"
+              className="inset-0 w-full"
+            />
+          </>
+        ) : (
+          <div className="absolute inset-0" style={{ background: gradient }} />
+        )}
         <div
           className="absolute inset-0"
           style={{
@@ -319,7 +344,24 @@ export default function ProjectPageContent({ project, nextProject, prevProject }
             })`,
           }}
         />
-        {project.coverImage && (
+        {project.coverLogos ? (
+          <div className="absolute inset-0 -translate-y-12 flex items-center">
+            {/* Left logo — gecentreerd in linkerhelft */}
+            <div className="w-1/2 flex items-center justify-center">
+              <div className="relative h-32 w-64 md:h-48 md:w-96">
+                <Image src={project.coverLogos[0]} alt="" fill className="object-contain" priority />
+              </div>
+            </div>
+            {/* × op de clash-lijn */}
+            <span className="absolute left-1/2 -translate-x-1/2 font-headline font-bold text-white/70 text-5xl md:text-7xl select-none drop-shadow-lg">×</span>
+            {/* Right logo — gecentreerd in rechterhelft */}
+            <div className="w-1/2 flex items-center justify-center">
+              <div className="relative h-32 w-64 md:h-48 md:w-96">
+                <Image src={project.coverLogos[1]} alt="" fill className="object-contain" priority />
+              </div>
+            </div>
+          </div>
+        ) : project.coverImage && (
           <div className="absolute inset-0 -translate-y-12">
             <Image
               src={project.coverImage}
@@ -392,7 +434,10 @@ export default function ProjectPageContent({ project, nextProject, prevProject }
 
           {(project.metadata || project.discontinued) && (
             <FadeUp delay={0.2} className="lg:col-span-4 lg:col-start-9">
-              <div className="glass-panel rounded-2xl border border-white/8 p-7 flex flex-col gap-5">
+              <div
+                className="rounded-2xl border border-white/8 p-7 flex flex-col gap-5"
+                style={{ background: project.theme ? `color-mix(in srgb, ${project.theme.primary} 6%, ${project.theme.surfaceContainerLow ?? project.theme.background})` : "rgba(53,53,52,0.4)", backdropFilter: "blur(24px)" }}
+              >
                 {project.metadata?.duration && (
                   <div>
                     <p className="text-[10px] font-headline font-bold tracking-widest uppercase text-on-surface-variant mb-1">
@@ -439,7 +484,7 @@ export default function ProjectPageContent({ project, nextProject, prevProject }
                     )}
                     {project.links.figma && (
                       <a href={project.links.figma} target="_blank" rel="noopener noreferrer"
-                        className="flex items-center gap-2 px-3 py-2.5 rounded-xl border border-white/10 hover:border-primary/40 hover:text-primary text-on-surface-variant transition-all duration-200">
+                        className="flex items-center gap-2 px-3 py-2.5 rounded-xl border border-on-surface/20 hover:border-on-surface/60 text-on-surface transition-all duration-200">
                         <svg className="w-4 h-4 shrink-0" viewBox="0 0 38 57" fill="currentColor"><path d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z"/><path d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 0 1-19 0z"/><path d="M19 0v19h9.5a9.5 9.5 0 0 0 0-19H19z"/><path d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5z"/><path d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5z"/></svg>
                         <span className="text-xs font-headline font-bold tracking-widest uppercase">Figma</span>
                       </a>
@@ -480,6 +525,28 @@ export default function ProjectPageContent({ project, nextProject, prevProject }
             );
 
             const isLast = i === sections.length - 1;
+
+            // ── Text-only section ─────────────────────────────────────
+            if (section.type === "text") {
+              return (
+                <Shell key={section.heading} last={isLast}>
+                  <motion.div variants={sectionItem} className="lg:col-span-12 flex flex-col gap-8">
+                    <span className="font-headline text-[10px] uppercase tracking-[0.5em] text-primary font-bold">
+                      {section.heading}
+                    </span>
+                    {section.subheading && (
+                      <h2 className="font-headline font-bold text-on-surface tracking-tighter leading-[1] text-[clamp(2rem,5vw,4.5rem)] max-w-4xl">
+                        {section.subheading}
+                      </h2>
+                    )}
+                    <div className="h-px bg-on-surface/10 w-full" />
+                    <p className="text-lg md:text-xl text-on-surface-variant leading-relaxed font-body font-light max-w-3xl">
+                      {section.body}
+                    </p>
+                  </motion.div>
+                </Shell>
+              );
+            }
 
             // ── Visual identity ───────────────────────────────────────
             if (isVisualIdentity && project.theme) {
@@ -560,7 +627,7 @@ export default function ProjectPageContent({ project, nextProject, prevProject }
                   <span className="font-headline text-[10px] uppercase tracking-[0.35em] text-primary font-bold">
                     {section.heading}
                   </span>
-                  <p className="text-base md:text-lg text-on-surface-variant leading-relaxed font-body">
+                  <p className="text-base md:text-lg text-on-surface leading-relaxed font-body">
                     {project.theme?.fontHighlights
                       ? renderWithFontHighlights(section.body, project.theme.fontHighlights)
                       : section.body}

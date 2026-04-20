@@ -42,7 +42,7 @@ export default function AboutHero() {
           {t.about.heroBody}
         </motion.p>
 
-        <motion.div {...item(0.4)}>
+        <motion.div {...item(0.4)} className="flex items-center gap-4 flex-wrap">
           <Link
             href="/work"
             className="inline-flex items-center gap-3 bg-primary-container text-on-primary-fixed px-8 py-4 rounded-full font-headline font-bold hover:scale-95 active:scale-90 transition-transform duration-150 uppercase tracking-widest text-sm"
@@ -50,6 +50,14 @@ export default function AboutHero() {
             {t.about.heroCta}
             <Icon name="arrow_forward" />
           </Link>
+          <a
+            href="/cv.html"
+            target="_blank"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-headline font-bold border border-primary/40 text-primary hover:bg-primary hover:text-on-primary-fixed transition-all duration-300 uppercase tracking-widest text-sm"
+          >
+            <Icon name="download" />
+            CV
+          </a>
         </motion.div>
       </div>
 

@@ -185,9 +185,11 @@ export default function AboutPage() {
       {/* ── Personal Photos ───────────────────────────────────── */}
       <section
         className="mb-24 -mx-8 md:-mx-16 overflow-hidden cursor-grab select-none"
+        style={{ touchAction: "none" }}
         onPointerDown={onPhotoPointerDown}
         onPointerMove={onPhotoPointerMove}
         onPointerUp={onPhotoPointerUp}
+        onPointerCancel={onPhotoPointerUp}
       >
         <motion.div
           ref={photoTrackRef}
@@ -203,6 +205,7 @@ export default function AboutPage() {
             { src: "/persoonlijkefotos/persoonlijkefoto7.jpeg",  position: "50% 50%",  offset: "-mt-10" },
             { src: "/persoonlijkefotos/persoonlijkefoto5.JPG",   position: "50% 50%",  offset: "mt-10" },
             { src: "/persoonlijkefotos/persoonlijkefoto12.jpeg", position: "75% 50%",  offset: "" },
+            { src: "/persoonlijkefotos/persoonlijkefoto13.jpeg", position: "50% 50%",  offset: "-mt-10" },
             { src: "/persoonlijkefotos/persoonlijkefoto6.jpeg",  position: "50% 50%",  offset: "" },
             { src: "/persoonlijkefotos/persoonlijkefoto2.jpeg",  position: "50% 50%",  offset: "-mt-10" },
             { src: "/persoonlijkefotos/persoonlijkefoto11.jpeg", position: "50% 50%",  offset: "" },
@@ -211,6 +214,7 @@ export default function AboutPage() {
             { src: "/persoonlijkefotos/persoonlijkefoto7.jpeg",  position: "50% 50%",  offset: "-mt-10" },
             { src: "/persoonlijkefotos/persoonlijkefoto5.JPG",   position: "50% 50%",  offset: "mt-10" },
             { src: "/persoonlijkefotos/persoonlijkefoto12.jpeg", position: "75% 50%",  offset: "" },
+            { src: "/persoonlijkefotos/persoonlijkefoto13.jpeg", position: "50% 50%",  offset: "-mt-10" },
           ].map((photo, i) => (
             <div key={i} className={`shrink-0 w-[65vw] md:w-[20vw] ${photo.offset}`}>
               <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden cinematic-shadow">

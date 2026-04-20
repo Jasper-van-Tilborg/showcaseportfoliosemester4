@@ -21,8 +21,14 @@ export default function ThemeApplicator() {
       root.style.setProperty("--color-on-surface",         theme.onSurface);
       root.style.setProperty("--color-on-surface-variant", theme.onSurfaceVariant);
       root.style.setProperty("--color-outline-variant",    theme.outlineVariant);
-      root.style.setProperty("--color-surface-tint",              theme.primary);
-      root.style.setProperty("--color-surface-container-lowest",  theme.surfaceContainerLowest);
+      root.style.setProperty("--color-surface-tint",             theme.primary);
+      root.style.setProperty("--color-background",               theme.background);
+      root.style.setProperty("--color-surface",                  theme.background);
+      root.style.setProperty("--color-surface-dim",              theme.background);
+      root.style.setProperty("--color-surface-container-lowest", theme.surfaceContainerLowest);
+      if (theme.surfaceContainerLow)  root.style.setProperty("--color-surface-container-low",  theme.surfaceContainerLow);
+      if (theme.surfaceContainer)     root.style.setProperty("--color-surface-container",      theme.surfaceContainer);
+      if (theme.surfaceContainerHigh) root.style.setProperty("--color-surface-container-high", theme.surfaceContainerHigh);
     } else {
       // Clean up — restore to CSS defaults by removing inline overrides
       [
@@ -34,7 +40,13 @@ export default function ThemeApplicator() {
         "--color-on-surface-variant",
         "--color-outline-variant",
         "--color-surface-tint",
+        "--color-background",
+        "--color-surface",
+        "--color-surface-dim",
         "--color-surface-container-lowest",
+        "--color-surface-container-low",
+        "--color-surface-container",
+        "--color-surface-container-high",
       ].forEach((v) => root.style.removeProperty(v));
     }
   }, [pathname]);
