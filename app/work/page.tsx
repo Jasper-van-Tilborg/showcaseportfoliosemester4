@@ -4,7 +4,7 @@ import Link from "next/link";
 import FadeUp from "@/components/motion/FadeUp";
 import WorkGrid from "@/components/motion/WorkGrid";
 import WorkPageHero from "@/components/motion/WorkPageHero";
-import { projects } from "@/data/projects";
+import { visibleProjects } from "@/data/projects";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function WorkPage() {
@@ -16,7 +16,7 @@ export default function WorkPage() {
       </section>
 
       <section className="max-w-screen-2xl mx-auto px-8 md:px-16">
-        <WorkGrid projects={projects} />
+        <WorkGrid projects={visibleProjects} />
       </section>
 
       <section className="max-w-screen-2xl mx-auto px-8 md:px-16 mt-24">

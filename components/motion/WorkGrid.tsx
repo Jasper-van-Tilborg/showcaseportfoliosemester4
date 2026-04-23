@@ -118,7 +118,7 @@ export default function WorkGrid({ projects }: { projects: Project[] }) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <AnimatePresence mode="popLayout">
           {filtered.map((project, index) => {
-            const isWide = active === "All" && project.slug === "rosh-studios-tournament-editor";
+            const isWide = active === "All" && index === filtered.length - 1;
             const themeVars = project.theme
               ? ({
                   "--color-primary":            project.theme.primary,

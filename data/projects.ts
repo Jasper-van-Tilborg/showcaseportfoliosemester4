@@ -45,6 +45,7 @@ export interface ProjectTheme {
 export interface Project {
   id: number;
   slug: string;
+  hidden?: boolean;
   title: string;
   category: string;
   categories?: string[];
@@ -57,6 +58,9 @@ export interface Project {
   tags: string[];
   coverGradient: string; // CSS gradient string used as cover
   coverImage?: string;  // Optional hero image for cards
+  fullWidthBanner?: string; // Full-bleed image shown at top of project page
+  bannerVideo?: string;        // Ping-pong background video for banner
+  bannerOverlayImage?: string; // Image overlaid on top of bannerVideo
   coverLogos?: string[]; // Multiple logos rendered side by side with × between them
   heroSplit?: { left: string; right: string }; // Split hero gradient: left half / right half
   featured: boolean;
@@ -84,6 +88,7 @@ export const projects: Project[] = [
   {
     id: 1,
     slug: "fioresque",
+    hidden: true,
     title: "Fioresque",
     category: "UI/UX",
     categories: ["UI/UX", "FRONT-END"],
@@ -115,6 +120,8 @@ export const projects: Project[] = [
     tags: ["Next.js", "Tailwind CSS", "Stripe", "Vercel", "GitHub", "Figma", "Supabase"],
     coverGradient: "linear-gradient(135deg, #1E2420 0%, #2D4A35 50%, #4A7A56 100%)",
     coverImage: "/fioresque_logo.png",
+    bannerVideo: "/fioresque/junglebackground.mp4",
+    bannerOverlayImage: "/fioresque/tshirtdesign.png",
     featured: true,
     links: { live: "https://fioresque.vercel.app", github: "https://github.com/Jasper-van-Tilborg/fioresque" },
     metadata: {
@@ -168,6 +175,7 @@ export const projects: Project[] = [
   {
     id: 2,
     slug: "vara-media-agency",
+    hidden: true,
     title: "Virtual Production Marketing",
     category: "BRANDING",
     categories: ["BRANDING", "UI/UX"],
@@ -248,91 +256,6 @@ export const projects: Project[] = [
           },
         ],
       },
-    },
-  },
-  {
-    id: 3,
-    slug: "rosh-studios-tournament-editor",
-    title: "Tournament Editor",
-    category: "FULL-STACK",
-    year: "2025",
-    status: "completed",
-    tagline: "AI-gestuurde toernooipagina's voor Twitch-kijkers.",
-    shortDescription: "Een customizable online toernooitool gebouwd voor Rosh Studios, gericht op kijkersengagement rondom Twitch-toernooien.",
-    description:
-      "Een customizable online toernooitool gebouwd voor Rosh Studios, gericht op kijkersengagement rondom Twitch-toernooien. De tool stelt een admin in staat om toernooipagina's te genereren, bewerken en beheren via een AI-gestuurde wizard en live editor.",
-    sections: [
-      {
-        heading: "De uitdaging",
-        body: "Rosh Studios maakte eerder gebruik van Challonge voor het beheren van toernooien. Hoewel functioneel, bood het platform nauwelijks mogelijkheden om de uitstraling aan te passen aan de Rosh Studios-branding. De uitdaging: een tool bouwen die wél volledig customisable is, zonder dat de beheerder technische kennis nodig heeft.",
-        media: { type: "image", src: "/roshproject/challongetoernooipage_rosh.png" },
-      },
-      {
-        heading: "AI Wizard",
-        body: "De kern van de tool is een wizard-flow die gebruikersinput omzet in een Claude-prompt. Claude genereert vervolgens een volledige toernooipagina in HTML, CSS en JavaScript, op maat en binnen seconden.",
-        media: { type: "video", src: "/roshproject/rosh_project_poc.mp4" },
-      },
-      {
-        heading: "Live editor & dashboard",
-        body: "Na generatie kunnen pagina's component voor component bewerkt worden via een live editor. Data wordt opgeslagen in Supabase. Het dashboard biedt overzicht van alle pagina's, publicatie via eigen slugs en Twitch-integratie.",
-        media: { type: "image", src: "/roshproject/customeditorpagina_rosh.png" },
-      },
-    ],
-    gallery: [
-      "/roshproject/dashboardpage_rosh.png",
-      "/roshproject/toernooibeherenpage_rosh.png",
-      "/roshproject/loginpage_rosh.png",
-    ],
-    tags: ["Next.js", "React", "Supabase", "Claude API", "Tailwind CSS", "Vercel", "Groepsproject"],
-    links: {
-      live: "https://roshproject.vercel.app",
-      github: "https://github.com/Jasper-van-Tilborg/roshproject",
-    },
-    coverGradient: "linear-gradient(135deg, #111827 0%, #1A2335 50%, #482CFF 100%)",
-    coverImage: "/rosh_studios_logo.svg",
-    featured: true,
-    metadata: {
-      duration: "Semester 3, Front-end Development",
-      role: "Full-stack Developer",
-    },
-    theme: {
-      background:             "#111827",
-      primary:                "#482CFF",
-      primaryContainer:       "#420AB2",
-      onPrimary:              "#F2F1EF",
-      onSurface:              "#F2F1EF",
-      onSurfaceVariant:       "#8B9EB8",
-      outlineVariant:         "#2D3E5A",
-      surfaceContainerLowest: "#0D1420",
-    },
-    i18n: {
-      en: {
-        tagline: "AI-powered tournament pages for Twitch audiences.",
-        shortDescription: "A customizable online tournament tool built for Rosh Studios, focused on viewer engagement around Twitch tournaments.",
-        description:
-          "A customizable online tournament tool built for Rosh Studios, focused on viewer engagement around Twitch tournaments. The tool allows an admin to generate, edit, and manage tournament pages via an AI-powered wizard and live editor.",
-        sections: [
-          {
-            heading: "The challenge",
-            body: "Rosh Studios previously used Challonge to manage their tournaments. While functional, the platform offered little flexibility to match the Rosh Studios branding. The challenge: build a tool that is fully customisable, without requiring any technical knowledge from the admin.",
-            media: { type: "image", src: "/roshproject/challongetoernooipage_rosh.png" },
-          },
-          {
-            heading: "AI Wizard",
-            body: "The core of the tool is a wizard flow that converts user input into a Claude prompt. Claude then generates a complete tournament page in HTML, CSS and JavaScript, custom and within seconds.",
-            media: { type: "video", src: "/roshproject/rosh_project_poc.mp4" },
-          },
-          {
-            heading: "Live editor & dashboard",
-            body: "After generation, pages can be edited component by component via a live editor. Data is stored in Supabase. The dashboard provides an overview of all pages, publication via custom slugs and Twitch integration.",
-            media: { type: "image", src: "/roshproject/customeditorpagina_rosh.png" },
-          },
-        ],
-      },
-    },
-    discontinued: {
-      nl: "Dit project is stilgelegd. De tool maakt gebruik van de Claude AI API, waarvoor credits nodig zijn die momenteel niet meer beschikbaar zijn. De applicatie is daardoor niet meer functioneel.",
-      en: "This project has been discontinued. The tool relies on the Claude AI API, which requires credits that are no longer available. As a result, the application is no longer functional.",
     },
   },
   {
@@ -479,9 +402,95 @@ export const projects: Project[] = [
       },
     },
   },
+  {
+    id: 3,
+    slug: "rosh-studios-tournament-editor",
+    title: "Tournament Editor",
+    category: "FULL-STACK",
+    year: "2025",
+    status: "completed",
+    tagline: "AI-gestuurde toernooipagina's voor Twitch-kijkers.",
+    shortDescription: "Een customizable online toernooitool gebouwd voor Rosh Studios, gericht op kijkersengagement rondom Twitch-toernooien.",
+    description:
+      "Een customizable online toernooitool gebouwd voor Rosh Studios, gericht op kijkersengagement rondom Twitch-toernooien. De tool stelt een admin in staat om toernooipagina's te genereren, bewerken en beheren via een AI-gestuurde wizard en live editor.",
+    sections: [
+      {
+        heading: "De uitdaging",
+        body: "Rosh Studios maakte eerder gebruik van Challonge voor het beheren van toernooien. Hoewel functioneel, bood het platform nauwelijks mogelijkheden om de uitstraling aan te passen aan de Rosh Studios-branding. De uitdaging: een tool bouwen die wél volledig customisable is, zonder dat de beheerder technische kennis nodig heeft.",
+        media: { type: "image", src: "/roshproject/challongetoernooipage_rosh.png" },
+      },
+      {
+        heading: "AI Wizard",
+        body: "De kern van de tool is een wizard-flow die gebruikersinput omzet in een Claude-prompt. Claude genereert vervolgens een volledige toernooipagina in HTML, CSS en JavaScript, op maat en binnen seconden.",
+        media: { type: "video", src: "/roshproject/rosh_project_poc.mp4" },
+      },
+      {
+        heading: "Live editor & dashboard",
+        body: "Na generatie kunnen pagina's component voor component bewerkt worden via een live editor. Data wordt opgeslagen in Supabase. Het dashboard biedt overzicht van alle pagina's, publicatie via eigen slugs en Twitch-integratie.",
+        media: { type: "image", src: "/roshproject/customeditorpagina_rosh.png" },
+      },
+    ],
+    gallery: [
+      "/roshproject/dashboardpage_rosh.png",
+      "/roshproject/toernooibeherenpage_rosh.png",
+      "/roshproject/loginpage_rosh.png",
+    ],
+    tags: ["Next.js", "React", "Supabase", "Claude API", "Tailwind CSS", "Vercel", "Groepsproject"],
+    links: {
+      live: "https://roshproject.vercel.app",
+      github: "https://github.com/Jasper-van-Tilborg/roshproject",
+    },
+    coverGradient: "linear-gradient(135deg, #111827 0%, #1A2335 50%, #482CFF 100%)",
+    coverImage: "/rosh_studios_logo.svg",
+    featured: true,
+    metadata: {
+      duration: "Semester 3, Front-end Development",
+      role: "Full-stack Developer",
+    },
+    theme: {
+      background:             "#111827",
+      primary:                "#482CFF",
+      primaryContainer:       "#420AB2",
+      onPrimary:              "#F2F1EF",
+      onSurface:              "#F2F1EF",
+      onSurfaceVariant:       "#8B9EB8",
+      outlineVariant:         "#2D3E5A",
+      surfaceContainerLowest: "#0D1420",
+    },
+    i18n: {
+      en: {
+        tagline: "AI-powered tournament pages for Twitch audiences.",
+        shortDescription: "A customizable online tournament tool built for Rosh Studios, focused on viewer engagement around Twitch tournaments.",
+        description:
+          "A customizable online tournament tool built for Rosh Studios, focused on viewer engagement around Twitch tournaments. The tool allows an admin to generate, edit, and manage tournament pages via an AI-powered wizard and live editor.",
+        sections: [
+          {
+            heading: "The challenge",
+            body: "Rosh Studios previously used Challonge to manage their tournaments. While functional, the platform offered little flexibility to match the Rosh Studios branding. The challenge: build a tool that is fully customisable, without requiring any technical knowledge from the admin.",
+            media: { type: "image", src: "/roshproject/challongetoernooipage_rosh.png" },
+          },
+          {
+            heading: "AI Wizard",
+            body: "The core of the tool is a wizard flow that converts user input into a Claude prompt. Claude then generates a complete tournament page in HTML, CSS and JavaScript, custom and within seconds.",
+            media: { type: "video", src: "/roshproject/rosh_project_poc.mp4" },
+          },
+          {
+            heading: "Live editor & dashboard",
+            body: "After generation, pages can be edited component by component via a live editor. Data is stored in Supabase. The dashboard provides an overview of all pages, publication via custom slugs and Twitch integration.",
+            media: { type: "image", src: "/roshproject/customeditorpagina_rosh.png" },
+          },
+        ],
+      },
+    },
+    discontinued: {
+      nl: "Dit project is stilgelegd. De tool maakt gebruik van de Claude AI API, waarvoor credits nodig zijn die momenteel niet meer beschikbaar zijn. De applicatie is daardoor niet meer functioneel.",
+      en: "This project has been discontinued. The tool relies on the Claude AI API, which requires credits that are no longer available. As a result, the application is no longer functional.",
+    },
+  },
 ];
 
-export const featuredProjects = projects.filter((p) => p.featured);
+export const visibleProjects = projects.filter((p) => !p.hidden);
+export const featuredProjects = visibleProjects.filter((p) => p.featured);
 
 export function getProjectBySlug(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);

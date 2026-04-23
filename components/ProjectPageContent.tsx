@@ -1,17 +1,205 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import Icon from "@/components/Icon";
-import LightPillar from "@/components/LightPillar";
 import MountReveal from "@/components/motion/MountReveal";
 import FadeUp from "@/components/motion/FadeUp";
 import type { Project } from "@/data/projects";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const ease = [0.16, 1, 0.3, 1] as const;
+
+function Leaf({ cx, cy, rx, ry, rotate, fill, opacity = 1 }: { cx: number; cy: number; rx: number; ry: number; rotate: number; fill: string; opacity?: number }) {
+  return (
+    <ellipse
+      cx={cx} cy={cy} rx={rx} ry={ry}
+      transform={`rotate(${rotate} ${cx} ${cy})`}
+      fill={fill} opacity={opacity}
+    />
+  );
+}
+
+function VineOverlay() {
+  return (
+    <svg
+      className="absolute left-0 w-full pointer-events-none z-10"
+      style={{ top: "-18%", height: "136%" }}
+      viewBox="0 0 1600 1224"
+      preserveAspectRatio="xMidYMid slice"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <style>{`
+        @keyframes sway-l  { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(3deg)} }
+        @keyframes sway-r  { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(-3deg)} }
+        @keyframes sway-s  { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(1.5deg)} }
+        .vl  { transform-origin:0px 162px;    animation:sway-l 5.2s ease-in-out infinite; }
+        .vr  { transform-origin:1600px 162px; animation:sway-r 4.8s ease-in-out infinite; }
+        .vl2 { transform-origin:0px 162px;    animation:sway-l 6.4s ease-in-out infinite 1.1s; }
+        .vr2 { transform-origin:1600px 162px; animation:sway-r 5.9s ease-in-out infinite 0.7s; }
+        .vbl { transform-origin:0px 1062px;   animation:sway-s 6.1s ease-in-out infinite 0.8s; }
+        .vbr { transform-origin:1600px 1062px;animation:sway-s 5.7s ease-in-out infinite 1.4s; }
+      `}</style>
+
+      {/* ── Top-left main vine ── */}
+      <g className="vl">
+        <path d="M -60 20 C 120 180 80 360 260 480 C 380 560 340 680 220 780 C 140 840 160 940 80 1020" stroke="#1a4a0e" strokeWidth="7" fill="none" strokeLinecap="round"/>
+        <path d="M 160 340 C 260 300 400 330 500 295" stroke="#1a4a0e" strokeWidth="4" fill="none" strokeLinecap="round"/>
+        <path d="M 240 500 C 340 465 460 490 560 455" stroke="#1a4a0e" strokeWidth="4" fill="none" strokeLinecap="round"/>
+        <path d="M 100 640 C 60 700 80 780 30 840" stroke="#1a4a0e" strokeWidth="3.5" fill="none" strokeLinecap="round"/>
+        <path d="M 200 760 C 300 720 400 745 480 710" stroke="#1a4a0e" strokeWidth="3.5" fill="none" strokeLinecap="round"/>
+        <Leaf cx={40}   cy={120} rx={70} ry={30} rotate={-50} fill="#2d6e18" opacity={0.97}/>
+        <Leaf cx={130}  cy={240} rx={78} ry={34} rotate={25}  fill="#3a7f20" opacity={0.93}/>
+        <Leaf cx={60}   cy={370} rx={65} ry={28} rotate={-32} fill="#265c14" opacity={0.95}/>
+        <Leaf cx={220}  cy={460} rx={82} ry={36} rotate={42}  fill="#347018" opacity={0.90}/>
+        <Leaf cx={160}  cy={580} rx={70} ry={30} rotate={-18} fill="#3a7f20" opacity={0.87}/>
+        <Leaf cx={100}  cy={700} rx={60} ry={26} rotate={-44} fill="#265c14" opacity={0.84}/>
+        <Leaf cx={180}  cy={820} rx={65} ry={28} rotate={20}  fill="#2d6e18" opacity={0.80}/>
+        <Leaf cx={370}  cy={305} rx={58} ry={24} rotate={-14} fill="#3a7f20" opacity={0.88}/>
+        <Leaf cx={480}  cy={290} rx={52} ry={22} rotate={22}  fill="#2d6e18" opacity={0.82}/>
+        <Leaf cx={440}  cy={465} rx={56} ry={23} rotate={-8}  fill="#3a7f20" opacity={0.85}/>
+        <Leaf cx={370}  cy={725} rx={54} ry={23} rotate={16}  fill="#2d6e18" opacity={0.80}/>
+        <Leaf cx={25}   cy={870} rx={48} ry={20} rotate={-38} fill="#265c14" opacity={0.78}/>
+      </g>
+
+      {/* ── Top-left secondary vine ── */}
+      <g className="vl2">
+        <path d="M 20 -40 C 180 80 140 200 300 300 C 420 375 380 480 260 560" stroke="#1e5510" strokeWidth="5" fill="none" strokeLinecap="round"/>
+        <Leaf cx={160} cy={120} rx={60} ry={26} rotate={30}  fill="#316618" opacity={0.88}/>
+        <Leaf cx={280} cy={290} rx={66} ry={28} rotate={-22} fill="#3a7f20" opacity={0.85}/>
+        <Leaf cx={220} cy={430} rx={58} ry={24} rotate={15}  fill="#265c14" opacity={0.82}/>
+      </g>
+
+      {/* ── Top-right main vine ── */}
+      <g className="vr">
+        <path d="M 1660 20 C 1480 180 1520 360 1340 480 C 1220 560 1260 680 1380 780 C 1460 840 1440 940 1520 1020" stroke="#1a4a0e" strokeWidth="7" fill="none" strokeLinecap="round"/>
+        <path d="M 1440 340 C 1340 300 1200 330 1100 295" stroke="#1a4a0e" strokeWidth="4" fill="none" strokeLinecap="round"/>
+        <path d="M 1360 500 C 1260 465 1140 490 1040 455" stroke="#1a4a0e" strokeWidth="4" fill="none" strokeLinecap="round"/>
+        <path d="M 1500 640 C 1540 700 1520 780 1570 840" stroke="#1a4a0e" strokeWidth="3.5" fill="none" strokeLinecap="round"/>
+        <path d="M 1400 760 C 1300 720 1200 745 1120 710" stroke="#1a4a0e" strokeWidth="3.5" fill="none" strokeLinecap="round"/>
+        <Leaf cx={1560} cy={120} rx={70} ry={30} rotate={50}  fill="#2d6e18" opacity={0.97}/>
+        <Leaf cx={1470} cy={240} rx={78} ry={34} rotate={-25} fill="#3a7f20" opacity={0.93}/>
+        <Leaf cx={1540} cy={370} rx={65} ry={28} rotate={32}  fill="#265c14" opacity={0.95}/>
+        <Leaf cx={1380} cy={460} rx={82} ry={36} rotate={-42} fill="#347018" opacity={0.90}/>
+        <Leaf cx={1440} cy={580} rx={70} ry={30} rotate={18}  fill="#3a7f20" opacity={0.87}/>
+        <Leaf cx={1500} cy={700} rx={60} ry={26} rotate={44}  fill="#265c14" opacity={0.84}/>
+        <Leaf cx={1420} cy={820} rx={65} ry={28} rotate={-20} fill="#2d6e18" opacity={0.80}/>
+        <Leaf cx={1230} cy={305} rx={58} ry={24} rotate={14}  fill="#3a7f20" opacity={0.88}/>
+        <Leaf cx={1120} cy={290} rx={52} ry={22} rotate={-22} fill="#2d6e18" opacity={0.82}/>
+        <Leaf cx={1160} cy={465} rx={56} ry={23} rotate={8}   fill="#3a7f20" opacity={0.85}/>
+        <Leaf cx={1230} cy={725} rx={54} ry={23} rotate={-16} fill="#2d6e18" opacity={0.80}/>
+        <Leaf cx={1575} cy={870} rx={48} ry={20} rotate={38}  fill="#265c14" opacity={0.78}/>
+      </g>
+
+      {/* ── Top-right secondary vine ── */}
+      <g className="vr2">
+        <path d="M 1580 -40 C 1420 80 1460 200 1300 300 C 1180 375 1220 480 1340 560" stroke="#1e5510" strokeWidth="5" fill="none" strokeLinecap="round"/>
+        <Leaf cx={1440} cy={120} rx={60} ry={26} rotate={-30} fill="#316618" opacity={0.88}/>
+        <Leaf cx={1320} cy={290} rx={66} ry={28} rotate={22}  fill="#3a7f20" opacity={0.85}/>
+        <Leaf cx={1380} cy={430} rx={58} ry={24} rotate={-15} fill="#265c14" opacity={0.82}/>
+      </g>
+
+      {/* ── Bottom-left ── */}
+      <g className="vbl">
+        <path d="M -40 1204 C 140 1060 120 960 300 900 C 420 855 460 780 380 700" stroke="#1a4a0e" strokeWidth="6" fill="none" strokeLinecap="round"/>
+        <path d="M 200 980 C 320 940 440 960 540 920" stroke="#1a4a0e" strokeWidth="3.5" fill="none" strokeLinecap="round"/>
+        <Leaf cx={60}  cy={1110} rx={68} ry={30} rotate={40}  fill="#2d6e18" opacity={0.92}/>
+        <Leaf cx={180} cy={1010} rx={72} ry={32} rotate={-22} fill="#3a7f20" opacity={0.88}/>
+        <Leaf cx={280} cy={920}  rx={64} ry={28} rotate={15}  fill="#265c14" opacity={0.85}/>
+        <Leaf cx={360} cy={740}  rx={60} ry={26} rotate={-30} fill="#347018" opacity={0.80}/>
+        <Leaf cx={420} cy={935}  rx={56} ry={24} rotate={10}  fill="#3a7f20" opacity={0.82}/>
+        <Leaf cx={510} cy={910}  rx={50} ry={22} rotate={-18} fill="#2d6e18" opacity={0.78}/>
+      </g>
+
+      {/* ── Bottom-right ── */}
+      <g className="vbr">
+        <path d="M 1640 1204 C 1460 1060 1480 960 1300 900 C 1180 855 1140 780 1220 700" stroke="#1a4a0e" strokeWidth="6" fill="none" strokeLinecap="round"/>
+        <path d="M 1400 980 C 1280 940 1160 960 1060 920" stroke="#1a4a0e" strokeWidth="3.5" fill="none" strokeLinecap="round"/>
+        <Leaf cx={1540} cy={1110} rx={68} ry={30} rotate={-40} fill="#2d6e18" opacity={0.92}/>
+        <Leaf cx={1420} cy={1010} rx={72} ry={32} rotate={22}  fill="#3a7f20" opacity={0.88}/>
+        <Leaf cx={1320} cy={920}  rx={64} ry={28} rotate={-15} fill="#265c14" opacity={0.85}/>
+        <Leaf cx={1240} cy={740}  rx={60} ry={26} rotate={30}  fill="#347018" opacity={0.80}/>
+        <Leaf cx={1180} cy={935}  rx={56} ry={24} rotate={-10} fill="#3a7f20" opacity={0.82}/>
+        <Leaf cx={1090} cy={910}  rx={50} ry={22} rotate={18}  fill="#2d6e18" opacity={0.78}/>
+      </g>
+    </svg>
+  );
+}
+
+function PingPongBanner({ video, overlay }: { video: string; overlay?: string }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el) return;
+
+    let rafId: number | null = null;
+    let direction = 1;
+    let lastTimestamp = 0;
+
+    const tick = (timestamp: number) => {
+      const delta = lastTimestamp ? (timestamp - lastTimestamp) / 1000 : 0;
+      lastTimestamp = timestamp;
+
+      let t = el.currentTime + direction * delta;
+
+      if (t >= el.duration) {
+        t = el.duration;
+        direction = -1;
+      } else if (t <= 0) {
+        t = 0;
+        direction = 1;
+      }
+
+      el.currentTime = t;
+      rafId = requestAnimationFrame(tick);
+    };
+
+    const start = () => {
+      el.pause();
+      el.currentTime = 0;
+      lastTimestamp = 0;
+      rafId = requestAnimationFrame(tick);
+    };
+
+    if (el.readyState >= 1) {
+      start();
+    } else {
+      el.addEventListener("loadedmetadata", start, { once: true });
+    }
+
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, []);
+
+  return (
+    <div className="relative w-full" style={{ height: "80vh" }}>
+      {/* Video clipped to section bounds */}
+      <div className="absolute inset-0 overflow-hidden">
+        <video
+          ref={videoRef}
+          src={video}
+          autoPlay
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      </div>
+      {overlay && (
+        <div className="absolute inset-0 flex items-center justify-center z-20">
+          <div className="relative w-1/2 max-w-lg aspect-square">
+            <Image src={overlay} alt="" fill className="object-contain drop-shadow-2xl" />
+          </div>
+        </div>
+      )}
+      {/* Vines bleed 18% above and below the section */}
+      <VineOverlay />
+    </div>
+  );
+}
 
 const tagTranslations: Record<string, { nl: string; en: string }> = {
   "Groepsproject": { nl: "Groepsproject", en: "Group project" },
@@ -310,21 +498,6 @@ export default function ProjectPageContent({ project, nextProject, prevProject }
             <div className="absolute inset-0" style={{ background: project.heroSplit.left, clipPath: "inset(0 50% 0 0)" }} />
             {/* Right half */}
             <div className="absolute inset-0" style={{ background: project.heroSplit.right, clipPath: "inset(0 0 0 50%)" }} />
-
-            {/* LightPillar — screen blend: zwarte gebieden zijn transparant, glow addt op de achtergrond */}
-            <LightPillar
-              topColor="#246BF6"
-              bottomColor="#7B2D8B"
-              intensity={2.5}
-              rotationSpeed={0.2}
-              glowAmount={0.018}
-              pillarWidth={1.6}
-              pillarHeight={0.45}
-              noiseIntensity={0.2}
-              pillarRotation={0}
-              mixBlendMode="screen"
-              className="inset-0 w-full"
-            />
           </>
         ) : (
           <div className="absolute inset-0" style={{ background: gradient }} />
@@ -405,6 +578,17 @@ export default function ProjectPageContent({ project, nextProject, prevProject }
           </MountReveal>
         </div>
       </section>
+
+      {/* ── Full-width banner ────────────────────────────────── */}
+      {project.fullWidthBanner && (
+        <div className="w-full overflow-hidden">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={project.fullWidthBanner} alt="" className="w-full h-auto block" />
+        </div>
+      )}
+      {project.bannerVideo && (
+        <PingPongBanner video={project.bannerVideo} overlay={project.bannerOverlayImage} />
+      )}
 
       {/* ── Intro + Metadata ─────────────────────────────────── */}
       <section className="max-w-screen-2xl mx-auto px-8 md:px-16 pt-16 pb-16">
