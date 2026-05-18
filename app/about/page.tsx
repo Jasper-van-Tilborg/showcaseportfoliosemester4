@@ -152,6 +152,7 @@ export default function AboutPage() {
 
   const activeProjects = activeTool
     ? projects.filter((p) =>
+        !p.hidden &&
         p.tags.some((tag) =>
           toolTagMap[activeTool]?.some((kw) => tag.toLowerCase().includes(kw))
         )

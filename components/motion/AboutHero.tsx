@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 import Icon from "@/components/Icon";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -51,7 +52,7 @@ export default function AboutHero() {
             <Icon name="arrow_forward" />
           </Link>
           <a
-            href="/cv.html"
+            href="/cv/cv_jasper_van_tilborg.pdf"
             target="_blank"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-headline font-bold border border-primary/40 text-primary hover:bg-primary hover:text-on-primary-fixed transition-all duration-300 uppercase tracking-widest text-sm"
           >
@@ -69,14 +70,15 @@ export default function AboutHero() {
         className="lg:col-span-7 order-1 lg:order-2"
       >
         <div className="relative aspect-[4/5] w-full max-h-[45vh] md:max-h-[72vh] overflow-hidden rounded-2xl glass-card cinematic-shadow">
-          <div className="w-full h-full bg-gradient-to-b from-surface-container-high via-surface-container to-surface-container-lowest" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(255,92,0,0.12),transparent_60%)]" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-60" />
-          <div className="absolute bottom-8 left-8">
-            <p className="font-headline text-4xl md:text-6xl font-bold text-on-surface/10 tracking-tighter uppercase leading-none">
-              JVT
-            </p>
-          </div>
+          <Image
+            src="/persoonlijkefotos/persoonlijkefoto7.jpeg"
+            alt="Jasper van Tilborg"
+            fill
+            quality={90}
+            className="object-cover object-top"
+            sizes="(max-width: 1024px) 100vw, 58vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
         </div>
       </motion.div>
     </section>

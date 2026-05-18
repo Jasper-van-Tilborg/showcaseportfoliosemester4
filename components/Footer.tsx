@@ -11,7 +11,6 @@ export default function Footer() {
     { label: t.footer.work,    href: "/work" },
     { label: t.footer.about,   href: "/about" },
     { label: t.footer.contact, href: "/contact" },
-    { label: "LinkedIn",       href: "https://linkedin.com", external: true },
   ];
 
   return (
@@ -36,12 +35,10 @@ export default function Footer() {
 
         {/* Links */}
         <div className="flex flex-wrap gap-8 justify-center">
-          {links.map(({ label, href, external }) => (
+          {links.map(({ label, href }) => (
             <Link
               key={label}
               href={href}
-              target={external ? "_blank" : undefined}
-              rel={external ? "noopener noreferrer" : undefined}
               className="font-headline text-[11px] font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300"
             >
               {label}

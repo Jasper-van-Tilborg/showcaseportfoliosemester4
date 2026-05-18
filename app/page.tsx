@@ -49,7 +49,7 @@ export default function HomePage() {
               />
             </div>
             <div className="absolute -bottom-4 -right-2 md:-bottom-6 md:-right-8 glass-panel p-4 md:p-6 rounded-2xl border border-primary/20 cinematic-shadow">
-              <span className="text-primary font-headline text-3xl md:text-4xl font-bold italic">5+</span>
+              <span className="text-primary font-headline text-3xl md:text-4xl font-bold italic">3</span>
               <p className="text-[10px] tracking-widest uppercase text-on-surface-variant mt-1 font-bold font-label">
                 {t.home.projects}
               </p>
