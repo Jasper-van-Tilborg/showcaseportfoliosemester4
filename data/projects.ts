@@ -18,6 +18,7 @@ export interface ProjectSection {
     src: string;
     poster?: string;
   };
+  carousel?: string[]; // multiple images shown as a carousel
 }
 
 export interface ProjectI18n {
@@ -82,6 +83,7 @@ export interface Project {
     nl: string;
     en: string;
   };
+  disableLightbox?: boolean;
 }
 
 export const projects: Project[] = [
@@ -397,6 +399,108 @@ export const projects: Project[] = [
               src: "https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/QbTLSUu7nLg4ucJ7FT0cOQ/Quality-Lodgings?node-id=32-386&p=f&scaling=scale-down-width&content-scaling=fixed&starting-point-node-id=32%3A386&page-id=0%3A1",
               poster: "/qualitylodgings/qualitylodgingsposter.png",
             },
+          },
+        ],
+      },
+    },
+  },
+  {
+    id: 6,
+    slug: "popkoordivers",
+    hidden: true,
+    title: "Popkoor Divers",
+    category: "FULL-STACK",
+    categories: ["FULL-STACK", "UI/UX"],
+    year: "2026",
+    status: "in-progress",
+    tagline: "Volledige website redesign & custom CMS voor een actief popkoor.",
+    shortDescription: "Een complete redesign en rebuild van de bestaande WordPress website van Popkoor Divers, van een verouderde omgeving naar een volledig custom Next.js platform met ingebouwd admin systeem, ledenomgeving en cloudopslag.",
+    description:
+      "Een complete redesign en rebuild van de bestaande WordPress website van Popkoor Divers, een actief popkoor uit Gilze met 60 stemmen. Van een verouderde WordPress omgeving naar een volledig custom Next.js platform met ingebouwd admin systeem, ledenomgeving en cloudopslag.",
+    sections: [
+      {
+        heading: "De uitdaging",
+        body: "De bestaande website was gebouwd op WordPress en voelde verouderd aan. Geen duidelijke structuur, alles door elkaar, en geen prettige beheerervaring voor het bestuur. Het doel: een moderne, professionele site die nieuwe leden trekt én het bestuur zelfstandig laat beheren.",
+        media: { type: "image", src: "/popkoordivers/Screenshot 2026-06-01 101041.png" },
+      },
+      {
+        heading: "Ontwerp & strategie",
+        body: "Vanuit een stakeholdersgesprek zijn de wensen en eisen opgehaald. Op basis daarvan heb ik de volledige visuele stijl van de website opgebouwd, van kleurenpalet en typografie tot de volledige pagina-indeling en componentstructuur.",
+        carousel: [
+          "/popkoordivers/Screenshot 2026-06-01 101222.png",
+          "/popkoordivers/Screenshot 2026-06-01 101247.png",
+          "/popkoordivers/Screenshot 2026-06-01 101259.png",
+          "/popkoordivers/Screenshot 2026-06-01 101314.png",
+          "/popkoordivers/Screenshot 2026-06-01 101345.png",
+        ],
+      },
+      {
+        heading: "Ledenomgeving & CMS",
+        body: "Naast de publieke website is er een beveiligde ledenomgeving gebouwd waar leden inloggen om liedjes per stemgroep, nieuwsbrieven en opnames te bekijken. Bestanden worden opgeslagen in cloudopslag, goedkoper en schaalbaarder dan de oude WordPress filebase. Admins hebben extra rechten om agenda, nieuws, bestanden en sponsorlinks te beheren, volledig zonder WordPress of externe plugins.",
+        carousel: [
+          "/popkoordivers/Screenshot 2026-06-01 102207.png",
+          "/popkoordivers/Screenshot 2026-06-01 102237.png",
+        ],
+      },
+    ],
+    disableLightbox: true,
+    tags: ["Next.js", "React", "Tailwind CSS", "Supabase", "Cloudflare R2", "Vercel"],
+    coverGradient: "linear-gradient(135deg, #1a0a04 0%, #3d1808 55%, #F36A2A 100%)",
+    coverImage: "/popkoordivers/logo_popkoor_divers.svg",
+    featured: true,
+    metadata: {
+      duration: "Semester 4",
+      teamSize: 1,
+      role: "Full-stack Designer & Developer",
+      course: "Semester 4, Front-end Development",
+    },
+    theme: {
+      background:             "#0f0804",
+      primary:                "#F36A2A",
+      primaryContainer:       "#d4561e",
+      onPrimary:              "#ffffff",
+      onSurface:              "#FFF8F4",
+      onSurfaceVariant:       "#f8956a",
+      outlineVariant:         "#3d1a08",
+      surfaceContainerLowest: "#080402",
+      surfaceContainerLow:    "#1a0c06",
+      surfaceContainer:       "#2d1408",
+      surfaceContainerHigh:   "#3d1e10",
+      fontHighlights: {
+        "Syne":    "'Syne', sans-serif",
+        "Manrope": "'Manrope', sans-serif",
+      },
+    },
+    i18n: {
+      en: {
+        tagline: "Full website redesign & custom CMS for an active choir.",
+        shortDescription: "A complete redesign and rebuild of the existing WordPress website of Popkoor Divers, from an outdated environment to a fully custom Next.js platform with a built-in admin system, member area and cloud storage.",
+        description:
+          "A complete redesign and rebuild of the existing WordPress website of Popkoor Divers, an active choir from Gilze with 60 voices. From an outdated WordPress environment to a fully custom Next.js platform with a built-in admin system, member area and cloud storage.",
+        sections: [
+          {
+            heading: "The challenge",
+            body: "The existing website was built on WordPress and felt outdated. No clear structure, everything mixed together, and no pleasant management experience for the board. The goal: a modern, professional site that attracts new members and lets the board manage it independently.",
+            media: { type: "image", src: "/popkoordivers/Screenshot 2026-06-01 101041.png" },
+          },
+          {
+            heading: "Design & strategy",
+            body: "From a stakeholder conversation, wishes and requirements were gathered. Based on that, I built the complete visual style of the website, from colour palette and typography to the full page layout and component structure.",
+            carousel: [
+          "/popkoordivers/Screenshot 2026-06-01 101222.png",
+          "/popkoordivers/Screenshot 2026-06-01 101247.png",
+          "/popkoordivers/Screenshot 2026-06-01 101259.png",
+          "/popkoordivers/Screenshot 2026-06-01 101314.png",
+          "/popkoordivers/Screenshot 2026-06-01 101345.png",
+        ],
+          },
+          {
+            heading: "Member area & CMS",
+            body: "Alongside the public website, a secured member area was built where members log in to view songs per voice group, newsletters and recordings. Files are stored in cloud storage, cheaper and more scalable than the old WordPress filebase. Admins have extra permissions to manage the agenda, news, files and sponsor links, completely without WordPress or external plugins.",
+            carousel: [
+              "/popkoordivers/Screenshot 2026-06-01 102207.png",
+              "/popkoordivers/Screenshot 2026-06-01 102237.png",
+            ],
           },
         ],
       },

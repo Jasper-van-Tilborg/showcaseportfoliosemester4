@@ -86,7 +86,7 @@ export const translations = {
         {
           title: "MEDIA",
           subtitle: "CREATIE",
-          description: "In semester 4 doe ik Social Media Marketing via Media Creation op Fontys. Een nieuw onderdeel van mijn skillset, maar niet de richting waar ik mijn carrière in zie gaan.",
+          description: "In semester 4 doe ik Social Media Marketing via Media Creation op Fontys. Een nieuw onderdeel van mijn skillset dat me een bredere kijk geeft op digitale communicatie, naast mijn focus op front-end development.",
         },
       ],
       education: [
@@ -218,7 +218,7 @@ export const translations = {
         {
           title: "MEDIA",
           subtitle: "CREATION",
-          description: "In semester 4 I'm doing Social Media Marketing through Media Creation at Fontys. A new part of my skillset, but not the direction I see my career heading in.",
+          description: "In semester 4 I'm doing Social Media Marketing through Media Creation at Fontys. A new area of my skillset that broadened my view on digital communication, alongside my focus on front-end development.",
         },
       ],
       education: [

@@ -398,6 +398,57 @@ function FigmaEmbed({
   );
 }
 
+function SectionCarousel({
+  images,
+  aspect = "aspect-[4/3]",
+  className = "",
+  onImageClick,
+}: {
+  images: string[];
+  aspect?: string;
+  className?: string;
+  onImageClick?: (src: string) => void;
+}) {
+  const [current, setCurrent] = useState(0);
+  const [direction, setDirection] = useState(1);
+  const isInitial = useRef(true);
+
+  useEffect(() => {
+    if (images.length <= 1) return;
+    const id = setInterval(() => {
+      isInitial.current = false;
+      setDirection(1);
+      setCurrent((i) => (i + 1) % images.length);
+    }, 5000);
+    return () => clearInterval(id);
+  }, [images.length]);
+
+  return (
+    <div className={`group relative w-full rounded-2xl overflow-hidden ${aspect} ${className}`}>
+      <AnimatePresence mode="sync" custom={direction}>
+        <motion.div
+          key={current}
+          custom={direction}
+          initial={isInitial.current ? false : { x: direction > 0 ? "100%" : "-100%" }}
+          animate={{ x: 0 }}
+          exit={{ x: direction > 0 ? "-100%" : "100%" }}
+          transition={{ duration: 2, ease: [0.76, 0, 0.24, 1] }}
+          className="absolute inset-0"
+          onClick={() => onImageClick?.(images[current])}
+        >
+          <Image src={images[current]} alt="" fill className="object-cover" />
+          {onImageClick && (
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center cursor-pointer">
+              <Icon name="open_in_full" className="text-white text-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </div>
+          )}
+        </motion.div>
+      </AnimatePresence>
+
+    </div>
+  );
+}
+
 function SectionMedia({
   section,
   aspect = "aspect-[4/3]",
@@ -413,6 +464,9 @@ function SectionMedia({
   className?: string;
   onImageClick?: (src: string) => void;
 }) {
+  if (section.carousel && section.carousel.length > 0) {
+    return <SectionCarousel images={section.carousel} aspect={aspect} className={className} onImageClick={onImageClick} />;
+  }
   if (section.media?.type === "figma") {
     return <FigmaEmbed src={section.media.src} poster={section.media.poster} aspect={aspect} className={className} gradient={gradient} primary={primary} />;
   }
@@ -473,6 +527,7 @@ export default function ProjectPageContent({ project, nextProject, prevProject }
   const primary  = project.theme?.primary ?? "var(--color-primary)";
   const isOngoing = project.metadata?.duration?.toLowerCase() === "ongoing";
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
+  const handleImageClick = project.disableLightbox ? undefined : setLightboxSrc;
 
   return (
     <main className="relative z-10" style={themeVars}>
@@ -795,7 +850,7 @@ export default function ProjectPageContent({ project, nextProject, prevProject }
 
                   {/* Image side — 4+8=12, fills the full grid */}
                   <motion.div variants={sectionItem} className="lg:col-span-8">
-                    <SectionMedia section={section} aspect="aspect-[4/3]" gradient={gradient} primary={primary} className="cinematic-shadow" onImageClick={setLightboxSrc} />
+                    <SectionMedia section={section} aspect="aspect-[4/3]" gradient={gradient} primary={primary} className="cinematic-shadow" onImageClick={handleImageClick} />
                   </motion.div>
                 </Shell>
               );
@@ -805,7 +860,7 @@ export default function ProjectPageContent({ project, nextProject, prevProject }
             return (
               <Shell key={section.heading} last={isLast}>
                 <motion.div variants={sectionItem} className={`lg:col-span-8 ${flipImage ? "lg:order-2" : ""}`}>
-                  <SectionMedia section={section} aspect="aspect-[4/3]" gradient={gradient} primary={primary} className="cinematic-shadow" onImageClick={setLightboxSrc} />
+                  <SectionMedia section={section} aspect="aspect-[4/3]" gradient={gradient} primary={primary} className="cinematic-shadow" onImageClick={handleImageClick} />
                 </motion.div>
                 <motion.div variants={sectionItem} className={`lg:col-span-4 flex flex-col gap-5 ${flipImage ? "lg:order-1" : ""}`}>
                   <span className="font-headline text-[10px] uppercase tracking-[0.35em] text-primary font-bold">
